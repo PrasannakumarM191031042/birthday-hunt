@@ -1,0 +1,44 @@
+:root {
+
+  --primary: #ff5fa2;
+
+  --primary-soft:
+    rgba(255, 95, 162, 0.25);
+
+  --primary-glow:
+    rgba(255, 95, 162, 0.55);
+
+  --background:
+    #100006;
+
+  --card-background:
+    #1b080f;
+
+  --camera-background:
+    #18070d;
+
+  --timer-background:
+    #200912;
+
+  --destination-background:
+    #220a15;
+
+  --button-background:
+    #1b080f;
+
+  --button-hover:
+    #320d1c;
+
+  --text:
+    #ffffff;
+
+  --secondary-text:
+    #ffe3ed;
+
+
+  --streamer-1: #ff5fa2;
+  --streamer-2: #59c7ff;
+  --streamer-3: #ffd23f;
+  --streamer-4: #b76cff;
+  --streamer-5: #6dffb8;
+}
