@@ -418,13 +418,6 @@
 
     }
 
-    .hidden {
-
-      display:
-        none !important;
-
-    }
-
     canvas {
 
       display:
@@ -440,135 +433,139 @@
 <body>
 
 
-  <!-- ====================================================== -->
-  <!-- SCANNER PAGE -->
-  <!-- ====================================================== -->
+<!-- ====================================================== -->
+<!-- SCANNER PAGE -->
+<!-- ====================================================== -->
 
-  <div id="scannerPage">
+<div id="scannerPage">
 
-    <h1>
-      🎂 Birthday Surprise
-    </h1>
+  <h1>
+    🎂 Birthday Surprise
+  </h1>
 
-    <p class="subtitle">
-      Point your camera at the QR code.
-    </p>
+  <p class="subtitle">
+    Point your camera at the QR code.
+  </p>
 
-    <p class="subtitle">
-      Your surprise will appear automatically.
-    </p>
-
-
-    <div class="cameraBox">
-
-      <video
-        id="camera"
-        autoplay
-        playsinline
-        muted>
-      </video>
-
-    </div>
+  <p class="subtitle">
+    Your surprise will appear automatically.
+  </p>
 
 
-    <canvas id="canvas"></canvas>
+  <div class="cameraBox">
 
-
-    <div id="status">
-      Camera not started.
-    </div>
-
-
-    <button
-      id="startButton"
-      onclick="startScanner()">
-
-      📷 Start Scanner
-
-    </button>
+    <video
+      id="camera"
+      autoplay
+      playsinline
+      muted>
+    </video>
 
   </div>
 
 
-  <!-- ====================================================== -->
-  <!-- RESULT PAGE -->
-  <!-- ====================================================== -->
-
-  <div id="resultPage">
-
-    <h1>
-      🎂 Birthday Surprise
-    </h1>
+  <canvas id="canvas"></canvas>
 
 
-    <div class="successTitle">
+  <div id="status">
+    Camera not started.
+  </div>
 
-      🎉 CLUE
-      <span id="scanNumberDisplay"></span>
-      FOUND!
+
+  <button
+    id="startButton"
+    onclick="startScanner()">
+
+    📷 Start Scanner
+
+  </button>
+
+</div>
+
+
+<!-- ====================================================== -->
+<!-- RESULT PAGE -->
+<!-- ====================================================== -->
+
+<div id="resultPage">
+
+  <h1>
+    🎂 Birthday Surprise
+  </h1>
+
+
+  <div class="successTitle">
+
+    🎉 CLUE
+    <span id="scanNumberDisplay"></span>
+    FOUND!
+
+  </div>
+
+
+  <div class="clueCard">
+
+    <div class="clueLabel">
+      Your clue
+    </div>
+
+    <div id="clueText">
+      Loading...
+    </div>
+
+  </div>
+
+
+  <!-- ================================================== -->
+  <!-- TIMER -->
+  <!-- ================================================== -->
+
+  <div
+    class="timerBox"
+    id="timerBox">
+
+    <div class="timerLabel">
+
+      🔐 Your destination will be revealed in
 
     </div>
 
 
-    <div class="clueCard">
-
-      <div class="clueLabel">
-        Your clue
-      </div>
-
-      <div id="clueText">
-        Loading...
-      </div>
-
+    <div id="timer">
+      02:30
     </div>
 
 
-    <!-- TIMER -->
+    <div id="waitingMessage">
 
-    <div
-      class="timerBox"
-      id="timerBox">
-
-      <div class="timerLabel">
-
-        🔐 Your destination will be revealed in
-
-      </div>
-
-
-      <div id="timer">
-        02:30
-      </div>
-
-
-      <div id="waitingMessage">
-
-        Keep this screen open...
-
-      </div>
-
-    </div>
-
-
-    <!-- DESTINATION -->
-
-    <div
-      id="destinationBox">
-
-      <div class="destinationTitle">
-
-        🎁 The next destination is:
-
-      </div>
-
-
-      <div id="destination">
-
-      </div>
+      Keep this screen open...
 
     </div>
 
   </div>
+
+
+  <!-- ================================================== -->
+  <!-- DESTINATION -->
+  <!-- ================================================== -->
+
+  <div
+    id="destinationBox">
+
+    <div class="destinationTitle">
+
+      🎁 The next destination is:
+
+    </div>
+
+
+    <div id="destination">
+
+    </div>
+
+  </div>
+
+</div>
 
 
 <script>
@@ -591,10 +588,12 @@ const video =
     "camera"
   );
 
+
 const canvas =
   document.getElementById(
     "canvas"
   );
+
 
 const ctx =
   canvas.getContext(
@@ -605,45 +604,66 @@ const ctx =
     }
   );
 
+
 const status =
   document.getElementById(
     "status"
   );
+
 
 const startButton =
   document.getElementById(
     "startButton"
   );
 
+
 const scannerPage =
   document.getElementById(
     "scannerPage"
   );
+
 
 const resultPage =
   document.getElementById(
     "resultPage"
   );
 
+
 const clueText =
   document.getElementById(
     "clueText"
   );
+
 
 const destination =
   document.getElementById(
     "destination"
   );
 
+
 const destinationBox =
   document.getElementById(
     "destinationBox"
   );
 
+
 const timer =
   document.getElementById(
     "timer"
   );
+
+
+const timerBox =
+  document.getElementById(
+    "timerBox"
+  );
+
+
+const waitingMessage =
+  document.getElementById(
+    "waitingMessage"
+  );
+
 
 const scanNumberDisplay =
   document.getElementById(
@@ -692,7 +712,9 @@ async function startScanner() {
     }
 
 
-    // Stop old stream
+    // --------------------------------------------------------
+    // STOP OLD CAMERA
+    // --------------------------------------------------------
 
     if (stream) {
 
@@ -706,7 +728,9 @@ async function startScanner() {
     }
 
 
-    // Start rear camera
+    // --------------------------------------------------------
+    // START REAR CAMERA
+    // --------------------------------------------------------
 
     stream =
       await navigator.mediaDevices.getUserMedia({
@@ -753,15 +777,18 @@ async function startScanner() {
 
     scanQRCode();
 
+
   } catch (error) {
 
     console.error(
       error
     );
 
+
     status.innerHTML =
       "❌ Camera error: " +
       error.message;
+
 
     startButton.disabled =
       false;
@@ -790,21 +817,18 @@ function scanQRCode() {
     canvas.width =
       video.videoWidth;
 
+
     canvas.height =
       video.videoHeight;
 
 
-    ctx.drawImage(
-      video,
-      0,
-      0,
-      canvas.width,
-      canvas.height
-    );
+    if (
+      canvas.width > 0 &&
+      canvas.height > 0
+    ) {
 
-
-    const imageData =
-      ctx.getImageData(
+      ctx.drawImage(
+        video,
         0,
         0,
         canvas.width,
@@ -812,39 +836,50 @@ function scanQRCode() {
       );
 
 
-    const code =
-      jsQR(
-        imageData.data,
-        imageData.width,
-        imageData.height,
-        {
-          inversionAttempts:
-            "attemptBoth"
-        }
-      );
+      const imageData =
+        ctx.getImageData(
+          0,
+          0,
+          canvas.width,
+          canvas.height
+        );
 
 
-    if (code) {
-
-      console.log(
-        "QR DETECTED:",
-        code.data
-      );
-
-
-      scanning =
-        false;
-
-
-      stopCamera();
+      const code =
+        jsQR(
+          imageData.data,
+          imageData.width,
+          imageData.height,
+          {
+            inversionAttempts:
+              "attemptBoth"
+          }
+        );
 
 
-      processQRCode(
-        code.data
-      );
+      if (code) {
+
+        console.log(
+          "QR DETECTED:",
+          code.data
+        );
 
 
-      return;
+        scanning =
+          false;
+
+
+        stopCamera();
+
+
+        processQRCode(
+          code.data
+        );
+
+
+        return;
+
+      }
 
     }
 
@@ -877,6 +912,7 @@ function stopCamera() {
       null;
 
   }
+
 
   video.srcObject =
     null;
@@ -915,6 +951,7 @@ function processQRCode(
         "scan"
       );
 
+
   } catch (error) {
 
     console.log(
@@ -925,7 +962,7 @@ function processQRCode(
 
 
   // ----------------------------------------------------------
-  // If QR directly contains scan number
+  // FALLBACK
   // ----------------------------------------------------------
 
   if (!scanNumber) {
@@ -948,6 +985,10 @@ function processQRCode(
   }
 
 
+  // ----------------------------------------------------------
+  // VALIDATION
+  // ----------------------------------------------------------
+
   if (!scanNumber) {
 
     status.innerHTML =
@@ -962,11 +1003,7 @@ function processQRCode(
 
 
   // ----------------------------------------------------------
-  // IMPORTANT
-  //
-  // We DO NOT open the Apps Script URL.
-  //
-  // We stay on GitHub Pages and load the clue.
+  // OPEN RESULT
   // ----------------------------------------------------------
 
   openResultPage(
@@ -987,6 +1024,7 @@ function openResultPage(
   scannerPage.style.display =
     "none";
 
+
   resultPage.style.display =
     "block";
 
@@ -1005,18 +1043,20 @@ function openResultPage(
     "none";
 
 
+  timerBox.style.display =
+    "block";
+
+
+  waitingMessage.innerHTML =
+    "Keep this screen open...";
+
+
   timer.innerHTML =
     "02:30";
 
 
   // ----------------------------------------------------------
-  // Make URL look like a new page.
-  //
-  // Example:
-  //
-  // https://m191031042.github.io/?result=1&scan=1
-  //
-  // The Apps Script URL is NOT shown.
+  // CHANGE BROWSER URL
   // ----------------------------------------------------------
 
   const newUrl =
@@ -1031,13 +1071,19 @@ function openResultPage(
     {
       result:
         true,
+
       scan:
         scanNumber
+
     },
     "",
     newUrl
   );
 
+
+  // ----------------------------------------------------------
+  // LOAD CLUE
+  // ----------------------------------------------------------
 
   getClueFromAppsScript(
     scanNumber
@@ -1048,13 +1094,6 @@ function openResultPage(
 
 // ============================================================
 // GET CLUE FROM APPS SCRIPT
-// ============================================================
-//
-// This is the function you previously asked about.
-//
-// It is ALREADY CONNECTED to the scanner.
-// You do NOT need to attach it somewhere else.
-//
 // ============================================================
 
 function getClueFromAppsScript(
@@ -1073,6 +1112,14 @@ function getClueFromAppsScript(
     "qrCallback_" +
     Date.now();
 
+
+  let scriptElement =
+    null;
+
+
+  // ----------------------------------------------------------
+  // JSONP CALLBACK
+  // ----------------------------------------------------------
 
   window[callbackName] =
     function(data) {
@@ -1098,9 +1145,7 @@ function getClueFromAppsScript(
       }
 
 
-      if (
-        scriptElement
-      ) {
+      if (scriptElement) {
 
         scriptElement.remove();
 
@@ -1108,7 +1153,7 @@ function getClueFromAppsScript(
 
 
       // ------------------------------------------------------
-      // ERROR
+      // ERROR RESPONSE
       // ------------------------------------------------------
 
       if (
@@ -1148,6 +1193,10 @@ function getClueFromAppsScript(
         );
 
 
+      // ------------------------------------------------------
+      // START 2:30 TIMER
+      // ------------------------------------------------------
+
       startCountdown(
         data.destination || ""
       );
@@ -1156,7 +1205,7 @@ function getClueFromAppsScript(
 
 
   // ----------------------------------------------------------
-  // IMPORTANT API URL
+  // API URL
   // ----------------------------------------------------------
 
   const apiUrl =
@@ -1178,7 +1227,11 @@ function getClueFromAppsScript(
   );
 
 
-  const scriptElement =
+  // ----------------------------------------------------------
+  // CREATE SCRIPT
+  // ----------------------------------------------------------
+
+  scriptElement =
     document.createElement(
       "script"
     );
@@ -1188,11 +1241,15 @@ function getClueFromAppsScript(
     apiUrl;
 
 
+  // ----------------------------------------------------------
+  // NETWORK ERROR
+  // ----------------------------------------------------------
+
   scriptElement.onerror =
     function() {
 
       console.error(
-        "Apps Script API failed."
+        "Apps Script JSONP request failed."
       );
 
 
@@ -1216,6 +1273,7 @@ function getClueFromAppsScript(
 
         "Please check your Apps Script deployment.";
 
+
       scriptElement.remove();
 
     };
@@ -1236,7 +1294,9 @@ function startCountdown(
   destinationValue
 ) {
 
-  // Stop previous timer
+  // ----------------------------------------------------------
+  // STOP OLD TIMER
+  // ----------------------------------------------------------
 
   if (timerInterval) {
 
@@ -1244,8 +1304,15 @@ function startCountdown(
       timerInterval
     );
 
+    timerInterval =
+      null;
+
   }
 
+
+  // ----------------------------------------------------------
+  // 150 SECONDS = 2 MINUTES 30 SECONDS
+  // ----------------------------------------------------------
 
   const TOTAL_SECONDS =
     150;
@@ -1263,10 +1330,18 @@ function startCountdown(
     "none";
 
 
+  waitingMessage.innerHTML =
+    "Keep this screen open...";
+
+
   updateTimer(
     remaining
   );
 
+
+  // ----------------------------------------------------------
+  // COUNTDOWN
+  // ----------------------------------------------------------
 
   timerInterval =
     setInterval(
@@ -1287,6 +1362,10 @@ function startCountdown(
           clearInterval(
             timerInterval
           );
+
+
+          timerInterval =
+            null;
 
 
           timer.innerHTML =
@@ -1319,6 +1398,7 @@ function updateTimer(
       seconds / 60
     );
 
+
   const secs =
     seconds % 60;
 
@@ -1329,7 +1409,9 @@ function updateTimer(
         2,
         "0"
       ) +
+
     ":" +
+
     String(secs)
       .padStart(
         2,
@@ -1347,9 +1429,7 @@ function revealDestination(
   value
 ) {
 
-  document.getElementById(
-    "waitingMessage"
-  ).innerHTML =
+  waitingMessage.innerHTML =
     "🎉 The wait is over!";
 
 
@@ -1416,7 +1496,7 @@ function escapeHtml(
 
 
 // ============================================================
-// IF PAGE IS OPENED WITH ?result=1&scan=1
+// OPEN EXISTING RESULT
 // ============================================================
 
 (function checkExistingResult() {
@@ -1431,6 +1511,7 @@ function escapeHtml(
     params.get(
       "result"
     );
+
 
   const scan =
     params.get(
@@ -1450,7 +1531,6 @@ function escapeHtml(
   }
 
 })();
-
 
 </script>
 
