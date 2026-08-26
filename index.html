@@ -9,70 +9,234 @@
     content="width=device-width, initial-scale=1"
   >
 
-  <title>Birthday Hunt</title>
+  <title>Birthday Surprise</title>
 
+  <!-- QR Scanner -->
   <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js"></script>
 
   <style>
 
+    * {
+      box-sizing: border-box;
+    }
+
     body {
       margin: 0;
       background: #000;
-      color: white;
-      font-family: Arial, sans-serif;
+      color: #fff;
+      font-family: Arial, Helvetica, sans-serif;
       text-align: center;
+      min-height: 100vh;
     }
 
     h1 {
-      margin: 25px 10px 10px;
+      margin: 35px 10px 15px;
       color: #4cff3b;
       font-size: 42px;
+      text-shadow:
+        0 0 10px #00ff00,
+        0 0 25px #00ff00;
     }
 
     p {
       font-size: 20px;
+      line-height: 1.5;
+      padding: 0 20px;
+    }
+
+    /* =====================================================
+       SCANNER
+       ===================================================== */
+
+    #scannerPage {
+      display: none;
     }
 
     #cameraBox {
-      width: 90%;
-      max-width: 650px;
-      margin: 35px auto;
+      width: 92%;
+      max-width: 700px;
+      height: 450px;
+      margin: 35px auto 20px;
       border: 4px solid #4cff3b;
       border-radius: 20px;
-      padding: 20px;
-      box-sizing: border-box;
       background: #111;
+      box-shadow:
+        0 0 15px #00ff00,
+        0 0 35px rgba(0,255,0,.4);
+
+      position: relative;
+      overflow: hidden;
     }
 
     #camera {
       width: 100%;
+      height: 100%;
+      object-fit: cover;
       display: block;
-      border-radius: 15px;
+    }
+
+    #scanLine {
+      position: absolute;
+      left: 20%;
+      right: 20%;
+      height: 4px;
+      background: #4cff3b;
+      box-shadow:
+        0 0 10px #00ff00,
+        0 0 20px #00ff00;
+
+      animation: scanAnimation 2s linear infinite;
+    }
+
+    @keyframes scanAnimation {
+
+      0% {
+        top: 20%;
+      }
+
+      50% {
+        top: 80%;
+      }
+
+      100% {
+        top: 20%;
+      }
+
+    }
+
+    #status {
+      font-size: 19px;
+      margin: 20px;
+      color: #fff;
+    }
+
+    button {
+      padding: 16px 32px;
+      margin: 15px;
+      font-size: 19px;
+      font-weight: bold;
+      border: 2px solid #4cff3b;
+      border-radius: 12px;
       background: #111;
+      color: #4cff3b;
+
+      box-shadow:
+        0 0 10px rgba(0,255,0,.4);
+
+      cursor: pointer;
+    }
+
+    button:disabled {
+      opacity: .5;
     }
 
     canvas {
       display: none;
     }
 
-    #status {
-      font-size: 22px;
-      margin: 25px 10px;
+    /* =====================================================
+       RESULT PAGE
+       ===================================================== */
+
+    #resultPage {
+      display: none;
+      padding-bottom: 50px;
     }
 
-    button {
-      padding: 16px 30px;
-      font-size: 20px;
-      font-weight: bold;
+    .resultCard {
+      width: 90%;
+      max-width: 650px;
+      margin: 30px auto;
+      padding: 30px 25px;
+
       border: 3px solid #4cff3b;
-      border-radius: 12px;
-      background: #111;
-      color: #4cff3b;
-      margin: 15px;
+      border-radius: 20px;
+
+      background: #050505;
+
+      box-shadow:
+        0 0 15px #00ff00,
+        0 0 35px rgba(0,255,0,.35);
     }
 
-    button:disabled {
-      opacity: 0.5;
+    .clueTitle {
+      font-size: 32px;
+      color: #4cff3b;
+      margin-bottom: 25px;
+
+      text-shadow:
+        0 0 10px #00ff00;
+    }
+
+    #clueText {
+      font-size: 25px;
+      line-height: 1.6;
+      color: #fff;
+      margin: 25px 0;
+    }
+
+    .timerTitle {
+      font-size: 20px;
+      color: #aaa;
+      margin-top: 30px;
+    }
+
+    #timer {
+      font-size: 60px;
+      font-weight: bold;
+      color: #4cff3b;
+
+      margin: 10px 0 25px;
+
+      text-shadow:
+        0 0 10px #00ff00,
+        0 0 25px #00ff00;
+    }
+
+    #lockedMessage {
+      font-size: 18px;
+      color: #ddd;
+      line-height: 1.5;
+    }
+
+    #destinationBox {
+      display: none;
+
+      margin-top: 30px;
+      padding: 25px;
+
+      border: 2px solid #4cff3b;
+      border-radius: 15px;
+
+      background: #101010;
+
+      box-shadow:
+        0 0 15px rgba(0,255,0,.4);
+    }
+
+    #destinationBox h2 {
+      color: #4cff3b;
+      font-size: 28px;
+      margin-top: 0;
+    }
+
+    #destination {
+      font-size: 28px;
+      font-weight: bold;
+      color: white;
+      line-height: 1.5;
+      word-break: break-word;
+    }
+
+    .birthdayEmoji {
+      font-size: 55px;
+      margin-top: 20px;
+    }
+
+    .success {
+      color: #4cff3b;
+      font-size: 22px;
+      font-weight: bold;
     }
 
   </style>
@@ -81,14 +245,27 @@
 
 <body>
 
-  <h1>🎂 Birthday Hunt</h1>
+
+<!-- =====================================================
+     SCANNER PAGE
+     ===================================================== -->
+
+<div id="scannerPage">
+
+  <div class="birthdayEmoji">
+    🎂
+  </div>
+
+  <h1>
+    Birthday Surprise
+  </h1>
 
   <p>
     Point your camera at the QR code.
   </p>
 
   <p>
-    You will be taken to your clue automatically.
+    The surprise will appear automatically.
   </p>
 
 
@@ -100,6 +277,8 @@
       playsinline
       muted>
     </video>
+
+    <div id="scanLine"></div>
 
   </div>
 
@@ -120,13 +299,99 @@
 
   </button>
 
+</div>
+
+
+
+<!-- =====================================================
+     RESULT PAGE
+     ===================================================== -->
+
+<div id="resultPage">
+
+  <div class="birthdayEmoji">
+    🎂
+  </div>
+
+  <h1>
+    Birthday Surprise
+  </h1>
+
+
+  <div class="resultCard">
+
+    <div class="clueTitle">
+      🎉 CLUE <span id="clueNumber"></span> FOUND!
+    </div>
+
+
+    <div id="clueText">
+      Loading clue...
+    </div>
+
+
+    <!-- TIMER -->
+
+    <div class="timerTitle">
+      ⏳ Your destination will be revealed in
+    </div>
+
+    <div id="timer">
+      2:30
+    </div>
+
+
+    <div id="lockedMessage">
+
+      The next destination is still hidden...
+
+      <br><br>
+
+      Be patient. Your surprise is coming! 🎁
+
+    </div>
+
+
+    <!-- DESTINATION -->
+
+    <div id="destinationBox">
+
+      <h2>
+        🎯 Destination Revealed!
+      </h2>
+
+      <div
+        id="destination">
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+
 
 <script>
 
 
-// ============================================================
-// ELEMENTS
-// ============================================================
+/* ============================================================
+   CONFIGURATION
+   ============================================================ */
+
+const APPS_SCRIPT_URL =
+  "https://script.google.com/macros/s/AKfycbyar5ETPG9fs8Rur7aYuR9wZDFF9ry8Ra9Fw3wbz97AsYUrnK12BpLQofuHCsUFpWrw/exec";
+
+
+/* ============================================================
+   ELEMENTS
+   ============================================================ */
+
+const scannerPage =
+  document.getElementById("scannerPage");
+
+const resultPage =
+  document.getElementById("resultPage");
 
 const video =
   document.getElementById("camera");
@@ -149,29 +414,82 @@ const startButton =
   document.getElementById("startButton");
 
 
-// ============================================================
-// VARIABLES
-// ============================================================
+/* ============================================================
+   CAMERA VARIABLES
+   ============================================================ */
 
 let stream = null;
 
 let scanning = false;
 
-let qrFound = false;
+let alreadyDetected = false;
 
 
-// ============================================================
-// START CAMERA
-// ============================================================
+/* ============================================================
+   PAGE START
+   ============================================================ */
+
+window.addEventListener(
+  "load",
+  function() {
+
+    const params =
+      new URLSearchParams(
+        window.location.search
+      );
+
+    const scan =
+      params.get("scan");
+
+
+    /*
+     * If ?scan=1 exists,
+     * show the result page.
+     */
+
+    if (scan) {
+
+      scannerPage.style.display =
+        "none";
+
+      resultPage.style.display =
+        "block";
+
+      loadClue(
+        scan
+      );
+
+    } else {
+
+      scannerPage.style.display =
+        "block";
+
+      resultPage.style.display =
+        "none";
+
+    }
+
+  }
+);
+
+
+/* ============================================================
+   START SCANNER
+   ============================================================ */
 
 async function startScanner() {
 
-  qrFound = false;
+  if (scanning) {
+    return;
+  }
 
-  startButton.disabled = true;
 
   status.innerHTML =
-    "📷 Requesting camera permission...";
+    "🔍 Requesting camera permission...";
+
+
+  startButton.disabled =
+    true;
 
 
   try {
@@ -188,43 +506,43 @@ async function startScanner() {
     }
 
 
-    // Stop previous camera
-
     if (stream) {
 
       stream
         .getTracks()
         .forEach(
-          track => track.stop()
+          function(track) {
+            track.stop();
+          }
         );
 
     }
 
 
-    // Open rear camera
-
     stream =
-      await navigator.mediaDevices.getUserMedia({
+      await navigator
+        .mediaDevices
+        .getUserMedia({
 
-        video: {
+          video: {
 
-          facingMode: {
-            ideal: "environment"
+            facingMode: {
+              ideal: "environment"
+            },
+
+            width: {
+              ideal: 1280
+            },
+
+            height: {
+              ideal: 720
+            }
+
           },
 
-          width: {
-            ideal: 1280
-          },
+          audio: false
 
-          height: {
-            ideal: 720
-          }
-
-        },
-
-        audio: false
-
-      });
+        });
 
 
     video.srcObject =
@@ -234,11 +552,16 @@ async function startScanner() {
     await video.play();
 
 
+    scanning =
+      true;
+
+
+    alreadyDetected =
+      false;
+
+
     status.innerHTML =
       "📷 Camera working — scanning QR code...";
-
-
-    scanning = true;
 
 
     scanQRCode();
@@ -246,7 +569,9 @@ async function startScanner() {
 
   } catch (error) {
 
-    console.error(error);
+    console.error(
+      error
+    );
 
 
     status.innerHTML =
@@ -264,9 +589,9 @@ async function startScanner() {
 }
 
 
-// ============================================================
-// SCAN QR CODE
-// ============================================================
+/* ============================================================
+   QR SCANNER
+   ============================================================ */
 
 function scanQRCode() {
 
@@ -317,11 +642,105 @@ function scanQRCode() {
       );
 
 
-    if (code) {
+    if (code && !alreadyDetected) {
 
-      handleQRCode(
+      alreadyDetected =
+        true;
+
+      scanning =
+        false;
+
+
+      console.log(
+        "QR CODE FOUND:",
         code.data
       );
+
+
+      /*
+       * Stop camera.
+       */
+
+      if (stream) {
+
+        stream
+          .getTracks()
+          .forEach(
+            function(track) {
+              track.stop();
+            }
+          );
+
+      }
+
+
+      video.srcObject =
+        null;
+
+
+      /*
+       * Extract scan number
+       *
+       * QR contains:
+       *
+       * .../exec?scan=1
+       *
+       * We only need:
+       *
+       * 1
+       */
+
+      let scanNumber =
+        extractScanNumber(
+          code.data
+        );
+
+
+      if (!scanNumber) {
+
+        status.innerHTML =
+          "❌ Invalid QR code.";
+
+        startButton.disabled =
+          false;
+
+        return;
+
+      }
+
+
+      /*
+       * IMPORTANT:
+       *
+       * Move to a NEW PAGE.
+       *
+       * This gives the beautiful
+       * result page you wanted.
+       */
+
+      const newUrl =
+        window.location.origin +
+        window.location.pathname +
+        "?scan=" +
+        encodeURIComponent(
+          scanNumber
+        );
+
+
+      status.innerHTML =
+        "🎉 QR code detected!";
+
+
+      setTimeout(
+        function() {
+
+          window.location.href =
+            newUrl;
+
+        },
+        400
+      );
+
 
       return;
 
@@ -337,109 +756,445 @@ function scanQRCode() {
 }
 
 
-// ============================================================
-// QR DETECTED
-// ============================================================
+/* ============================================================
+   EXTRACT SCAN NUMBER
+   ============================================================ */
 
-function handleQRCode(
-  qrContent
+function extractScanNumber(
+  qrData
 ) {
-
-  if (qrFound) {
-    return;
-  }
-
-
-  qrFound = true;
-
-  scanning = false;
-
-
-  console.log(
-    "QR CODE FOUND:",
-    qrContent
-  );
-
-
-  status.innerHTML =
-    "✅ QR code detected! Opening your clue...";
-
-
-  // ==========================================================
-  // STOP CAMERA
-  // ==========================================================
-
-  if (stream) {
-
-    stream
-      .getTracks()
-      .forEach(
-        track => track.stop()
-      );
-
-  }
-
-
-  video.srcObject = null;
-
-
-  // ==========================================================
-  // CHECK QR CONTENT
-  // ==========================================================
 
   try {
 
-    const qrUrl =
+    /*
+     * QR contains a URL.
+     */
+
+    const url =
       new URL(
-        qrContent
+        qrData
       );
 
 
-    const scanNumber =
-      qrUrl.searchParams.get(
+    const scan =
+      url.searchParams.get(
         "scan"
       );
 
 
-    if (!scanNumber) {
+    if (scan) {
 
-      status.innerHTML =
-        "❌ QR code does not contain a scan number.";
-
-      startButton.disabled =
-        false;
-
-      return;
+      return String(
+        scan
+      ).trim();
 
     }
 
-
-    // ========================================================
-    // IMPORTANT
-    //
-    // OPEN THE QR URL DIRECTLY
-    //
-    // This takes the user to your Apps Script page.
-    // ========================================================
-
-    window.location.href =
-      qrContent;
-
-
   } catch (error) {
 
-    console.error(
-      error
+    /*
+     * In case QR contains
+     * just "1", "2", etc.
+     */
+
+    const simple =
+      String(
+        qrData
+      ).trim();
+
+
+    if (
+      /^\d+$/.test(
+        simple
+      )
+    ) {
+
+      return simple;
+
+    }
+
+  }
+
+
+  return "";
+
+}
+
+
+/* ============================================================
+   LOAD CLUE
+   ============================================================ */
+
+function loadClue(
+  scanNumber
+) {
+
+  document.getElementById(
+    "clueNumber"
+  ).innerHTML =
+    escapeHtml(
+      scanNumber
     );
 
 
-    status.innerHTML =
-      "❌ Invalid QR code.";
+  document.getElementById(
+    "clueText"
+  ).innerHTML =
+    "🔍 Loading your clue...";
 
-    startButton.disabled =
-      false;
 
-  }
+  getClueFromAppsScript(
+    scanNumber
+  );
+
+}
+
+
+/* ============================================================
+   GET CLUE FROM GOOGLE APPS SCRIPT
+   ============================================================ */
+
+function getClueFromAppsScript(
+  scanNumber
+) {
+
+  const callbackName =
+    "qrCallback_" +
+    Date.now();
+
+
+  window[callbackName] =
+    function(data) {
+
+      console.log(
+        "APPS SCRIPT RESPONSE:",
+        data
+      );
+
+
+      try {
+
+        delete window[
+          callbackName
+        ];
+
+      } catch (e) {
+
+        window[
+          callbackName
+        ] = undefined;
+
+      }
+
+
+      if (
+        scriptElement
+      ) {
+
+        scriptElement.remove();
+
+      }
+
+
+      if (
+        !data ||
+        data.success !== true
+      ) {
+
+        document.getElementById(
+          "clueText"
+        ).innerHTML =
+
+          "❌ Could not load the clue.<br><br>" +
+
+          escapeHtml(
+            data && data.error
+              ? data.error
+              : "Unknown error."
+          );
+
+        return;
+
+      }
+
+
+      /*
+       * Display clue immediately.
+       */
+
+      document.getElementById(
+        "clueNumber"
+      ).innerHTML =
+        escapeHtml(
+          data.scan
+        );
+
+
+      document.getElementById(
+        "clueText"
+      ).innerHTML =
+        escapeHtml(
+          data.clue || ""
+        );
+
+
+      /*
+       * Start 2:30 countdown.
+       */
+
+      startDestinationTimer(
+        data.destination || ""
+      );
+
+    };
+
+
+  const apiUrl =
+    APPS_SCRIPT_URL +
+    "?api=1" +
+    "&scan=" +
+    encodeURIComponent(
+      scanNumber
+    ) +
+    "&callback=" +
+    encodeURIComponent(
+      callbackName
+    );
+
+
+  console.log(
+    "API URL:",
+    apiUrl
+  );
+
+
+  const scriptElement =
+    document.createElement(
+      "script"
+    );
+
+
+  scriptElement.src =
+    apiUrl;
+
+
+  scriptElement.onerror =
+    function() {
+
+      console.error(
+        "Apps Script API failed."
+      );
+
+
+      try {
+
+        delete window[
+          callbackName
+        ];
+
+      } catch (e) {
+
+        window[
+          callbackName
+        ] = undefined;
+
+      }
+
+
+      document.getElementById(
+        "clueText"
+      ).innerHTML =
+
+        "❌ Could not connect to the clue server.";
+
+      scriptElement.remove();
+
+    };
+
+
+  document.body.appendChild(
+    scriptElement
+  );
+
+}
+
+
+/* ============================================================
+   2:30 DESTINATION TIMER
+   ============================================================ */
+
+function startDestinationTimer(
+  destination
+) {
+
+  /*
+   * 2 minutes 30 seconds
+   *
+   * 2 × 60 + 30
+   *
+   * = 150 seconds
+   */
+
+  let remainingSeconds =
+    150;
+
+
+  updateTimer(
+    remainingSeconds
+  );
+
+
+  const timerInterval =
+    setInterval(
+      function() {
+
+        remainingSeconds--;
+
+
+        updateTimer(
+          remainingSeconds
+        );
+
+
+        if (
+          remainingSeconds <= 0
+        ) {
+
+          clearInterval(
+            timerInterval
+          );
+
+
+          revealDestination(
+            destination
+          );
+
+        }
+
+      },
+      1000
+    );
+
+}
+
+
+/* ============================================================
+   UPDATE TIMER DISPLAY
+   ============================================================ */
+
+function updateTimer(
+  totalSeconds
+) {
+
+  const minutes =
+    Math.floor(
+      totalSeconds / 60
+    );
+
+
+  const seconds =
+    totalSeconds % 60;
+
+
+  document.getElementById(
+    "timer"
+  ).innerHTML =
+
+    minutes +
+    ":" +
+    String(
+      seconds
+    ).padStart(
+      2,
+      "0"
+    );
+
+}
+
+
+/* ============================================================
+   REVEAL DESTINATION
+   ============================================================ */
+
+function revealDestination(
+  destination
+) {
+
+  document.getElementById(
+    "timer"
+  ).innerHTML =
+    "🎉 0:00";
+
+
+  document.getElementById(
+    "lockedMessage"
+  ).innerHTML =
+    "✨ The wait is over! Your destination has been revealed.";
+
+
+  const destinationBox =
+    document.getElementById(
+      "destinationBox"
+    );
+
+
+  const destinationElement =
+    document.getElementById(
+      "destination"
+    );
+
+
+  destinationElement.innerHTML =
+    escapeHtml(
+      destination || "Destination unavailable."
+    );
+
+
+  destinationBox.style.display =
+    "block";
+
+}
+
+
+/* ============================================================
+   ESCAPE HTML
+   ============================================================ */
+
+function escapeHtml(
+  value
+) {
+
+  return String(
+    value === null ||
+    value === undefined
+      ? ""
+      : value
+  )
+
+  .replace(
+    /&/g,
+    "&amp;"
+  )
+
+  .replace(
+    /</g,
+    "&lt;"
+  )
+
+  .replace(
+    />/g,
+    "&gt;"
+  )
+
+  .replace(
+    /"/g,
+    "&quot;"
+  )
+
+  .replace(
+    /'/g,
+    "&#039;"
+  );
 
 }
 
