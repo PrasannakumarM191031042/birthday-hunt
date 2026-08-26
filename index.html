@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <base target="_top">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <style>
+    body {
+      margin: 0;
+      background: #000;
+      color: white;
+      font-family: Arial, sans-serif;
+      text-align: center;
+    }
+
+    h1 {
+      margin: 30px 10px 10px;
+      color: #4cff3b;
+    }
+
+    p {
+      font-size: 18px;
+    }
+
+    #camera {
+      width: 90%;
+      max-width: 600px;
+      margin: 20px auto;
+      border: 3px solid #4cff3b;
+      border-radius: 15px;
+      background: #111;
+      display: block;
+    }
+
+    button {
+      padding: 15px 30px;
+      font-size: 18px;
+      font-weight: bold;
+      border: 2px solid #4cff3b;
+      border-radius: 10px;
+      background: #111;
+      color: #4cff3b;
+      margin: 15px;
+    }
+
+    #status {
+      font-size: 18px;
+      margin: 20px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <h1>📷 Camera Test</h1>
+
+  <p>
+    Tap the button and allow camera access.
+  </p>
+
+  <video
+    id="camera"
+    autoplay
+    playsinline
+    muted>
+  </video>
+
+  <div id="status">
+    Camera not started.
+  </div>
+
+  <button onclick="startCamera()">
+    📷 Start Camera
+  </button>
+
+<script>
+
+async function startCamera() {
+
+  const video =
+    document.getElementById("camera");
+
+  const status =
+    document.getElementById("status");
+
+  status.innerHTML =
+    "Requesting camera permission...";
+
+  try {
+
+    if (!navigator.mediaDevices ||
+        !navigator.mediaDevices.getUserMedia) {
+
+      status.innerHTML =
+        "❌ This browser does not support camera access.";
+
+      return;
+    }
+
+    const stream =
+      await navigator.mediaDevices.getUserMedia({
+        video: {
+          facingMode: {
+            ideal: "environment"
+          }
+        },
+        audio: false
+      });
+
+    video.srcObject = stream;
+
+    status.innerHTML =
+      "✅ CAMERA WORKING!";
+
+  } catch (error) {
+
+    console.error(error);
+
+    status.innerHTML =
+      "❌ Camera error: " +
+      error.name +
+      " — " +
+      error.message;
+  }
+}
+
+</script>
+
+</body>
+</html>
