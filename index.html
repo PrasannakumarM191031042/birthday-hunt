@@ -1,504 +1,59 @@
-```html
 <!DOCTYPE html>
-<html lang="en">
+<html>
 
 <head>
+
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1"
+  >
 
   <title>Birthday Surprise</title>
 
+  <!-- QR SCANNER LIBRARY -->
   <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js"></script>
 
-  <style>
-    * {
-      box-sizing: border-box;
-    }
+  <!-- COMMON CSS -->
+  <link rel="stylesheet" href="style.css">
 
-    html,
-    body {
-      margin: 0;
-      padding: 0;
-      width: 100%;
-      min-height: 100%;
-      background: #000;
-      color: white;
-      font-family: Arial, Helvetica, sans-serif;
-      text-align: center;
-      overflow-x: hidden;
-    }
+  <!-- PINK THEME -->
+  <link rel="stylesheet" href="themes/pink.css">
 
-    body {
-      min-height: 100vh;
-      position: relative;
-    }
-
-    /* =====================================================
-       BACKGROUND
-       ===================================================== */
-
-    body::before {
-      content: "";
-      position: fixed;
-      inset: 0;
-      background:
-        radial-gradient(circle at 50% 0%,
-          rgba(76, 255, 59, 0.12),
-          transparent 35%),
-        radial-gradient(circle at 20% 80%,
-          rgba(0, 255, 180, 0.07),
-          transparent 30%),
-        radial-gradient(circle at 80% 70%,
-          rgba(180, 0, 255, 0.06),
-          transparent 30%);
-      pointer-events: none;
-      z-index: 0;
-    }
-
-    /* =====================================================
-       MAIN PAGES
-       ===================================================== */
-
-    #scannerPage,
-    #resultPage {
-      position: relative;
-      z-index: 2;
-      width: 100%;
-      max-width: 760px;
-      margin: 0 auto;
-      padding:
-        max(20px, env(safe-area-inset-top))
-        18px
-        max(35px, env(safe-area-inset-bottom));
-    }
-
-    #resultPage {
-      display: none;
-      min-height: 100vh;
-    }
-
-    /* =====================================================
-       HEADINGS
-       ===================================================== */
-
-    h1 {
-      margin: 28px 5px 10px;
-      color: #4cff3b;
-      font-size: clamp(32px, 8vw, 48px);
-      line-height: 1.1;
-      text-shadow:
-        0 0 10px rgba(76, 255, 59, 0.6),
-        0 0 25px rgba(76, 255, 59, 0.3);
-    }
-
-    .subtitle {
-      font-size: clamp(17px, 4.5vw, 21px);
-      line-height: 1.5;
-      color: #ddd;
-      margin: 10px auto;
-      max-width: 600px;
-    }
-
-    /* =====================================================
-       CAMERA
-       ===================================================== */
-
-    .cameraBox {
-      width: 100%;
-      max-width: 650px;
-      margin: 25px auto;
-      padding: 10px;
-      border: 3px solid #4cff3b;
-      border-radius: 20px;
-      background: #080808;
-      box-shadow:
-        0 0 18px rgba(76, 255, 59, 0.35),
-        0 0 40px rgba(76, 255, 59, 0.12);
-    }
-
-    #camera {
-      display: block;
-      width: 100%;
-      max-height: 65vh;
-      min-height: 260px;
-      object-fit: cover;
-      border-radius: 13px;
-      background: #111;
-    }
-
-    #status {
-      margin: 18px auto;
-      min-height: 28px;
-      font-size: 18px;
-      color: #ddd;
-    }
-
-    button {
-      padding: 15px 28px;
-      margin: 10px;
-      border: 2px solid #4cff3b;
-      border-radius: 14px;
-      background: #111;
-      color: #4cff3b;
-      font-size: 18px;
-      font-weight: bold;
-      cursor: pointer;
-      box-shadow: 0 0 15px rgba(76, 255, 59, 0.3);
-    }
-
-    button:disabled {
-      opacity: 0.5;
-      cursor: not-allowed;
-    }
-
-    canvas {
-      display: none;
-    }
-
-    /* =====================================================
-       RESULT PAGE
-       ===================================================== */
-
-    .successTitle {
-      margin: 20px auto 22px;
-      font-size: clamp(27px, 7vw, 40px);
-      font-weight: bold;
-      color: #4cff3b;
-      text-shadow:
-        0 0 10px rgba(76, 255, 59, 0.8),
-        0 0 25px rgba(76, 255, 59, 0.4);
-      animation: titlePop 0.8s cubic-bezier(.17,.89,.32,1.49);
-    }
-
-    @keyframes titlePop {
-      0% {
-        opacity: 0;
-        transform: scale(0.3);
-      }
-
-      70% {
-        transform: scale(1.12);
-      }
-
-      100% {
-        opacity: 1;
-        transform: scale(1);
-      }
-    }
-
-    /* =====================================================
-       CLUE CARD
-       ===================================================== */
-
-    .clueCard {
-      width: 100%;
-      margin: 18px auto;
-      padding: clamp(22px, 6vw, 32px) 20px;
-      border: 3px solid #4cff3b;
-      border-radius: 22px;
-      background:
-        linear-gradient(
-          145deg,
-          rgba(76, 255, 59, 0.08),
-          rgba(0, 0, 0, 0.75)
-        );
-      box-shadow:
-        0 0 20px rgba(76, 255, 59, 0.35),
-        inset 0 0 20px rgba(76, 255, 59, 0.05);
-      animation: cardPop 1s cubic-bezier(.17,.89,.32,1.49);
-    }
-
-    @keyframes cardPop {
-      0% {
-        opacity: 0;
-        transform: scale(0.65) translateY(30px);
-      }
-
-      70% {
-        transform: scale(1.04) translateY(-4px);
-      }
-
-      100% {
-        opacity: 1;
-        transform: scale(1) translateY(0);
-      }
-    }
-
-    .clueLabel {
-      font-size: 15px;
-      color: #aaa;
-      text-transform: uppercase;
-      letter-spacing: 3px;
-      margin-bottom: 15px;
-    }
-
-    #clueText {
-      font-size: clamp(22px, 6vw, 30px);
-      line-height: 1.55;
-      color: white;
-      word-wrap: break-word;
-    }
-
-    /* =====================================================
-       TIMER
-       ===================================================== */
-
-    .timerBox {
-      width: 100%;
-      margin: 22px auto;
-      padding: 22px 18px;
-      border: 2px solid #4cff3b;
-      border-radius: 20px;
-      background: #090909;
-      box-shadow:
-        0 0 18px rgba(76, 255, 59, 0.25);
-    }
-
-    .timerLabel {
-      font-size: clamp(16px, 4vw, 19px);
-      color: #aaa;
-      line-height: 1.4;
-      margin-bottom: 8px;
-    }
-
-    #timer {
-      font-size: clamp(48px, 15vw, 65px);
-      font-weight: bold;
-      color: #4cff3b;
-      line-height: 1.1;
-      text-shadow:
-        0 0 10px rgba(76, 255, 59, 0.8),
-        0 0 25px rgba(76, 255, 59, 0.35);
-    }
-
-    #waitingMessage {
-      margin-top: 10px;
-      font-size: 17px;
-      color: #ddd;
-    }
-
-    /* =====================================================
-       DESTINATION
-       ===================================================== */
-
-    #destinationBox {
-      display: none;
-      width: 100%;
-      margin: 25px auto;
-      padding: 28px 20px;
-      border: 3px solid #4cff3b;
-      border-radius: 22px;
-      background:
-        linear-gradient(
-          145deg,
-          rgba(76, 255, 59, 0.12),
-          rgba(0, 0, 0, 0.8)
-        );
-      box-shadow:
-        0 0 25px rgba(76, 255, 59, 0.5);
-      animation: destinationReveal 1s cubic-bezier(.17,.89,.32,1.49);
-    }
-
-    @keyframes destinationReveal {
-      0% {
-        opacity: 0;
-        transform: scale(0.5) rotate(-3deg);
-      }
-
-      70% {
-        transform: scale(1.06) rotate(1deg);
-      }
-
-      100% {
-        opacity: 1;
-        transform: scale(1) rotate(0);
-      }
-    }
-
-    .destinationTitle {
-      font-size: 19px;
-      color: white;
-      margin-bottom: 14px;
-    }
-
-    #destination {
-      font-size: clamp(25px, 7vw, 34px);
-      font-weight: bold;
-      color: #4cff3b;
-      line-height: 1.45;
-      word-wrap: break-word;
-      text-shadow: 0 0 12px rgba(76, 255, 59, 0.5);
-    }
-
-    /* =====================================================
-       CELEBRATION CONFETTI
-       ===================================================== */
-
-    #celebration {
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      overflow: hidden;
-      z-index: 100;
-    }
-
-    .confetti {
-      position: absolute;
-      top: -30px;
-      width: 10px;
-      height: 18px;
-      opacity: 0;
-      animation: confettiFall linear forwards;
-    }
-
-    @keyframes confettiFall {
-      0% {
-        opacity: 1;
-        transform:
-          translate3d(0, -20px, 0)
-          rotate(0deg);
-      }
-
-      100% {
-        opacity: 0;
-        transform:
-          translate3d(var(--x), 110vh, 0)
-          rotate(var(--rotation));
-      }
-    }
-
-    /* =====================================================
-       SIDE BURSTS
-       ===================================================== */
-
-    .burst {
-      position: fixed;
-      top: 50%;
-      width: 5px;
-      height: 5px;
-      border-radius: 50%;
-      pointer-events: none;
-      z-index: 101;
-    }
-
-    .burst.left {
-      left: 0;
-    }
-
-    .burst.right {
-      right: 0;
-    }
-
-    .burstParticle {
-      position: absolute;
-      width: 9px;
-      height: 9px;
-      border-radius: 2px;
-      animation: burstMove 1.4s ease-out forwards;
-    }
-
-    @keyframes burstMove {
-      0% {
-        opacity: 1;
-        transform:
-          translate(0, 0)
-          scale(1);
-      }
-
-      100% {
-        opacity: 0;
-        transform:
-          translate(
-            var(--bx),
-            var(--by)
-          )
-          rotate(var(--br))
-          scale(0.2);
-      }
-    }
-
-    /* =====================================================
-       SPARKLES
-       ===================================================== */
-
-    .sparkle {
-      position: fixed;
-      pointer-events: none;
-      z-index: 99;
-      font-size: 22px;
-      animation: sparklePop 1.5s ease-out forwards;
-    }
-
-    @keyframes sparklePop {
-      0% {
-        opacity: 0;
-        transform: scale(0);
-      }
-
-      25% {
-        opacity: 1;
-        transform: scale(1.2);
-      }
-
-      100% {
-        opacity: 0;
-        transform:
-          translateY(-80px)
-          scale(0.3);
-      }
-    }
-
-    /* =====================================================
-       MOBILE
-       ===================================================== */
-
-    @media (max-width: 480px) {
-
-      #scannerPage,
-      #resultPage {
-        padding-left: 14px;
-        padding-right: 14px;
-      }
-
-      h1 {
-        margin-top: 20px;
-      }
-
-      .cameraBox {
-        margin-top: 20px;
-        padding: 7px;
-      }
-
-      #camera {
-        min-height: 230px;
-      }
-
-      .clueCard {
-        padding: 22px 16px;
-      }
-
-      .timerBox {
-        padding: 20px 14px;
-      }
-    }
-  </style>
 </head>
+
 
 <body>
 
-  <!-- =====================================================
-       CELEBRATION LAYER
-       ===================================================== -->
 
-  <div id="celebration"></div>
+  <!-- ======================================================
+       CELEBRATION STREAMERS
+       ====================================================== -->
 
-  <!-- =====================================================
+  <div class="celebration">
+
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+
+  </div>
+
+
+  <!-- ======================================================
        SCANNER PAGE
-       ===================================================== -->
+       ====================================================== -->
 
   <div id="scannerPage">
 
-    <h1>🎂 Birthday Surprise</h1>
+    <h1>
+      🎂 Birthday Surprise
+    </h1>
 
     <p class="subtitle">
       Point your camera at the QR code.
@@ -507,6 +62,7 @@
     <p class="subtitle">
       Your surprise will appear automatically.
     </p>
+
 
     <div class="cameraBox">
 
@@ -519,11 +75,14 @@
 
     </div>
 
+
     <canvas id="canvas"></canvas>
+
 
     <div id="status">
       Camera not started.
     </div>
+
 
     <button
       id="startButton"
@@ -536,19 +95,22 @@
   </div>
 
 
-  <!-- =====================================================
+  <!-- ======================================================
        RESULT PAGE
-       ===================================================== -->
+       ====================================================== -->
 
   <div id="resultPage">
 
-    <h1>🎂 Birthday Surprise</h1>
+    <h1>
+      🎂 Birthday Surprise
+    </h1>
+
 
     <div class="successTitle">
 
       🎉 CLUE
       <span id="scanNumberDisplay"></span>
-      FOUND! 🎉
+      FOUND!
 
     </div>
 
@@ -556,17 +118,19 @@
     <div class="clueCard">
 
       <div class="clueLabel">
-        ✨ Your clue ✨
+        Your clue
       </div>
 
       <div id="clueText">
-        🔍 Loading your surprise...
+        Loading...
       </div>
 
     </div>
 
 
-    <!-- TIMER -->
+    <!-- ====================================================
+         TIMER
+         ==================================================== -->
 
     <div
       class="timerBox"
@@ -578,20 +142,24 @@
 
       </div>
 
+
       <div id="timer">
         02:30
       </div>
 
+
       <div id="waitingMessage">
 
-        Keep this screen open... 🎁
+        Keep this screen open...
 
       </div>
 
     </div>
 
 
-    <!-- DESTINATION -->
+    <!-- ====================================================
+         DESTINATION
+         ==================================================== -->
 
     <div id="destinationBox">
 
@@ -601,877 +169,788 @@
 
       </div>
 
-      <div id="destination"></div>
+
+      <div id="destination">
+
+      </div>
 
     </div>
 
   </div>
 
 
-  <script>
 
-    // =========================================================
-    // CONFIGURATION
-    // =========================================================
-
-    const APPS_SCRIPT_URL =
-      "https://script.google.com/macros/s/AKfycbyar5ETPG9fs8Rur7aYuR9wZDFF9ry8Ra9Fw3wbz97AsYUrnK12BpLQofuHCsUFpWrw/exec";
+<script>
 
 
-    // =========================================================
-    // ELEMENTS
-    // =========================================================
+// ============================================================
+// CONFIGURATION
+// ============================================================
 
-    const video =
-      document.getElementById("camera");
+const APPS_SCRIPT_URL =
+  "https://script.google.com/macros/s/AKfycbyar5ETPG9fs8Rur7aYuR9wZDFF9ry8Ra9Fw3wbz97AsYUrnK12BpLQofuHCsUFpWrw/exec";
 
-    const canvas =
-      document.getElementById("canvas");
 
-    const ctx =
-      canvas.getContext("2d", {
-        willReadFrequently: true
+// ============================================================
+// ELEMENTS
+// ============================================================
+
+const video =
+  document.getElementById("camera");
+
+const canvas =
+  document.getElementById("canvas");
+
+const ctx =
+  canvas.getContext(
+    "2d",
+    {
+      willReadFrequently: true
+    }
+  );
+
+const status =
+  document.getElementById("status");
+
+const startButton =
+  document.getElementById("startButton");
+
+const scannerPage =
+  document.getElementById("scannerPage");
+
+const resultPage =
+  document.getElementById("resultPage");
+
+const clueText =
+  document.getElementById("clueText");
+
+const destination =
+  document.getElementById("destination");
+
+const destinationBox =
+  document.getElementById("destinationBox");
+
+const timer =
+  document.getElementById("timer");
+
+const scanNumberDisplay =
+  document.getElementById("scanNumberDisplay");
+
+const timerBox =
+  document.getElementById("timerBox");
+
+
+// ============================================================
+// VARIABLES
+// ============================================================
+
+let stream = null;
+
+let scanning = false;
+
+let timerInterval = null;
+
+
+// ============================================================
+// START SCANNER
+// ============================================================
+
+async function startScanner() {
+
+  startButton.disabled = true;
+
+  status.innerHTML =
+    "📷 Requesting camera permission...";
+
+
+  try {
+
+    if (
+      !navigator.mediaDevices ||
+      !navigator.mediaDevices.getUserMedia
+    ) {
+
+      throw new Error(
+        "Camera is not supported by this browser."
+      );
+
+    }
+
+
+    // Stop old stream
+
+    if (stream) {
+
+      stream
+        .getTracks()
+        .forEach(
+          track => track.stop()
+        );
+
+    }
+
+
+    // Start rear camera
+
+    stream =
+      await navigator.mediaDevices.getUserMedia({
+
+        video: {
+
+          facingMode: {
+            ideal: "environment"
+          },
+
+          width: {
+            ideal: 1280
+          },
+
+          height: {
+            ideal: 720
+          }
+
+        },
+
+        audio: false
+
       });
 
-    const status =
-      document.getElementById("status");
 
-    const startButton =
-      document.getElementById("startButton");
+    video.srcObject = stream;
 
-    const scannerPage =
-      document.getElementById("scannerPage");
 
-    const resultPage =
-      document.getElementById("resultPage");
+    await video.play();
 
-    const clueText =
-      document.getElementById("clueText");
 
-    const destination =
-      document.getElementById("destination");
+    status.innerHTML =
+      "📷 Camera working — scanning QR code...";
 
-    const destinationBox =
-      document.getElementById("destinationBox");
 
-    const timerBox =
-      document.getElementById("timerBox");
+    scanning = true;
 
-    const timer =
-      document.getElementById("timer");
 
-    const scanNumberDisplay =
-      document.getElementById("scanNumberDisplay");
+    scanQRCode();
 
-    const celebration =
-      document.getElementById("celebration");
 
+  } catch (error) {
 
-    // =========================================================
-    // VARIABLES
-    // =========================================================
+    console.error(error);
 
-    let stream = null;
-    let scanning = false;
-    let timerInterval = null;
 
+    status.innerHTML =
+      "❌ Camera error: " +
+      error.message;
 
-    // =========================================================
-    // START SCANNER
-    // =========================================================
 
-    async function startScanner() {
+    startButton.disabled = false;
 
-      startButton.disabled = true;
+  }
 
-      status.innerHTML =
-        "📷 Requesting camera permission...";
+}
 
-      try {
 
-        if (
-          !navigator.mediaDevices ||
-          !navigator.mediaDevices.getUserMedia
-        ) {
+// ============================================================
+// QR SCANNER
+// ============================================================
 
-          throw new Error(
-            "Camera is not supported by this browser."
-          );
+function scanQRCode() {
 
-        }
+  if (!scanning) {
+    return;
+  }
 
-        if (stream) {
 
-          stream
-            .getTracks()
-            .forEach(track => track.stop());
+  if (
+    video.readyState ===
+    video.HAVE_ENOUGH_DATA
+  ) {
 
-        }
+    canvas.width =
+      video.videoWidth;
 
-        stream =
-          await navigator.mediaDevices.getUserMedia({
+    canvas.height =
+      video.videoHeight;
 
-            video: {
-              facingMode: {
-                ideal: "environment"
-              },
 
-              width: {
-                ideal: 1280
-              },
+    ctx.drawImage(
+      video,
+      0,
+      0,
+      canvas.width,
+      canvas.height
+    );
 
-              height: {
-                ideal: 720
-              }
 
-            },
-
-            audio: false
-
-          });
-
-        video.srcObject = stream;
-
-        await video.play();
-
-        status.innerHTML =
-          "📷 Camera working — scanning QR code...";
-
-        scanning = true;
-
-        scanQRCode();
-
-      } catch (error) {
-
-        console.error(error);
-
-        status.innerHTML =
-          "❌ Camera error: " +
-          escapeHtml(error.message);
-
-        startButton.disabled = false;
-
-      }
-
-    }
-
-
-    // =========================================================
-    // QR SCANNER
-    // =========================================================
-
-    function scanQRCode() {
-
-      if (!scanning) {
-        return;
-      }
-
-      if (
-        video.readyState ===
-        video.HAVE_ENOUGH_DATA
-      ) {
-
-        canvas.width =
-          video.videoWidth;
-
-        canvas.height =
-          video.videoHeight;
-
-        ctx.drawImage(
-          video,
-          0,
-          0,
-          canvas.width,
-          canvas.height
-        );
-
-        const imageData =
-          ctx.getImageData(
-            0,
-            0,
-            canvas.width,
-            canvas.height
-          );
-
-        const code =
-          jsQR(
-            imageData.data,
-            imageData.width,
-            imageData.height,
-            {
-              inversionAttempts:
-                "attemptBoth"
-            }
-          );
-
-        if (code) {
-
-          console.log(
-            "QR DETECTED:",
-            code.data
-          );
-
-          scanning = false;
-
-          stopCamera();
-
-          processQRCode(code.data);
-
-          return;
-        }
-
-      }
-
-      requestAnimationFrame(scanQRCode);
-
-    }
-
-
-    // =========================================================
-    // STOP CAMERA
-    // =========================================================
-
-    function stopCamera() {
-
-      if (stream) {
-
-        stream
-          .getTracks()
-          .forEach(track => track.stop());
-
-        stream = null;
-
-      }
-
-      video.srcObject = null;
-
-    }
-
-
-    // =========================================================
-    // PROCESS QR
-    // =========================================================
-
-    function processQRCode(qrData) {
-
-      console.log(
-        "QR CONTENT:",
-        qrData
+    const imageData =
+      ctx.getImageData(
+        0,
+        0,
+        canvas.width,
+        canvas.height
       );
 
-      let scanNumber = null;
+
+    const code =
+      jsQR(
+        imageData.data,
+        imageData.width,
+        imageData.height,
+        {
+          inversionAttempts:
+            "attemptBoth"
+        }
+      );
+
+
+    if (code) {
+
+      console.log(
+        "QR DETECTED:",
+        code.data
+      );
+
+
+      scanning = false;
+
+
+      stopCamera();
+
+
+      processQRCode(
+        code.data
+      );
+
+
+      return;
+
+    }
+
+  }
+
+
+  requestAnimationFrame(
+    scanQRCode
+  );
+
+}
+
+
+// ============================================================
+// STOP CAMERA
+// ============================================================
+
+function stopCamera() {
+
+  if (stream) {
+
+    stream
+      .getTracks()
+      .forEach(
+        track => track.stop()
+      );
+
+    stream = null;
+
+  }
+
+
+  video.srcObject = null;
+
+}
+
+
+// ============================================================
+// PROCESS QR CONTENT
+// ============================================================
+
+function processQRCode(qrData) {
+
+  console.log(
+    "QR CONTENT:",
+    qrData
+  );
+
+
+  let scanNumber = null;
+
+
+  try {
+
+    const url =
+      new URL(qrData);
+
+
+    scanNumber =
+      url.searchParams.get("scan");
+
+
+  } catch (error) {
+
+    console.log(
+      "QR is not a normal URL."
+    );
+
+  }
+
+
+  // If QR directly contains scan number
+
+  if (!scanNumber) {
+
+    const match =
+      String(qrData).match(
+        /[?&]scan=([^&]+)/i
+      );
+
+
+    if (match) {
+
+      scanNumber =
+        decodeURIComponent(
+          match[1]
+        );
+
+    }
+
+  }
+
+
+  if (!scanNumber) {
+
+    status.innerHTML =
+      "❌ This QR code does not contain a valid clue number.";
+
+    startButton.disabled = false;
+
+    return;
+
+  }
+
+
+  openResultPage(
+    scanNumber
+  );
+
+}
+
+
+// ============================================================
+// OPEN RESULT PAGE
+// ============================================================
+
+function openResultPage(scanNumber) {
+
+  scannerPage.style.display =
+    "none";
+
+  resultPage.style.display =
+    "block";
+
+
+  scanNumberDisplay.innerHTML =
+    escapeHtml(scanNumber);
+
+
+  clueText.innerHTML =
+    "🔍 Loading your surprise...";
+
+
+  destinationBox.style.display =
+    "none";
+
+
+  timer.innerHTML =
+    "02:30";
+
+
+  // Make URL look like a result page
+
+  const newUrl =
+    window.location.pathname +
+    "?result=1&scan=" +
+    encodeURIComponent(
+      scanNumber
+    );
+
+
+  window.history.pushState(
+    {
+      result: true,
+      scan: scanNumber
+    },
+    "",
+    newUrl
+  );
+
+
+  getClueFromAppsScript(
+    scanNumber
+  );
+
+}
+
+
+// ============================================================
+// GET CLUE FROM APPS SCRIPT
+// ============================================================
+
+function getClueFromAppsScript(scanNumber) {
+
+  status.innerHTML =
+    "🔍 Loading clue " +
+    escapeHtml(scanNumber) +
+    "...";
+
+
+  const callbackName =
+    "qrCallback_" +
+    Date.now();
+
+
+  let scriptElement = null;
+
+
+  window[callbackName] =
+    function(data) {
+
+      console.log(
+        "APPS SCRIPT RESPONSE:",
+        data
+      );
+
 
       try {
 
-        const url =
-          new URL(qrData);
+        delete window[callbackName];
 
-        scanNumber =
-          url.searchParams.get("scan");
+      } catch (e) {
 
-      } catch (error) {
-
-        console.log(
-          "QR is not a normal URL."
-        );
+        window[callbackName] =
+          undefined;
 
       }
 
-      if (!scanNumber) {
 
-        const match =
-          String(qrData).match(
-            /[?&]scan=([^&]+)/i
+      if (scriptElement) {
+
+        scriptElement.remove();
+
+      }
+
+
+      // ERROR
+
+      if (
+        !data ||
+        data.success !== true
+      ) {
+
+        clueText.innerHTML =
+          "❌ Could not load your surprise.<br><br>" +
+
+          escapeHtml(
+            data &&
+            data.error
+              ? data.error
+              : "Unknown error."
           );
-
-        if (match) {
-
-          scanNumber =
-            decodeURIComponent(match[1]);
-
-        }
-
-      }
-
-      if (!scanNumber) {
-
-        status.innerHTML =
-          "❌ This QR code does not contain a valid clue number.";
-
-        startButton.disabled = false;
 
         return;
 
       }
 
-      openResultPage(scanNumber);
 
-    }
+      // SUCCESS
 
+      console.log(
+        "CLUE RECEIVED:",
+        data
+      );
 
-    // =========================================================
-    // OPEN RESULT PAGE
-    // =========================================================
-
-    function openResultPage(scanNumber) {
-
-      scannerPage.style.display = "none";
-
-      resultPage.style.display = "block";
-
-      scanNumberDisplay.innerHTML =
-        escapeHtml(scanNumber);
 
       clueText.innerHTML =
-        "🔍 Loading your surprise...";
-
-      destinationBox.style.display = "none";
-
-      timerBox.style.display = "block";
-
-      timer.innerHTML = "02:30";
-
-      document.getElementById(
-        "waitingMessage"
-      ).innerHTML =
-        "Keep this screen open... 🎁";
+        escapeHtml(
+          data.clue || ""
+        );
 
 
-      // -------------------------------------------------------
-      // Celebration
-      // -------------------------------------------------------
+      startCountdown(
+        data.destination || ""
+      );
 
-      startCelebration();
+    };
 
 
-      // -------------------------------------------------------
-      // Make URL look like result page
-      // -------------------------------------------------------
+  // API URL
 
-      const newUrl =
-        window.location.pathname +
-        "?result=1&scan=" +
-        encodeURIComponent(scanNumber);
+  const apiUrl =
+    APPS_SCRIPT_URL +
+    "?api=1" +
+    "&scan=" +
+    encodeURIComponent(scanNumber) +
+    "&callback=" +
+    encodeURIComponent(callbackName);
 
-      window.history.pushState(
-        {
-          result: true,
-          scan: scanNumber
-        },
-        "",
-        newUrl
+
+  console.log(
+    "API URL:",
+    apiUrl
+  );
+
+
+  scriptElement =
+    document.createElement(
+      "script"
+    );
+
+
+  scriptElement.src =
+    apiUrl;
+
+
+  scriptElement.onerror =
+    function() {
+
+      console.error(
+        "Apps Script API failed."
       );
 
 
-      // -------------------------------------------------------
-      // Load clue
-      // -------------------------------------------------------
+      try {
 
-      getClueFromAppsScript(scanNumber);
+        delete window[callbackName];
 
-    }
+      } catch (e) {
+
+        window[callbackName] =
+          undefined;
+
+      }
 
 
-    // =========================================================
-    // GET CLUE FROM APPS SCRIPT
-    // =========================================================
+      clueText.innerHTML =
+        "❌ Could not connect to the clue server.<br><br>" +
 
-    function getClueFromAppsScript(scanNumber) {
+        "Please check your Apps Script deployment.";
 
-      const callbackName =
-        "qrCallback_" +
-        Date.now();
 
-      let scriptElement = null;
+      scriptElement.remove();
 
-      window[callbackName] =
-        function(data) {
+    };
 
-          console.log(
-            "APPS SCRIPT RESPONSE:",
-            data
+
+  document.body.appendChild(
+    scriptElement
+  );
+
+}
+
+
+// ============================================================
+// COUNTDOWN - 2 MINUTES 30 SECONDS
+// ============================================================
+
+function startCountdown(destinationValue) {
+
+  if (timerInterval) {
+
+    clearInterval(
+      timerInterval
+    );
+
+  }
+
+
+  const TOTAL_SECONDS = 150;
+
+  let remaining =
+    TOTAL_SECONDS;
+
+
+  timerBox.style.display =
+    "block";
+
+
+  destinationBox.style.display =
+    "none";
+
+
+  updateTimer(
+    remaining
+  );
+
+
+  timerInterval =
+    setInterval(
+      function() {
+
+        remaining--;
+
+
+        updateTimer(
+          remaining
+        );
+
+
+        if (
+          remaining <= 0
+        ) {
+
+          clearInterval(
+            timerInterval
           );
 
-          try {
 
-            delete window[callbackName];
-
-          } catch (e) {
-
-            window[callbackName] = undefined;
-
-          }
-
-          if (scriptElement) {
-            scriptElement.remove();
-          }
+          timer.innerHTML =
+            "00:00";
 
 
-          // ---------------------------------------------------
-          // ERROR
-          // ---------------------------------------------------
-
-          if (
-            !data ||
-            data.success !== true
-          ) {
-
-            clueText.innerHTML =
-              "❌ Could not load your surprise.<br><br>" +
-              escapeHtml(
-                data && data.error
-                  ? data.error
-                  : "Unknown error."
-              );
-
-            return;
-
-          }
-
-
-          // ---------------------------------------------------
-          // SUCCESS
-          // ---------------------------------------------------
-
-          clueText.innerHTML =
-            escapeHtml(
-              data.clue || ""
-            );
-
-
-          // Start 2:30 timer
-
-          startCountdown(
-            data.destination || ""
+          revealDestination(
+            destinationValue
           );
 
-        };
+        }
 
+      },
+      1000
+    );
 
-      const apiUrl =
-        APPS_SCRIPT_URL +
-        "?api=1" +
-        "&scan=" +
-        encodeURIComponent(scanNumber) +
-        "&callback=" +
-        encodeURIComponent(callbackName);
+}
 
 
-      console.log(
-        "API URL:",
-        apiUrl
-      );
+// ============================================================
+// UPDATE TIMER
+// ============================================================
 
+function updateTimer(seconds) {
 
-      scriptElement =
-        document.createElement("script");
+  const minutes =
+    Math.floor(
+      seconds / 60
+    );
 
-      scriptElement.src = apiUrl;
 
+  const secs =
+    seconds % 60;
 
-      scriptElement.onerror =
-        function() {
 
-          console.error(
-            "Apps Script API failed."
-          );
+  timer.innerHTML =
+    String(minutes)
+      .padStart(2, "0") +
+    ":" +
+    String(secs)
+      .padStart(2, "0");
 
-          try {
+}
 
-            delete window[callbackName];
 
-          } catch (e) {
+// ============================================================
+// REVEAL DESTINATION
+// ============================================================
 
-            window[callbackName] = undefined;
+function revealDestination(value) {
 
-          }
+  document.getElementById(
+    "waitingMessage"
+  ).innerHTML =
+    "🎉 The wait is over!";
 
-          clueText.innerHTML =
-            "❌ Could not connect to the clue server.<br><br>" +
-            "Please check the Apps Script deployment.";
 
-          if (scriptElement) {
-            scriptElement.remove();
-          }
+  if (
+    value &&
+    String(value).trim()
+  ) {
 
-        };
+    destination.innerHTML =
+      escapeHtml(value);
 
+  } else {
 
-      document.body.appendChild(
-        scriptElement
-      );
+    destination.innerHTML =
+      "Your next surprise is waiting for you! 🎁";
 
-    }
+  }
 
 
-    // =========================================================
-    // 2:30 COUNTDOWN
-    // =========================================================
+  destinationBox.style.display =
+    "block";
 
-    function startCountdown(destinationValue) {
+}
 
-      if (timerInterval) {
 
-        clearInterval(timerInterval);
+// ============================================================
+// HTML ESCAPE
+// ============================================================
 
-      }
+function escapeHtml(value) {
 
-      const TOTAL_SECONDS = 150;
+  return String(
+    value === null ||
+    value === undefined
+      ? ""
+      : value
+  )
+    .replace(
+      /&/g,
+      "&amp;"
+    )
+    .replace(
+      /</g,
+      "&lt;"
+    )
+    .replace(
+      />/g,
+      "&gt;"
+    )
+    .replace(
+      /"/g,
+      "&quot;"
+    )
+    .replace(
+      /'/g,
+      "&#039;"
+    );
 
-      let remaining = TOTAL_SECONDS;
+}
 
-      timerBox.style.display = "block";
 
-      destinationBox.style.display = "none";
+// ============================================================
+// OPEN RESULT IF URL CONTAINS RESULT
+// ============================================================
 
-      updateTimer(remaining);
+(function checkExistingResult() {
 
+  const params =
+    new URLSearchParams(
+      window.location.search
+    );
 
-      timerInterval =
-        setInterval(function() {
 
-          remaining--;
+  const result =
+    params.get("result");
 
-          updateTimer(remaining);
 
+  const scan =
+    params.get("scan");
 
-          if (remaining <= 0) {
 
-            clearInterval(timerInterval);
+  if (
+    result === "1" &&
+    scan
+  ) {
 
-            timer.innerHTML = "00:00";
+    openResultPage(
+      scan
+    );
 
-            revealDestination(
-              destinationValue
-            );
+  }
 
-          }
+})();
 
-        }, 1000);
 
-    }
+</script>
 
-
-    // =========================================================
-    // UPDATE TIMER
-    // =========================================================
-
-    function updateTimer(seconds) {
-
-      const minutes =
-        Math.floor(seconds / 60);
-
-      const secs =
-        seconds % 60;
-
-      timer.innerHTML =
-        String(minutes).padStart(2, "0") +
-        ":" +
-        String(secs).padStart(2, "0");
-
-    }
-
-
-    // =========================================================
-    // REVEAL DESTINATION
-    // =========================================================
-
-    function revealDestination(value) {
-
-      document.getElementById(
-        "waitingMessage"
-      ).innerHTML =
-        "🎉 The wait is over! 🎉";
-
-
-      if (
-        value &&
-        String(value).trim()
-      ) {
-
-        destination.innerHTML =
-          escapeHtml(value);
-
-      } else {
-
-        destination.innerHTML =
-          "Your next surprise is waiting for you! 🎁";
-
-      }
-
-
-      destinationBox.style.display =
-        "block";
-
-
-      // Celebration again when destination opens
-
-      startCelebration();
-
-    }
-
-
-    // =========================================================
-    // CELEBRATION
-    // =========================================================
-
-    function startCelebration() {
-
-      // Clear old celebration
-
-      celebration.innerHTML = "";
-
-
-      // -------------------------------------------------------
-      // Confetti
-      // -------------------------------------------------------
-
-      for (let i = 0; i < 90; i++) {
-
-        const piece =
-          document.createElement("div");
-
-        piece.className = "confetti";
-
-        piece.style.left =
-          Math.random() * 100 + "%";
-
-        piece.style.width =
-          (6 + Math.random() * 8) + "px";
-
-        piece.style.height =
-          (10 + Math.random() * 12) + "px";
-
-        piece.style.background =
-          randomCelebrationColor();
-
-        piece.style.setProperty(
-          "--x",
-          (Math.random() * 240 - 120) + "px"
-        );
-
-        piece.style.setProperty(
-          "--rotation",
-          (Math.random() * 1400 - 700) + "deg"
-        );
-
-        piece.style.animationDuration =
-          (2.5 + Math.random() * 3) + "s";
-
-        piece.style.animationDelay =
-          (Math.random() * 0.8) + "s";
-
-        celebration.appendChild(piece);
-
-      }
-
-
-      // -------------------------------------------------------
-      // Left and right bursts
-      // -------------------------------------------------------
-
-      createBurst("left");
-      createBurst("right");
-
-
-      // -------------------------------------------------------
-      // Sparkles
-      // -------------------------------------------------------
-
-      createSparkles();
-
-    }
-
-
-    // =========================================================
-    // RANDOM CELEBRATION COLOR
-    // =========================================================
-
-    function randomCelebrationColor() {
-
-      const colors = [
-        "#4cff3b",
-        "#ffffff",
-        "#00e5ff",
-        "#ff4fd8",
-        "#ffd700",
-        "#ff6b6b",
-        "#9b7bff"
-      ];
-
-      return colors[
-        Math.floor(
-          Math.random() * colors.length
-        )
-      ];
-
-    }
-
-
-    // =========================================================
-    // BURST
-    // =========================================================
-
-    function createBurst(side) {
-
-      const burst =
-        document.createElement("div");
-
-      burst.className =
-        "burst " + side;
-
-      celebration.appendChild(burst);
-
-
-      for (let i = 0; i < 35; i++) {
-
-        const particle =
-          document.createElement("div");
-
-        particle.className =
-          "burstParticle";
-
-        particle.style.background =
-          randomCelebrationColor();
-
-        const direction =
-          side === "left"
-            ? 1
-            : -1;
-
-        const x =
-          direction *
-          (80 + Math.random() * 300);
-
-        const y =
-          (Math.random() * 500) - 250;
-
-        particle.style.setProperty(
-          "--bx",
-          x + "px"
-        );
-
-        particle.style.setProperty(
-          "--by",
-          y + "px"
-        );
-
-        particle.style.setProperty(
-          "--br",
-          (Math.random() * 720 - 360) +
-          "deg"
-        );
-
-        particle.style.animationDelay =
-          (Math.random() * 0.15) + "s";
-
-        burst.appendChild(particle);
-
-      }
-
-    }
-
-
-    // =========================================================
-    // SPARKLES
-    // =========================================================
-
-    function createSparkles() {
-
-      const symbols = [
-        "✨",
-        "⭐",
-        "🎉",
-        "💫",
-        "🎊"
-      ];
-
-
-      for (let i = 0; i < 18; i++) {
-
-        const sparkle =
-          document.createElement("div");
-
-        sparkle.className = "sparkle";
-
-        sparkle.innerHTML =
-          symbols[
-            Math.floor(
-              Math.random() *
-              symbols.length
-            )
-          ];
-
-        sparkle.style.left =
-          (5 + Math.random() * 90) + "%";
-
-        sparkle.style.top =
-          (30 + Math.random() * 55) + "%";
-
-        sparkle.style.animationDelay =
-          (Math.random() * 1.2) + "s";
-
-        celebration.appendChild(
-          sparkle
-        );
-
-      }
-
-    }
-
-
-    // =========================================================
-    // HTML ESCAPE
-    // =========================================================
-
-    function escapeHtml(value) {
-
-      return String(
-        value === null ||
-        value === undefined
-          ? ""
-          : value
-      )
-      .replace(/&/g, "&amp;")
-      .replace(/</g, "&lt;")
-      .replace(/>/g, "&gt;")
-      .replace(/"/g, "&quot;")
-      .replace(/'/g, "&#039;");
-
-    }
-
-
-    // =========================================================
-    // DIRECT RESULT URL
-    // =========================================================
-
-    (function checkExistingResult() {
-
-      const params =
-        new URLSearchParams(
-          window.location.search
-        );
-
-      const result =
-        params.get("result");
-
-      const scan =
-        params.get("scan");
-
-
-      if (
-        result === "1" &&
-        scan
-      ) {
-
-        openResultPage(scan);
-
-      }
-
-    })();
-
-  </script>
 
 </body>
+
 </html>
-```
