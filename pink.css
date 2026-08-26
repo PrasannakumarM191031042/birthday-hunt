@@ -1,506 +1,494 @@
 * {
   box-sizing: border-box;
-  }
+}
 
 html,
 body {
-margin: 0;
-padding: 0;
-min-height: 100%;
+  margin: 0;
+  padding: 0;
+  min-height: 100%;
 }
 
 body {
-background:
-radial-gradient(
-circle at top,
-#3b102f 0%,
-#170817 45%,
-#050207 100%
-);
+  background:
+    radial-gradient(
+      circle at top,
+      #3b102f 0%,
+      #170817 45%,
+      #050207 100%
+    );
 
-color: #fff;
+  color: #fff;
 
-font-family:
-Arial,
-Helvetica,
-sans-serif;
+  font-family:
+    Arial,
+    Helvetica,
+    sans-serif;
 
-text-align: center;
+  text-align: center;
 
-min-height: 100vh;
+  min-height: 100vh;
 
-overflow-x: hidden;
+  overflow-x: hidden;
 
-position: relative;
+  position: relative;
 }
 
 /* =========================================
-FALLING CELEBRATION
-========================================= */
+   FALLING CELEBRATION
+   ========================================= */
 
 #celebration {
-position: fixed;
+  position: fixed;
 
-top: 0;
-left: 0;
+  top: 0;
+  left: 0;
 
-width: 100%;
-height: 100vh;
+  width: 100%;
+  height: 100vh;
 
-pointer-events: none;
+  pointer-events: none;
 
-overflow: hidden;
+  overflow: hidden;
 
-z-index: 999;
+  z-index: 999;
 }
 
 .fallingPiece {
-position: absolute;
+  position: absolute;
 
-top: -40px;
+  top: -40px;
 
-opacity: 0.8;
+  opacity: 0.8;
 
-animation:
-fallDown linear infinite;
+  animation:
+    fallDown linear infinite;
 
-filter:
-drop-shadow(
-0 0 5px
-rgba(255, 105, 180, 0.6)
-);
+  filter:
+    drop-shadow(
+      0 0 5px
+      rgba(255, 105, 180, 0.6)
+    );
 }
 
 @keyframes fallDown {
 
-0% {
-transform:
-translateY(-50px)
-rotate(0deg);
+  0% {
+    transform:
+      translateY(-50px)
+      rotate(0deg);
 
-```
-opacity: 0;
-```
+    opacity: 0;
+  }
 
-}
+  10% {
+    opacity: 0.85;
+  }
 
-10% {
-opacity: 0.85;
-}
+  90% {
+    opacity: 0.75;
+  }
 
-90% {
-opacity: 0.75;
-}
+  100% {
+    transform:
+      translateY(110vh)
+      rotate(360deg);
 
-100% {
-transform:
-translateY(110vh)
-rotate(360deg);
-
-```
-opacity: 0;
-```
-
-}
+    opacity: 0;
+  }
 }
 
 /* =========================================
-MAIN PAGES
-========================================= */
+   MAIN PAGES
+   ========================================= */
 
 #scannerPage,
 #resultPage {
-width: 100%;
+  width: 100%;
 
-max-width: 760px;
+  max-width: 760px;
 
-margin: 0 auto;
+  margin: 0 auto;
 
-padding:
-20px 18px 45px;
+  padding:
+    20px 18px 45px;
 
-position: relative;
+  position: relative;
 
-z-index: 2;
+  z-index: 2;
 }
 
 #resultPage {
-display: none;
+  display: none;
 }
 
 /* =========================================
-TITLE
-========================================= */
+   TITLE
+   ========================================= */
 
 h1 {
-margin:
-20px 5px 15px;
+  margin:
+    20px 5px 15px;
 
-color: #ff69b4;
+  color: #ff69b4;
 
-font-size:
-clamp(32px, 8vw, 48px);
+  font-size:
+    clamp(32px, 8vw, 48px);
 
-line-height: 1.15;
+  line-height: 1.15;
 
-text-shadow:
-0 0 8px #ff69b4,
-0 0 20px rgba(255, 105, 180, 0.65);
+  text-shadow:
+    0 0 8px #ff69b4,
+    0 0 20px rgba(255, 105, 180, 0.65);
 }
 
 /* =========================================
-SUBTITLE
-========================================= */
+   SUBTITLE
+   ========================================= */
 
 .subtitle {
-font-size:
-clamp(17px, 4vw, 21px);
+  font-size:
+    clamp(17px, 4vw, 21px);
 
-line-height: 1.5;
+  line-height: 1.5;
 
-margin:
-10px 5px;
+  margin:
+    10px 5px;
 
-color: #ffd6ed;
+  color: #ffd6ed;
 }
 
 /* =========================================
-CAMERA
-========================================= */
+   CAMERA
+   ========================================= */
 
 .cameraBox {
-width: 100%;
+  width: 100%;
 
-margin:
-25px auto;
+  margin:
+    25px auto;
 
-padding: 12px;
+  padding: 12px;
 
-border:
-3px solid #ff69b4;
+  border:
+    3px solid #ff69b4;
 
-border-radius: 20px;
+  border-radius: 20px;
 
-background:
-rgba(40, 5, 30, 0.75);
+  background:
+    rgba(40, 5, 30, 0.75);
 
-box-shadow:
-0 0 18px
-rgba(255, 105, 180, 0.45);
+  box-shadow:
+    0 0 18px
+    rgba(255, 105, 180, 0.45);
 }
 
 #camera {
-width: 100%;
+  width: 100%;
 
-display: block;
+  display: block;
 
-border-radius: 14px;
+  border-radius: 14px;
 
-background: #100510;
+  background: #100510;
 
-min-height: 280px;
+  min-height: 280px;
 
-object-fit: cover;
+  object-fit: cover;
 }
 
 /* =========================================
-STATUS
-========================================= */
+   STATUS
+   ========================================= */
 
 #status {
-font-size: 18px;
+  font-size: 18px;
 
-margin:
-18px 5px;
+  margin:
+    18px 5px;
 
-color: #ffd6ed;
+  color: #ffd6ed;
 
-line-height: 1.5;
+  line-height: 1.5;
 }
 
 /* =========================================
-BUTTON
-========================================= */
+   BUTTON
+   ========================================= */
 
 button {
-padding:
-15px 28px;
+  padding:
+    15px 28px;
 
-font-size: 18px;
+  font-size: 18px;
 
-font-weight: bold;
+  font-weight: bold;
 
-border:
-2px solid #ff69b4;
+  border:
+    2px solid #ff69b4;
 
-border-radius: 14px;
+  border-radius: 14px;
 
-background:
-#1a0715;
+  background:
+    #1a0715;
 
-color: #ff8bc7;
+  color: #ff8bc7;
 
-margin: 10px;
+  margin: 10px;
 
-box-shadow:
-0 0 14px
-rgba(255, 105, 180, 0.4);
+  box-shadow:
+    0 0 14px
+    rgba(255, 105, 180, 0.4);
 
-cursor: pointer;
+  cursor: pointer;
 }
 
 button:active {
-transform: scale(0.97);
+  transform: scale(0.97);
 }
 
 button:disabled {
-opacity: 0.5;
+  opacity: 0.5;
 }
 
 /* =========================================
-SUCCESS TITLE
-========================================= */
+   SUCCESS TITLE
+   ========================================= */
 
 .successTitle {
-font-size:
-clamp(27px, 7vw, 40px);
+  font-size:
+    clamp(27px, 7vw, 40px);
 
-font-weight: bold;
+  font-weight: bold;
 
-color: #ff69b4;
+  color: #ff69b4;
 
-margin:
-20px 0 25px;
+  margin:
+    20px 0 25px;
 
-line-height: 1.25;
+  line-height: 1.25;
 
-text-shadow:
-0 0 8px #ff69b4,
-0 0 20px
-rgba(255, 105, 180, 0.6);
+  text-shadow:
+    0 0 8px #ff69b4,
+    0 0 20px
+    rgba(255, 105, 180, 0.6);
 }
 
 /* =========================================
-CLUE CARD
-========================================= */
+   CLUE CARD
+   ========================================= */
 
 .clueCard {
-margin:
-20px auto;
+  margin:
+    20px auto;
 
-padding:
-28px 20px;
+  padding:
+    28px 20px;
 
-border:
-3px solid #ff69b4;
+  border:
+    3px solid #ff69b4;
 
-border-radius: 22px;
+  border-radius: 22px;
 
-background:
-rgba(15, 3, 12, 0.85);
+  background:
+    rgba(15, 3, 12, 0.85);
 
-box-shadow:
-0 0 22px
-rgba(255, 105, 180, 0.35);
+  box-shadow:
+    0 0 22px
+    rgba(255, 105, 180, 0.35);
 }
 
 .clueLabel {
-font-size: 16px;
+  font-size: 16px;
 
-color: #ff9bd0;
+  color: #ff9bd0;
 
-text-transform: uppercase;
+  text-transform: uppercase;
 
-letter-spacing: 4px;
+  letter-spacing: 4px;
 
-margin-bottom: 18px;
+  margin-bottom: 18px;
 }
 
 #clueText {
-font-size:
-clamp(22px, 5.5vw, 30px);
+  font-size:
+    clamp(22px, 5.5vw, 30px);
 
-line-height: 1.55;
+  line-height: 1.55;
 
-color: #fff;
+  color: #fff;
 
-word-wrap: break-word;
+  word-wrap: break-word;
 }
 
 /* =========================================
-TIMER
-========================================= */
+   TIMER
+   ========================================= */
 
 .timerBox {
-margin:
-25px auto;
+  margin:
+    25px auto;
 
-padding:
-25px 18px;
+  padding:
+    25px 18px;
 
-border:
-2px solid #ff69b4;
+  border:
+    2px solid #ff69b4;
 
-border-radius: 20px;
+  border-radius: 20px;
 
-background:
-rgba(15, 3, 12, 0.85);
+  background:
+    rgba(15, 3, 12, 0.85);
 
-box-shadow:
-0 0 20px
-rgba(255, 105, 180, 0.3);
+  box-shadow:
+    0 0 20px
+    rgba(255, 105, 180, 0.3);
 }
 
 .timerLabel {
-font-size:
-clamp(16px, 4vw, 20px);
+  font-size:
+    clamp(16px, 4vw, 20px);
 
-color: #ffd6ed;
+  color: #ffd6ed;
 
-line-height: 1.5;
+  line-height: 1.5;
 
-margin-bottom: 10px;
+  margin-bottom: 10px;
 }
 
 #timer {
-font-size:
-clamp(52px, 15vw, 78px);
+  font-size:
+    clamp(52px, 15vw, 78px);
 
-font-weight: bold;
+  font-weight: bold;
 
-color: #ff69b4;
+  color: #ff69b4;
 
-line-height: 1;
+  line-height: 1;
 
-margin:
-15px 0;
+  margin:
+    15px 0;
 
-text-shadow:
-0 0 8px #ff69b4,
-0 0 25px
-rgba(255, 105, 180, 0.7);
+  text-shadow:
+    0 0 8px #ff69b4,
+    0 0 25px
+    rgba(255, 105, 180, 0.7);
 }
 
 #waitingMessage {
-font-size:
-clamp(17px, 4vw, 21px);
+  font-size:
+    clamp(17px, 4vw, 21px);
 
-color: #ffd6ed;
+  color: #ffd6ed;
 
-margin-top: 15px;
+  margin-top: 15px;
 }
 
 /* =========================================
-DESTINATION
-========================================= */
+   DESTINATION
+   ========================================= */
 
 #destinationBox {
-display: none;
+  display: none;
 
-margin:
-25px auto;
+  margin:
+    25px auto;
 
-padding:
-28px 20px;
+  padding:
+    28px 20px;
 
-border:
-3px solid #ff69b4;
+  border:
+    3px solid #ff69b4;
 
-border-radius: 22px;
+  border-radius: 22px;
 
-background:
-rgba(15, 3, 12, 0.9);
+  background:
+    rgba(15, 3, 12, 0.9);
 
-box-shadow:
-0 0 25px
-rgba(255, 105, 180, 0.45);
+  box-shadow:
+    0 0 25px
+    rgba(255, 105, 180, 0.45);
 
-animation:
-reveal 0.8s ease;
+  animation:
+    reveal 0.8s ease;
 }
 
 .destinationTitle {
-font-size:
-clamp(18px, 4vw, 22px);
+  font-size:
+    clamp(18px, 4vw, 22px);
 
-color: #ffd6ed;
+  color: #ffd6ed;
 
-margin-bottom: 15px;
+  margin-bottom: 15px;
 }
 
 #destination {
-font-size:
-clamp(24px, 6vw, 34px);
+  font-size:
+    clamp(24px, 6vw, 34px);
 
-font-weight: bold;
+  font-weight: bold;
 
-color: #ff69b4;
+  color: #ff69b4;
 
-line-height: 1.5;
+  line-height: 1.5;
 
-text-shadow:
-0 0 10px
-rgba(255, 105, 180, 0.6);
+  text-shadow:
+    0 0 10px
+    rgba(255, 105, 180, 0.6);
 }
 
 @keyframes reveal {
 
-from {
-opacity: 0;
+  from {
+    opacity: 0;
 
-```
-transform:
-  scale(0.85);
-```
+    transform:
+      scale(0.85);
+  }
 
-}
+  to {
+    opacity: 1;
 
-to {
-opacity: 1;
-
-```
-transform:
-  scale(1);
-```
-
-}
+    transform:
+      scale(1);
+  }
 }
 
 canvas {
-display: none;
+  display: none;
 }
 
 /* =========================================
-MOBILE
-========================================= */
+   MOBILE
+   ========================================= */
 
 @media (max-width: 500px) {
 
-#scannerPage,
-#resultPage {
-padding:
-12px 14px 35px;
-}
+  #scannerPage,
+  #resultPage {
+    padding:
+      12px 14px 35px;
+  }
 
-h1 {
-margin-top: 12px;
-}
+  h1 {
+    margin-top: 12px;
+  }
 
-.cameraBox {
-margin-top: 20px;
-}
+  .cameraBox {
+    margin-top: 20px;
+  }
 
-#camera {
-min-height: 240px;
-}
+  #camera {
+    min-height: 240px;
+  }
 
-.clueCard {
-padding:
-24px 16px;
-}
+  .clueCard {
+    padding:
+      24px 16px;
+  }
 
-.timerBox {
-padding:
-22px 14px;
-}
+  .timerBox {
+    padding:
+      22px 14px;
+  }
 }
