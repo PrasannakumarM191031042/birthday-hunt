@@ -1,0 +1,506 @@
+* {
+  box-sizing: border-box;
+  }
+
+html,
+body {
+margin: 0;
+padding: 0;
+min-height: 100%;
+}
+
+body {
+background:
+radial-gradient(
+circle at top,
+#3b102f 0%,
+#170817 45%,
+#050207 100%
+);
+
+color: #fff;
+
+font-family:
+Arial,
+Helvetica,
+sans-serif;
+
+text-align: center;
+
+min-height: 100vh;
+
+overflow-x: hidden;
+
+position: relative;
+}
+
+/* =========================================
+FALLING CELEBRATION
+========================================= */
+
+#celebration {
+position: fixed;
+
+top: 0;
+left: 0;
+
+width: 100%;
+height: 100vh;
+
+pointer-events: none;
+
+overflow: hidden;
+
+z-index: 999;
+}
+
+.fallingPiece {
+position: absolute;
+
+top: -40px;
+
+opacity: 0.8;
+
+animation:
+fallDown linear infinite;
+
+filter:
+drop-shadow(
+0 0 5px
+rgba(255, 105, 180, 0.6)
+);
+}
+
+@keyframes fallDown {
+
+0% {
+transform:
+translateY(-50px)
+rotate(0deg);
+
+```
+opacity: 0;
+```
+
+}
+
+10% {
+opacity: 0.85;
+}
+
+90% {
+opacity: 0.75;
+}
+
+100% {
+transform:
+translateY(110vh)
+rotate(360deg);
+
+```
+opacity: 0;
+```
+
+}
+}
+
+/* =========================================
+MAIN PAGES
+========================================= */
+
+#scannerPage,
+#resultPage {
+width: 100%;
+
+max-width: 760px;
+
+margin: 0 auto;
+
+padding:
+20px 18px 45px;
+
+position: relative;
+
+z-index: 2;
+}
+
+#resultPage {
+display: none;
+}
+
+/* =========================================
+TITLE
+========================================= */
+
+h1 {
+margin:
+20px 5px 15px;
+
+color: #ff69b4;
+
+font-size:
+clamp(32px, 8vw, 48px);
+
+line-height: 1.15;
+
+text-shadow:
+0 0 8px #ff69b4,
+0 0 20px rgba(255, 105, 180, 0.65);
+}
+
+/* =========================================
+SUBTITLE
+========================================= */
+
+.subtitle {
+font-size:
+clamp(17px, 4vw, 21px);
+
+line-height: 1.5;
+
+margin:
+10px 5px;
+
+color: #ffd6ed;
+}
+
+/* =========================================
+CAMERA
+========================================= */
+
+.cameraBox {
+width: 100%;
+
+margin:
+25px auto;
+
+padding: 12px;
+
+border:
+3px solid #ff69b4;
+
+border-radius: 20px;
+
+background:
+rgba(40, 5, 30, 0.75);
+
+box-shadow:
+0 0 18px
+rgba(255, 105, 180, 0.45);
+}
+
+#camera {
+width: 100%;
+
+display: block;
+
+border-radius: 14px;
+
+background: #100510;
+
+min-height: 280px;
+
+object-fit: cover;
+}
+
+/* =========================================
+STATUS
+========================================= */
+
+#status {
+font-size: 18px;
+
+margin:
+18px 5px;
+
+color: #ffd6ed;
+
+line-height: 1.5;
+}
+
+/* =========================================
+BUTTON
+========================================= */
+
+button {
+padding:
+15px 28px;
+
+font-size: 18px;
+
+font-weight: bold;
+
+border:
+2px solid #ff69b4;
+
+border-radius: 14px;
+
+background:
+#1a0715;
+
+color: #ff8bc7;
+
+margin: 10px;
+
+box-shadow:
+0 0 14px
+rgba(255, 105, 180, 0.4);
+
+cursor: pointer;
+}
+
+button:active {
+transform: scale(0.97);
+}
+
+button:disabled {
+opacity: 0.5;
+}
+
+/* =========================================
+SUCCESS TITLE
+========================================= */
+
+.successTitle {
+font-size:
+clamp(27px, 7vw, 40px);
+
+font-weight: bold;
+
+color: #ff69b4;
+
+margin:
+20px 0 25px;
+
+line-height: 1.25;
+
+text-shadow:
+0 0 8px #ff69b4,
+0 0 20px
+rgba(255, 105, 180, 0.6);
+}
+
+/* =========================================
+CLUE CARD
+========================================= */
+
+.clueCard {
+margin:
+20px auto;
+
+padding:
+28px 20px;
+
+border:
+3px solid #ff69b4;
+
+border-radius: 22px;
+
+background:
+rgba(15, 3, 12, 0.85);
+
+box-shadow:
+0 0 22px
+rgba(255, 105, 180, 0.35);
+}
+
+.clueLabel {
+font-size: 16px;
+
+color: #ff9bd0;
+
+text-transform: uppercase;
+
+letter-spacing: 4px;
+
+margin-bottom: 18px;
+}
+
+#clueText {
+font-size:
+clamp(22px, 5.5vw, 30px);
+
+line-height: 1.55;
+
+color: #fff;
+
+word-wrap: break-word;
+}
+
+/* =========================================
+TIMER
+========================================= */
+
+.timerBox {
+margin:
+25px auto;
+
+padding:
+25px 18px;
+
+border:
+2px solid #ff69b4;
+
+border-radius: 20px;
+
+background:
+rgba(15, 3, 12, 0.85);
+
+box-shadow:
+0 0 20px
+rgba(255, 105, 180, 0.3);
+}
+
+.timerLabel {
+font-size:
+clamp(16px, 4vw, 20px);
+
+color: #ffd6ed;
+
+line-height: 1.5;
+
+margin-bottom: 10px;
+}
+
+#timer {
+font-size:
+clamp(52px, 15vw, 78px);
+
+font-weight: bold;
+
+color: #ff69b4;
+
+line-height: 1;
+
+margin:
+15px 0;
+
+text-shadow:
+0 0 8px #ff69b4,
+0 0 25px
+rgba(255, 105, 180, 0.7);
+}
+
+#waitingMessage {
+font-size:
+clamp(17px, 4vw, 21px);
+
+color: #ffd6ed;
+
+margin-top: 15px;
+}
+
+/* =========================================
+DESTINATION
+========================================= */
+
+#destinationBox {
+display: none;
+
+margin:
+25px auto;
+
+padding:
+28px 20px;
+
+border:
+3px solid #ff69b4;
+
+border-radius: 22px;
+
+background:
+rgba(15, 3, 12, 0.9);
+
+box-shadow:
+0 0 25px
+rgba(255, 105, 180, 0.45);
+
+animation:
+reveal 0.8s ease;
+}
+
+.destinationTitle {
+font-size:
+clamp(18px, 4vw, 22px);
+
+color: #ffd6ed;
+
+margin-bottom: 15px;
+}
+
+#destination {
+font-size:
+clamp(24px, 6vw, 34px);
+
+font-weight: bold;
+
+color: #ff69b4;
+
+line-height: 1.5;
+
+text-shadow:
+0 0 10px
+rgba(255, 105, 180, 0.6);
+}
+
+@keyframes reveal {
+
+from {
+opacity: 0;
+
+```
+transform:
+  scale(0.85);
+```
+
+}
+
+to {
+opacity: 1;
+
+```
+transform:
+  scale(1);
+```
+
+}
+}
+
+canvas {
+display: none;
+}
+
+/* =========================================
+MOBILE
+========================================= */
+
+@media (max-width: 500px) {
+
+#scannerPage,
+#resultPage {
+padding:
+12px 14px 35px;
+}
+
+h1 {
+margin-top: 12px;
+}
+
+.cameraBox {
+margin-top: 20px;
+}
+
+#camera {
+min-height: 240px;
+}
+
+.clueCard {
+padding:
+24px 16px;
+}
+
+.timerBox {
+padding:
+22px 14px;
+}
+}
