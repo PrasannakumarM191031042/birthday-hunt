@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
 
@@ -7,7 +7,7 @@
 
   <meta
     name="viewport"
-    content="width=device-width, initial-scale=1"
+    content="width=device-width, initial-scale=1, maximum-scale=1"
   >
 
   <title>Birthday Surprise</title>
@@ -20,11 +20,23 @@
       box-sizing: border-box;
     }
 
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      min-height: 100%;
+    }
+
     body {
 
-      margin: 0;
-
-      background: #000;
+      background:
+        radial-gradient(
+          circle at 50% -10%,
+          #1d2a20 0%,
+          #080b09 45%,
+          #000 100%
+        );
 
       color: white;
 
@@ -37,89 +49,128 @@
 
       min-height: 100vh;
 
+      overflow-x: hidden;
+
     }
+
+
+    /* ======================================================
+       GENERAL
+       ====================================================== */
+
+    .page {
+
+      width: 100%;
+
+      max-width: 760px;
+
+      margin: 0 auto;
+
+      padding:
+        18px
+        16px
+        40px;
+
+    }
+
+
+    /* ======================================================
+       HEADER
+       ====================================================== */
 
     h1 {
 
       margin:
-        35px 10px 15px;
+        12px 0 8px;
+
+      font-size:
+        clamp(32px, 8vw, 48px);
+
+      line-height: 1.1;
 
       color:
         #4cff3b;
 
-      font-size:
-        42px;
-
       text-shadow:
-        0 0 15px
-        rgba(76,255,59,0.8);
+        0 0 8px rgba(76,255,59,.7),
+        0 0 25px rgba(76,255,59,.35);
 
     }
+
 
     .subtitle {
 
+      margin:
+        8px auto 20px;
+
+      max-width: 520px;
+
       font-size:
-        21px;
+        clamp(16px, 4.5vw, 21px);
 
-      margin:
-        15px;
+      line-height: 1.5;
 
-      line-height:
-        1.6;
+      color:
+        #d8d8d8;
+
+    }
+
+
+    /* ======================================================
+       SCANNER PAGE
+       ====================================================== */
+
+    #scannerPage {
+
+      animation:
+        pageIn .6s ease;
 
     }
 
-    #scannerPage,
-    #resultPage {
-
-      width:
-        100%;
-
-      max-width:
-        800px;
-
-      margin:
-        auto;
-
-      padding:
-        10px 20px 40px;
-
-    }
 
     .cameraBox {
 
-      width:
-        100%;
+      width: 100%;
+
+      max-width: 650px;
 
       margin:
-        30px auto;
+        20px auto;
 
       padding:
-        15px;
+        8px;
 
       border:
-        4px solid
-        #4cff3b;
+        3px solid #4cff3b;
 
       border-radius:
-        20px;
-
-      box-shadow:
-        0 0 25px
-        rgba(76,255,59,0.5);
+        22px;
 
       background:
-        #080808;
+        #050505;
+
+      box-shadow:
+        0 0 20px rgba(76,255,59,.25),
+        inset 0 0 20px rgba(76,255,59,.05);
+
+      overflow: hidden;
 
     }
 
+
     #camera {
 
-      width:
-        100%;
+      display: block;
 
-      display:
-        block;
+      width: 100%;
+
+      height: auto;
+
+      min-height: 280px;
+
+      max-height: 65vh;
+
+      object-fit: cover;
 
       border-radius:
         15px;
@@ -127,119 +178,226 @@
       background:
         #111;
 
-      min-height:
-        300px;
-
-      object-fit:
-        cover;
-
     }
+
 
     #status {
 
-      font-size:
-        20px;
+      min-height:
+        30px;
 
       margin:
-        20px;
+        18px 5px;
 
       color:
         #ddd;
 
+      font-size:
+        17px;
+
+      line-height:
+        1.5;
+
     }
+
 
     button {
 
       padding:
-        16px 30px;
-
-      font-size:
-        19px;
-
-      font-weight:
-        bold;
+        14px 28px;
 
       border:
-        2px solid
-        #4cff3b;
+        2px solid #4cff3b;
 
       border-radius:
-        12px;
+        14px;
 
       background:
-        #111;
+        linear-gradient(
+          135deg,
+          #101510,
+          #050505
+        );
 
       color:
         #4cff3b;
 
-      margin:
-        15px;
+      font-size:
+        18px;
+
+      font-weight:
+        bold;
+
+      cursor:
+        pointer;
 
       box-shadow:
-        0 0 12px
-        rgba(76,255,59,0.4);
+        0 0 15px rgba(76,255,59,.3);
+
+      transition:
+        transform .2s ease,
+        box-shadow .2s ease;
 
     }
+
+
+    button:active {
+
+      transform:
+        scale(.96);
+
+    }
+
 
     button:disabled {
 
       opacity:
-        0.5;
+        .5;
 
     }
+
+
+    /* ======================================================
+       RESULT PAGE
+       ====================================================== */
 
     #resultPage {
 
       display:
         none;
 
+      animation:
+        resultPageIn .7s ease;
+
     }
+
 
     .successTitle {
 
+      margin:
+        20px 0 22px;
+
       font-size:
-        34px;
+        clamp(28px, 7vw, 40px);
+
+      font-weight:
+        bold;
 
       color:
         #4cff3b;
 
-      margin:
-        30px 0;
-
       text-shadow:
-        0 0 15px
-        rgba(76,255,59,0.8);
+        0 0 10px rgba(76,255,59,.8),
+        0 0 30px rgba(76,255,59,.35);
+
+      animation:
+        popIn .7s cubic-bezier(.17,.89,.32,1.28);
 
     }
+
+
+    #scanNumberDisplay {
+
+      display:
+        inline-block;
+
+    }
+
+
+    /* ======================================================
+       CLUE CARD
+       ====================================================== */
 
     .clueCard {
 
+      position:
+        relative;
+
+      width:
+        100%;
+
       margin:
-        25px auto;
+        18px auto;
 
       padding:
-        30px 25px;
+        28px 20px;
 
       border:
-        3px solid
-        #4cff3b;
+        2px solid #4cff3b;
 
       border-radius:
-        20px;
+        22px;
 
       background:
-        #0b0b0b;
+        linear-gradient(
+          145deg,
+          rgba(20,25,20,.98),
+          rgba(4,5,4,.98)
+        );
 
       box-shadow:
-        0 0 30px
-        rgba(76,255,59,0.4);
+        0 0 25px rgba(76,255,59,.22),
+        inset 0 0 30px rgba(76,255,59,.03);
+
+      overflow:
+        hidden;
+
+      animation:
+        cluePop .9s cubic-bezier(.17,.89,.32,1.28);
 
     }
 
+
+    .clueCard::before {
+
+      content:
+        "";
+
+      position:
+        absolute;
+
+      top:
+        -100%;
+
+      left:
+        -50%;
+
+      width:
+        200%;
+
+      height:
+        300%;
+
+      background:
+        linear-gradient(
+          120deg,
+          transparent 40%,
+          rgba(76,255,59,.08) 50%,
+          transparent 60%
+        );
+
+      transform:
+        rotate(15deg);
+
+      animation:
+        shine 4s ease-in-out infinite;
+
+      pointer-events:
+        none;
+
+    }
+
+
     .clueLabel {
 
+      position:
+        relative;
+
       font-size:
-        16px;
+        14px;
+
+      font-weight:
+        bold;
 
       color:
         #aaa;
@@ -248,67 +406,362 @@
         uppercase;
 
       letter-spacing:
-        2px;
+        3px;
+
+      margin-bottom:
+        14px;
+
+    }
+
+
+    #clueText {
+
+      position:
+        relative;
+
+      font-size:
+        clamp(22px, 6vw, 30px);
+
+      line-height:
+        1.55;
+
+      color:
+        white;
+
+      font-weight:
+        500;
+
+      word-wrap:
+        break-word;
+
+    }
+
+
+    /* ======================================================
+       TIMER
+       ====================================================== */
+
+    .timerBox {
+
+      width:
+        100%;
+
+      margin:
+        25px auto;
+
+      padding:
+        22px 18px;
+
+      border:
+        2px solid rgba(76,255,59,.75);
+
+      border-radius:
+        20px;
+
+      background:
+        rgba(5,7,5,.95);
+
+      box-shadow:
+        0 0 25px rgba(76,255,59,.18);
+
+      animation:
+        fadeUp .8s ease;
+
+    }
+
+
+    .timerLabel {
+
+      color:
+        #aaa;
+
+      font-size:
+        clamp(15px, 4vw, 18px);
+
+      line-height:
+        1.4;
+
+      margin-bottom:
+        8px;
+
+    }
+
+
+    #timer {
+
+      font-size:
+        clamp(48px, 14vw, 70px);
+
+      line-height:
+        1;
+
+      font-weight:
+        bold;
+
+      letter-spacing:
+        3px;
+
+      color:
+        #4cff3b;
+
+      text-shadow:
+        0 0 10px rgba(76,255,59,.8),
+        0 0 30px rgba(76,255,59,.35);
+
+      font-variant-numeric:
+        tabular-nums;
+
+    }
+
+
+    #waitingMessage {
+
+      margin-top:
+        12px;
+
+      color:
+        #ccc;
+
+      font-size:
+        15px;
+
+    }
+
+
+    /* ======================================================
+       DESTINATION
+       ====================================================== */
+
+    #destinationBox {
+
+      display:
+        none;
+
+      position:
+        relative;
+
+      width:
+        100%;
+
+      margin:
+        28px auto;
+
+      padding:
+        30px 20px;
+
+      border:
+        3px solid #4cff3b;
+
+      border-radius:
+        24px;
+
+      background:
+        radial-gradient(
+          circle at top,
+          rgba(76,255,59,.15),
+          rgba(5,8,5,.98) 65%
+        );
+
+      box-shadow:
+        0 0 25px rgba(76,255,59,.35),
+        0 0 70px rgba(76,255,59,.15);
+
+      overflow:
+        hidden;
+
+      animation:
+        destinationPop
+        1s
+        cubic-bezier(.17,.89,.32,1.28);
+
+    }
+
+
+    #destinationBox::before {
+
+      content:
+        "✨";
+
+      position:
+        absolute;
+
+      top:
+        10px;
+
+      left:
+        15px;
+
+      font-size:
+        24px;
+
+      animation:
+        sparkle 1.5s infinite;
+
+    }
+
+
+    #destinationBox::after {
+
+      content:
+        "✨";
+
+      position:
+        absolute;
+
+      right:
+        15px;
+
+      top:
+        20px;
+
+      font-size:
+        24px;
+
+      animation:
+        sparkle 1.8s infinite .3s;
+
+    }
+
+
+    .destinationTitle {
+
+      position:
+        relative;
+
+      font-size:
+        clamp(18px, 5vw, 23px);
+
+      font-weight:
+        bold;
+
+      color:
+        white;
 
       margin-bottom:
         15px;
 
     }
 
-    #clueText {
+
+    #destination {
+
+      position:
+        relative;
 
       font-size:
-        28px;
+        clamp(25px, 7vw, 34px);
+
+      font-weight:
+        bold;
 
       line-height:
-        1.6;
+        1.45;
 
       color:
-        white;
-
-    }
-
-    .timerBox {
-
-      margin:
-        30px auto;
-
-      padding:
-        25px;
-
-      border:
-        2px solid
         #4cff3b;
 
-      border-radius:
-        18px;
+      text-shadow:
+        0 0 12px rgba(76,255,59,.7);
+
+      word-wrap:
+        break-word;
+
+    }
+
+
+    /* ======================================================
+       CELEBRATION POPUP
+       ====================================================== */
+
+    #celebration {
+
+      display:
+        none;
+
+      position:
+        fixed;
+
+      inset:
+        0;
+
+      z-index:
+        999;
+
+      align-items:
+        center;
+
+      justify-content:
+        center;
+
+      padding:
+        20px;
 
       background:
-        #090909;
+        rgba(0,0,0,.72);
+
+      backdrop-filter:
+        blur(5px);
+
+      animation:
+        overlayIn .4s ease;
+
+    }
+
+
+    .celebrationCard {
+
+      width:
+        min(90vw, 500px);
+
+      padding:
+        35px 22px;
+
+      border:
+        3px solid #4cff3b;
+
+      border-radius:
+        25px;
+
+      background:
+        linear-gradient(
+          145deg,
+          #111711,
+          #030403
+        );
 
       box-shadow:
-        0 0 20px
-        rgba(76,255,59,0.3);
+        0 0 30px rgba(76,255,59,.5),
+        0 0 100px rgba(76,255,59,.15);
+
+      animation:
+        celebrationPop
+        .8s
+        cubic-bezier(.17,.89,.32,1.28);
 
     }
 
-    .timerLabel {
+
+    .celebrationEmoji {
 
       font-size:
-        18px;
+        clamp(55px, 18vw, 90px);
 
-      color:
-        #aaa;
+      line-height:
+        1;
 
       margin-bottom:
-        10px;
+        12px;
+
+      animation:
+        bounce 1s infinite;
 
     }
 
-    #timer {
+
+    .celebrationTitle {
 
       font-size:
-        52px;
+        clamp(27px, 8vw, 40px);
 
       font-weight:
         bold;
@@ -317,112 +770,347 @@
         #4cff3b;
 
       text-shadow:
-        0 0 15px
-        rgba(76,255,59,0.8);
+        0 0 15px rgba(76,255,59,.8);
 
     }
 
-    #waitingMessage {
+
+    .celebrationText {
+
+      margin-top:
+        12px;
 
       font-size:
-        20px;
+        18px;
 
       color:
         #ddd;
-
-      margin-top:
-        15px;
-
-    }
-
-    #destinationBox {
-
-      display:
-        none;
-
-      margin:
-        30px auto;
-
-      padding:
-        30px 25px;
-
-      border:
-        3px solid
-        #4cff3b;
-
-      border-radius:
-        20px;
-
-      background:
-        #0b0b0b;
-
-      box-shadow:
-        0 0 35px
-        rgba(76,255,59,0.5);
-
-      animation:
-        reveal 1s ease;
-
-    }
-
-    #destination {
-
-      font-size:
-        30px;
-
-      font-weight:
-        bold;
-
-      color:
-        #4cff3b;
 
       line-height:
         1.5;
 
     }
 
-    .destinationTitle {
 
-      font-size:
-        20px;
+    /* ======================================================
+       CONFETTI
+       ====================================================== */
 
-      color:
-        white;
+    .confetti {
 
-      margin-bottom:
+      position:
+        fixed;
+
+      top:
+        -20px;
+
+      width:
+        9px;
+
+      height:
         15px;
+
+      z-index:
+        1000;
+
+      pointer-events:
+        none;
+
+      animation:
+        confettiFall
+        3s
+        linear
+        forwards;
 
     }
 
-    @keyframes reveal {
+
+    /* ======================================================
+       ANIMATIONS
+       ====================================================== */
+
+    @keyframes pageIn {
 
       from {
-
-        opacity:
-          0;
-
-        transform:
-          scale(0.8);
-
+        opacity: 0;
+        transform: translateY(15px);
       }
 
       to {
-
-        opacity:
-          1;
-
-        transform:
-          scale(1);
-
+        opacity: 1;
+        transform: translateY(0);
       }
 
     }
 
-    canvas {
 
+    @keyframes resultPageIn {
+
+      from {
+        opacity: 0;
+        transform: scale(.97);
+      }
+
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+
+    }
+
+
+    @keyframes popIn {
+
+      0% {
+        opacity: 0;
+        transform: scale(.5);
+      }
+
+      70% {
+        transform: scale(1.08);
+      }
+
+      100% {
+        opacity: 1;
+        transform: scale(1);
+      }
+
+    }
+
+
+    @keyframes cluePop {
+
+      0% {
+        opacity: 0;
+        transform:
+          translateY(40px)
+          scale(.75)
+          rotateX(15deg);
+      }
+
+      65% {
+        transform:
+          translateY(-8px)
+          scale(1.03);
+      }
+
+      100% {
+        opacity: 1;
+        transform:
+          translateY(0)
+          scale(1)
+          rotateX(0);
+      }
+
+    }
+
+
+    @keyframes destinationPop {
+
+      0% {
+        opacity: 0;
+        transform:
+          scale(.35)
+          rotate(-4deg);
+      }
+
+      60% {
+        opacity: 1;
+        transform:
+          scale(1.08)
+          rotate(1deg);
+      }
+
+      80% {
+        transform:
+          scale(.97)
+          rotate(-.5deg);
+      }
+
+      100% {
+        opacity: 1;
+        transform:
+          scale(1)
+          rotate(0);
+      }
+
+    }
+
+
+    @keyframes celebrationPop {
+
+      0% {
+        opacity: 0;
+        transform:
+          scale(.2)
+          rotate(-8deg);
+      }
+
+      60% {
+        transform:
+          scale(1.08)
+          rotate(2deg);
+      }
+
+      100% {
+        opacity: 1;
+        transform:
+          scale(1)
+          rotate(0);
+      }
+
+    }
+
+
+    @keyframes fadeUp {
+
+      from {
+        opacity: 0;
+        transform: translateY(25px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+    }
+
+
+    @keyframes shine {
+
+      0% {
+        transform:
+          translateX(-40%)
+          rotate(15deg);
+      }
+
+      50% {
+        transform:
+          translateX(40%)
+          rotate(15deg);
+      }
+
+      100% {
+        transform:
+          translateX(-40%)
+          rotate(15deg);
+      }
+
+    }
+
+
+    @keyframes sparkle {
+
+      0%,
+      100% {
+        opacity: .4;
+        transform: scale(.8) rotate(0);
+      }
+
+      50% {
+        opacity: 1;
+        transform: scale(1.3) rotate(20deg);
+      }
+
+    }
+
+
+    @keyframes bounce {
+
+      0%,
+      100% {
+        transform: translateY(0);
+      }
+
+      50% {
+        transform: translateY(-12px);
+      }
+
+    }
+
+
+    @keyframes overlayIn {
+
+      from {
+        opacity: 0;
+      }
+
+      to {
+        opacity: 1;
+      }
+
+    }
+
+
+    @keyframes confettiFall {
+
+      from {
+        transform:
+          translateY(-20px)
+          rotate(0deg);
+        opacity: 1;
+      }
+
+      to {
+        transform:
+          translateY(110vh)
+          rotate(720deg);
+        opacity: 0;
+      }
+
+    }
+
+
+    /* ======================================================
+       MOBILE
+       ====================================================== */
+
+    @media (max-width: 500px) {
+
+      .page {
+        padding:
+          12px
+          12px
+          30px;
+      }
+
+      h1 {
+        margin-top: 8px;
+      }
+
+      .cameraBox {
+        margin-top: 15px;
+      }
+
+      #camera {
+        min-height: 240px;
+      }
+
+      .clueCard {
+        padding:
+          25px
+          16px;
+      }
+
+      .timerBox {
+        padding:
+          20px
+          12px;
+      }
+
+    }
+
+
+    canvas {
       display:
         none;
+    }
 
+
+    .hidden {
+      display:
+        none !important;
     }
 
   </style>
@@ -433,139 +1121,163 @@
 <body>
 
 
-<!-- ====================================================== -->
-<!-- SCANNER PAGE -->
-<!-- ====================================================== -->
-
-<div id="scannerPage">
-
-  <h1>
-    🎂 Birthday Surprise
-  </h1>
-
-  <p class="subtitle">
-    Point your camera at the QR code.
-  </p>
-
-  <p class="subtitle">
-    Your surprise will appear automatically.
-  </p>
-
-
-  <div class="cameraBox">
-
-    <video
-      id="camera"
-      autoplay
-      playsinline
-      muted>
-    </video>
-
-  </div>
-
-
-  <canvas id="canvas"></canvas>
-
-
-  <div id="status">
-    Camera not started.
-  </div>
-
-
-  <button
-    id="startButton"
-    onclick="startScanner()">
-
-    📷 Start Scanner
-
-  </button>
-
-</div>
-
-
-<!-- ====================================================== -->
-<!-- RESULT PAGE -->
-<!-- ====================================================== -->
-
-<div id="resultPage">
-
-  <h1>
-    🎂 Birthday Surprise
-  </h1>
-
-
-  <div class="successTitle">
-
-    🎉 CLUE
-    <span id="scanNumberDisplay"></span>
-    FOUND!
-
-  </div>
-
-
-  <div class="clueCard">
-
-    <div class="clueLabel">
-      Your clue
-    </div>
-
-    <div id="clueText">
-      Loading...
-    </div>
-
-  </div>
-
-
-  <!-- ================================================== -->
-  <!-- TIMER -->
-  <!-- ================================================== -->
+  <!-- ====================================================
+       SCANNER PAGE
+       ==================================================== -->
 
   <div
-    class="timerBox"
-    id="timerBox">
+    id="scannerPage"
+    class="page"
+  >
 
-    <div class="timerLabel">
+    <h1>
+      🎂 Birthday Surprise
+    </h1>
 
-      🔐 Your destination will be revealed in
+    <p class="subtitle">
+      Point your camera at the QR code.
+    </p>
+
+    <p class="subtitle">
+      Your surprise will appear automatically ✨
+    </p>
+
+
+    <div class="cameraBox">
+
+      <video
+        id="camera"
+        autoplay
+        playsinline
+        muted>
+      </video>
 
     </div>
 
 
-    <div id="timer">
-      02:30
+    <canvas id="canvas"></canvas>
+
+
+    <div id="status">
+      Camera not started.
     </div>
 
 
-    <div id="waitingMessage">
-
-      Keep this screen open...
-
-    </div>
+    <button
+      id="startButton"
+      onclick="startScanner()"
+    >
+      📷 Start Scanner
+    </button>
 
   </div>
 
 
-  <!-- ================================================== -->
-  <!-- DESTINATION -->
-  <!-- ================================================== -->
+
+  <!-- ====================================================
+       RESULT PAGE
+       ==================================================== -->
 
   <div
-    id="destinationBox">
+    id="resultPage"
+    class="page"
+  >
 
-    <div class="destinationTitle">
+    <h1>
+      🎂 Birthday Surprise
+    </h1>
 
-      🎁 The next destination is:
+
+    <div class="successTitle">
+
+      🎉 CLUE
+      <span id="scanNumberDisplay"></span>
+      FOUND!
 
     </div>
 
 
-    <div id="destination">
+    <div class="clueCard">
+
+      <div class="clueLabel">
+        ✨ YOUR CLUE
+      </div>
+
+      <div id="clueText">
+        🔍 Loading your surprise...
+      </div>
+
+    </div>
+
+
+    <!-- ==================================================
+         TIMER
+         ================================================== -->
+
+    <div
+      class="timerBox"
+      id="timerBox"
+    >
+
+      <div class="timerLabel">
+        🔐 Your destination will be revealed in
+      </div>
+
+      <div id="timer">
+        02:30
+      </div>
+
+      <div id="waitingMessage">
+        Keep this screen open... 🎁
+      </div>
+
+    </div>
+
+
+    <!-- ==================================================
+         DESTINATION
+         ================================================== -->
+
+    <div
+      id="destinationBox"
+    >
+
+      <div class="destinationTitle">
+        🎁 THE NEXT DESTINATION IS:
+      </div>
+
+      <div id="destination"></div>
 
     </div>
 
   </div>
 
-</div>
+
+
+  <!-- ====================================================
+       CELEBRATION POPUP
+       ==================================================== -->
+
+  <div id="celebration">
+
+    <div class="celebrationCard">
+
+      <div class="celebrationEmoji">
+        🎉
+      </div>
+
+      <div class="celebrationTitle">
+        SURPRISE!
+      </div>
+
+      <div class="celebrationText">
+        Your next destination has been revealed! 🎁
+      </div>
+
+    </div>
+
+  </div>
+
 
 
 <script>
@@ -584,105 +1296,65 @@ const APPS_SCRIPT_URL =
 // ============================================================
 
 const video =
-  document.getElementById(
-    "camera"
-  );
-
+  document.getElementById("camera");
 
 const canvas =
-  document.getElementById(
-    "canvas"
-  );
-
+  document.getElementById("canvas");
 
 const ctx =
   canvas.getContext(
     "2d",
     {
-      willReadFrequently:
-        true
+      willReadFrequently: true
     }
   );
 
-
 const status =
-  document.getElementById(
-    "status"
-  );
-
+  document.getElementById("status");
 
 const startButton =
-  document.getElementById(
-    "startButton"
-  );
-
+  document.getElementById("startButton");
 
 const scannerPage =
-  document.getElementById(
-    "scannerPage"
-  );
-
+  document.getElementById("scannerPage");
 
 const resultPage =
-  document.getElementById(
-    "resultPage"
-  );
-
+  document.getElementById("resultPage");
 
 const clueText =
-  document.getElementById(
-    "clueText"
-  );
-
+  document.getElementById("clueText");
 
 const destination =
-  document.getElementById(
-    "destination"
-  );
-
+  document.getElementById("destination");
 
 const destinationBox =
-  document.getElementById(
-    "destinationBox"
-  );
-
+  document.getElementById("destinationBox");
 
 const timer =
-  document.getElementById(
-    "timer"
-  );
-
+  document.getElementById("timer");
 
 const timerBox =
-  document.getElementById(
-    "timerBox"
-  );
-
+  document.getElementById("timerBox");
 
 const waitingMessage =
-  document.getElementById(
-    "waitingMessage"
-  );
-
+  document.getElementById("waitingMessage");
 
 const scanNumberDisplay =
-  document.getElementById(
-    "scanNumberDisplay"
-  );
+  document.getElementById("scanNumberDisplay");
+
+const celebration =
+  document.getElementById("celebration");
 
 
 // ============================================================
 // VARIABLES
 // ============================================================
 
-let stream =
-  null;
+let stream = null;
 
-let scanning =
-  false;
+let scanning = false;
 
-let timerInterval =
-  null;
+let timerInterval = null;
 
 
 // ============================================================
@@ -691,12 +1363,10 @@ let timerInterval =
 
 async function startScanner() {
 
-  startButton.disabled =
-    true;
+  startButton.disabled = true;
 
   status.innerHTML =
     "📷 Requesting camera permission...";
-
 
   try {
 
@@ -712,25 +1382,16 @@ async function startScanner() {
     }
 
 
-    // --------------------------------------------------------
-    // STOP OLD CAMERA
-    // --------------------------------------------------------
-
     if (stream) {
 
       stream
         .getTracks()
         .forEach(
-          track =>
-            track.stop()
+          track => track.stop()
         );
 
     }
 
-
-    // --------------------------------------------------------
-    // START REAR CAMERA
-    // --------------------------------------------------------
 
     stream =
       await navigator.mediaDevices.getUserMedia({
@@ -738,31 +1399,25 @@ async function startScanner() {
         video: {
 
           facingMode: {
-            ideal:
-              "environment"
+            ideal: "environment"
           },
 
           width: {
-            ideal:
-              1280
+            ideal: 1280
           },
 
           height: {
-            ideal:
-              720
+            ideal: 720
           }
 
         },
 
-        audio:
-          false
+        audio: false
 
       });
 
 
-    video.srcObject =
-      stream;
-
+    video.srcObject = stream;
 
     await video.play();
 
@@ -771,27 +1426,19 @@ async function startScanner() {
       "📷 Camera working — scanning QR code...";
 
 
-    scanning =
-      true;
-
+    scanning = true;
 
     scanQRCode();
 
-
   } catch (error) {
 
-    console.error(
-      error
-    );
-
+    console.error(error);
 
     status.innerHTML =
       "❌ Camera error: " +
       error.message;
 
-
-    startButton.disabled =
-      false;
+    startButton.disabled = false;
 
   }
 
@@ -817,18 +1464,21 @@ function scanQRCode() {
     canvas.width =
       video.videoWidth;
 
-
     canvas.height =
       video.videoHeight;
 
 
-    if (
-      canvas.width > 0 &&
-      canvas.height > 0
-    ) {
+    ctx.drawImage(
+      video,
+      0,
+      0,
+      canvas.width,
+      canvas.height
+    );
 
-      ctx.drawImage(
-        video,
+
+    const imageData =
+      ctx.getImageData(
         0,
         0,
         canvas.width,
@@ -836,50 +1486,35 @@ function scanQRCode() {
       );
 
 
-      const imageData =
-        ctx.getImageData(
-          0,
-          0,
-          canvas.width,
-          canvas.height
-        );
+    const code =
+      jsQR(
+        imageData.data,
+        imageData.width,
+        imageData.height,
+        {
+          inversionAttempts:
+            "attemptBoth"
+        }
+      );
 
 
-      const code =
-        jsQR(
-          imageData.data,
-          imageData.width,
-          imageData.height,
-          {
-            inversionAttempts:
-              "attemptBoth"
-          }
-        );
+    if (code) {
+
+      console.log(
+        "QR DETECTED:",
+        code.data
+      );
 
 
-      if (code) {
+      scanning = false;
 
-        console.log(
-          "QR DETECTED:",
-          code.data
-        );
+      stopCamera();
 
+      processQRCode(
+        code.data
+      );
 
-        scanning =
-          false;
-
-
-        stopCamera();
-
-
-        processQRCode(
-          code.data
-        );
-
-
-        return;
-
-      }
+      return;
 
     }
 
@@ -904,18 +1539,14 @@ function stopCamera() {
     stream
       .getTracks()
       .forEach(
-        track =>
-          track.stop()
+        track => track.stop()
       );
 
-    stream =
-      null;
+    stream = null;
 
   }
 
-
-  video.srcObject =
-    null;
+  video.srcObject = null;
 
 }
 
@@ -924,9 +1555,7 @@ function stopCamera() {
 // PROCESS QR CONTENT
 // ============================================================
 
-function processQRCode(
-  qrData
-) {
+function processQRCode(qrData) {
 
   console.log(
     "QR CONTENT:",
@@ -934,23 +1563,16 @@ function processQRCode(
   );
 
 
-  let scanNumber =
-    null;
+  let scanNumber = null;
 
 
   try {
 
     const url =
-      new URL(
-        qrData
-      );
-
+      new URL(qrData);
 
     scanNumber =
-      url.searchParams.get(
-        "scan"
-      );
-
+      url.searchParams.get("scan");
 
   } catch (error) {
 
@@ -960,10 +1582,6 @@ function processQRCode(
 
   }
 
-
-  // ----------------------------------------------------------
-  // FALLBACK
-  // ----------------------------------------------------------
 
   if (!scanNumber) {
 
@@ -985,26 +1603,17 @@ function processQRCode(
   }
 
 
-  // ----------------------------------------------------------
-  // VALIDATION
-  // ----------------------------------------------------------
-
   if (!scanNumber) {
 
     status.innerHTML =
       "❌ This QR code does not contain a valid clue number.";
 
-    startButton.disabled =
-      false;
+    startButton.disabled = false;
 
     return;
 
   }
 
-
-  // ----------------------------------------------------------
-  // OPEN RESULT
-  // ----------------------------------------------------------
 
   openResultPage(
     scanNumber
@@ -1017,22 +1626,17 @@ function processQRCode(
 // OPEN RESULT PAGE
 // ============================================================
 
-function openResultPage(
-  scanNumber
-) {
+function openResultPage(scanNumber) {
 
   scannerPage.style.display =
     "none";
-
 
   resultPage.style.display =
     "block";
 
 
   scanNumberDisplay.innerHTML =
-    escapeHtml(
-      scanNumber
-    );
+    escapeHtml(scanNumber);
 
 
   clueText.innerHTML =
@@ -1047,43 +1651,29 @@ function openResultPage(
     "block";
 
 
-  waitingMessage.innerHTML =
-    "Keep this screen open...";
-
-
   timer.innerHTML =
     "02:30";
 
 
-  // ----------------------------------------------------------
-  // CHANGE BROWSER URL
-  // ----------------------------------------------------------
+  waitingMessage.innerHTML =
+    "Keep this screen open... 🎁";
+
 
   const newUrl =
     window.location.pathname +
     "?result=1&scan=" +
-    encodeURIComponent(
-      scanNumber
-    );
+    encodeURIComponent(scanNumber);
 
 
   window.history.pushState(
     {
-      result:
-        true,
-
-      scan:
-        scanNumber
-
+      result: true,
+      scan: scanNumber
     },
     "",
     newUrl
   );
 
-
-  // ----------------------------------------------------------
-  // LOAD CLUE
-  // ----------------------------------------------------------
 
   getClueFromAppsScript(
     scanNumber
@@ -1096,30 +1686,12 @@ function openResultPage(
 // GET CLUE FROM APPS SCRIPT
 // ============================================================
 
-function getClueFromAppsScript(
-  scanNumber
-) {
-
-  status.innerHTML =
-    "🔍 Loading clue " +
-    escapeHtml(
-      scanNumber
-    ) +
-    "...";
-
+function getClueFromAppsScript(scanNumber) {
 
   const callbackName =
     "qrCallback_" +
     Date.now();
 
-
-  let scriptElement =
-    null;
-
-
-  // ----------------------------------------------------------
-  // JSONP CALLBACK
-  // ----------------------------------------------------------
 
   window[callbackName] =
     function(data) {
@@ -1146,15 +1718,9 @@ function getClueFromAppsScript(
 
 
       if (scriptElement) {
-
         scriptElement.remove();
-
       }
 
-
-      // ------------------------------------------------------
-      // ERROR RESPONSE
-      // ------------------------------------------------------
 
       if (
         !data ||
@@ -1163,23 +1729,19 @@ function getClueFromAppsScript(
 
         clueText.innerHTML =
           "❌ Could not load your surprise.<br><br>" +
-
           escapeHtml(
-            data &&
-            data.error
+            data && data.error
               ? data.error
               : "Unknown error."
           );
 
+        timerBox.style.display =
+          "none";
 
         return;
 
       }
 
-
-      // ------------------------------------------------------
-      // SUCCESS
-      // ------------------------------------------------------
 
       console.log(
         "CLUE RECEIVED:",
@@ -1193,32 +1755,32 @@ function getClueFromAppsScript(
         );
 
 
-      // ------------------------------------------------------
-      // START 2:30 TIMER
-      // ------------------------------------------------------
+      /*
+       * Small extra delay so the clue
+       * pop-in animation can be seen.
+       */
 
-      startCountdown(
-        data.destination || ""
+      setTimeout(
+        function() {
+
+          startCountdown(
+            data.destination || ""
+          );
+
+        },
+        250
       );
 
     };
 
 
-  // ----------------------------------------------------------
-  // API URL
-  // ----------------------------------------------------------
-
   const apiUrl =
     APPS_SCRIPT_URL +
     "?api=1" +
     "&scan=" +
-    encodeURIComponent(
-      scanNumber
-    ) +
+    encodeURIComponent(scanNumber) +
     "&callback=" +
-    encodeURIComponent(
-      callbackName
-    );
+    encodeURIComponent(callbackName);
 
 
   console.log(
@@ -1227,29 +1789,19 @@ function getClueFromAppsScript(
   );
 
 
-  // ----------------------------------------------------------
-  // CREATE SCRIPT
-  // ----------------------------------------------------------
-
-  scriptElement =
-    document.createElement(
-      "script"
-    );
+  const scriptElement =
+    document.createElement("script");
 
 
   scriptElement.src =
     apiUrl;
 
 
-  // ----------------------------------------------------------
-  // NETWORK ERROR
-  // ----------------------------------------------------------
-
   scriptElement.onerror =
     function() {
 
       console.error(
-        "Apps Script JSONP request failed."
+        "Apps Script API failed."
       );
 
 
@@ -1270,8 +1822,11 @@ function getClueFromAppsScript(
 
       clueText.innerHTML =
         "❌ Could not connect to the clue server.<br><br>" +
+        "Please check the Apps Script deployment.";
 
-        "Please check your Apps Script deployment.";
+
+      timerBox.style.display =
+        "none";
 
 
       scriptElement.remove();
@@ -1290,13 +1845,7 @@ function getClueFromAppsScript(
 // 2 MINUTES 30 SECONDS COUNTDOWN
 // ============================================================
 
-function startCountdown(
-  destinationValue
-) {
-
-  // ----------------------------------------------------------
-  // STOP OLD TIMER
-  // ----------------------------------------------------------
+function startCountdown(destinationValue) {
 
   if (timerInterval) {
 
@@ -1304,19 +1853,10 @@ function startCountdown(
       timerInterval
     );
 
-    timerInterval =
-      null;
-
   }
 
 
-  // ----------------------------------------------------------
-  // 150 SECONDS = 2 MINUTES 30 SECONDS
-  // ----------------------------------------------------------
-
-  const TOTAL_SECONDS =
-    150;
-
+  const TOTAL_SECONDS = 150;
 
   let remaining =
     TOTAL_SECONDS;
@@ -1325,13 +1865,12 @@ function startCountdown(
   timerBox.style.display =
     "block";
 
-
   destinationBox.style.display =
     "none";
 
 
   waitingMessage.innerHTML =
-    "Keep this screen open...";
+    "Keep this screen open... 🎁";
 
 
   updateTimer(
@@ -1339,16 +1878,11 @@ function startCountdown(
   );
 
 
-  // ----------------------------------------------------------
-  // COUNTDOWN
-  // ----------------------------------------------------------
-
   timerInterval =
     setInterval(
       function() {
 
         remaining--;
-
 
         updateTimer(
           remaining
@@ -1362,10 +1896,6 @@ function startCountdown(
           clearInterval(
             timerInterval
           );
-
-
-          timerInterval =
-            null;
 
 
           timer.innerHTML =
@@ -1389,15 +1919,12 @@ function startCountdown(
 // UPDATE TIMER
 // ============================================================
 
-function updateTimer(
-  seconds
-) {
+function updateTimer(seconds) {
 
   const minutes =
     Math.floor(
       seconds / 60
     );
-
 
   const secs =
     seconds % 60;
@@ -1405,18 +1932,10 @@ function updateTimer(
 
   timer.innerHTML =
     String(minutes)
-      .padStart(
-        2,
-        "0"
-      ) +
-
+      .padStart(2, "0") +
     ":" +
-
     String(secs)
-      .padStart(
-        2,
-        "0"
-      );
+      .padStart(2, "0");
 
 }
 
@@ -1425,9 +1944,7 @@ function updateTimer(
 // REVEAL DESTINATION
 // ============================================================
 
-function revealDestination(
-  value
-) {
+function revealDestination(value) {
 
   waitingMessage.innerHTML =
     "🎉 The wait is over!";
@@ -1439,9 +1956,7 @@ function revealDestination(
   ) {
 
     destination.innerHTML =
-      escapeHtml(
-        value
-      );
+      escapeHtml(value);
 
   } else {
 
@@ -1454,6 +1969,136 @@ function revealDestination(
   destinationBox.style.display =
     "block";
 
+
+  /*
+   * Dramatic celebration popup
+   */
+
+  showCelebration();
+
+
+  /*
+   * Scroll destination into view
+   */
+
+  setTimeout(
+    function() {
+
+      destinationBox.scrollIntoView({
+        behavior: "smooth",
+        block: "center"
+      });
+
+    },
+    300
+  );
+
+}
+
+
+// ============================================================
+// CELEBRATION POPUP
+// ============================================================
+
+function showCelebration() {
+
+  celebration.style.display =
+    "flex";
+
+
+  createConfetti();
+
+
+  /*
+   * Automatically close popup
+   * after 2.5 seconds.
+   */
+
+  setTimeout(
+    function() {
+
+      celebration.style.display =
+        "none";
+
+    },
+    2500
+  );
+
+}
+
+
+// ============================================================
+// CONFETTI
+// ============================================================
+
+function createConfetti() {
+
+  const pieces = 45;
+
+
+  for (
+    let i = 0;
+    i < pieces;
+    i++
+  ) {
+
+    const piece =
+      document.createElement(
+        "div"
+      );
+
+
+    piece.className =
+      "confetti";
+
+
+    piece.style.left =
+      Math.random() * 100 +
+      "%";
+
+
+    piece.style.animationDelay =
+      Math.random() * .8 +
+      "s";
+
+
+    piece.style.animationDuration =
+      2.2 +
+      Math.random() * 1.5 +
+      "s";
+
+
+    /*
+     * Use different shapes
+     * without forcing colours.
+     */
+
+    if (
+      Math.random() > .5
+    ) {
+
+      piece.style.borderRadius =
+        "50%";
+
+    }
+
+
+    document.body.appendChild(
+      piece
+    );
+
+
+    setTimeout(
+      function() {
+
+        piece.remove();
+
+      },
+      4500
+    );
+
+  }
+
 }
 
 
@@ -1461,9 +2106,7 @@ function revealDestination(
 // HTML ESCAPE
 // ============================================================
 
-function escapeHtml(
-  value
-) {
+function escapeHtml(value) {
 
   return String(
     value === null ||
@@ -1471,32 +2114,37 @@ function escapeHtml(
       ? ""
       : value
   )
-  .replace(
-    /&/g,
-    "&amp;"
-  )
-  .replace(
-    /</g,
-    "&lt;"
-  )
-  .replace(
-    />/g,
-    "&gt;"
-  )
-  .replace(
-    /"/g,
-    "&quot;"
-  )
-  .replace(
-    /'/g,
-    "&#039;"
-  );
+
+    .replace(
+      /&/g,
+      "&amp;"
+    )
+
+    .replace(
+      /</g,
+      "&lt;"
+    )
+
+    .replace(
+      />/g,
+      "&gt;"
+    )
+
+    .replace(
+      /"/g,
+      "&quot;"
+    )
+
+    .replace(
+      /'/g,
+      "&#039;"
+    );
 
 }
 
 
 // ============================================================
-// OPEN EXISTING RESULT
+// EXISTING RESULT URL
 // ============================================================
 
 (function checkExistingResult() {
@@ -1508,15 +2156,10 @@ function escapeHtml(
 
 
   const result =
-    params.get(
-      "result"
-    );
-
+    params.get("result");
 
   const scan =
-    params.get(
-      "scan"
-    );
+    params.get("scan");
 
 
   if (
