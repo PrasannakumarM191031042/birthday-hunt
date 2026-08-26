@@ -1,834 +1,751 @@
 <!DOCTYPE html>
-
 <html lang="en">
-
 <head>
   <meta charset="UTF-8">
-
-<meta
-name="viewport"
-content="width=device-width, initial-scale=1"
-
->
-
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Birthday Surprise</title>
 
   <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js"></script>
-
-  <link rel="stylesheet" href="pink.css">
+  <link rel="stylesheet" href="pink.css?v=3">
 </head>
 
 <body>
 
-  <!-- FALLING CELEBRATION -->
-
   <div id="celebration"></div>
 
-  <!-- SCANNER PAGE -->
-
   <div id="scannerPage">
+    <h1>🎂 Birthday Surprise</h1>
 
-<h1>🎂 Birthday Surprise</h1>
+    <p class="subtitle">
+      Point your camera at the QR code.
+    </p>
 
-<p class="subtitle">
-  Point your camera at the QR code.
-</p>
+    <p class="subtitle">
+      Your surprise will appear automatically.
+    </p>
 
-<p class="subtitle">
-  Your surprise will appear automatically.
-</p>
+    <div class="cameraBox">
+      <video id="camera" autoplay playsinline muted></video>
+    </div>
 
-<div class="cameraBox">
+    <canvas id="canvas"></canvas>
 
-  <video
-    id="camera"
-    autoplay
-    playsinline
-    muted>
-  </video>
+    <div id="status">
+      Camera not started.
+    </div>
 
-</div>
-
-<canvas id="canvas"></canvas>
-
-<div id="status">
-  Camera not started.
-</div>
-
-<button
-  id="startButton"
-  onclick="startScanner()">
-  📷 Start Scanner
-</button>
-```
-
+    <button id="startButton" onclick="startScanner()">
+      📷 Start Scanner
+    </button>
   </div>
-
-  <!-- RESULT PAGE -->
 
   <div id="resultPage">
 
-```
-<h1>🎂 Birthday Surprise</h1>
+    <h1>🎂 Birthday Surprise</h1>
 
-<div class="successTitle">
-  🎉 CLUE
-  <span id="scanNumberDisplay"></span>
-  FOUND! 🎉
-</div>
+    <div class="successTitle">
+      🎉 CLUE <span id="scanNumberDisplay"></span> FOUND! 🎉
+    </div>
 
-<div class="clueCard">
+    <div class="clueCard">
+      <div class="clueLabel">✨ YOUR CLUE ✨</div>
 
-  <div class="clueLabel">
-    ✨ YOUR CLUE ✨
-  </div>
+      <div id="clueText">
+        Loading...
+      </div>
+    </div>
 
-  <div id="clueText">
-    Loading...
-  </div>
+    <div class="timerBox" id="timerBox">
 
-</div>
+      <div class="timerLabel">
+        🔐 Your destination will be revealed in
+      </div>
 
+      <div id="timer">
+        02:30
+      </div>
 
-<!-- TIMER -->
-<div
-  class="timerBox"
-  id="timerBox">
+      <div id="waitingMessage">
+        Keep this screen open... 🎁
+      </div>
 
-  <div class="timerLabel">
-    🔐 Your destination will be revealed in
-  </div>
+    </div>
 
-  <div id="timer">
-    02:30
-  </div>
+    <div id="destinationBox">
 
-  <div id="waitingMessage">
-    Keep this screen open... 🎁
-  </div>
+      <div class="destinationTitle">
+        🎁 The next destination is:
+      </div>
 
-</div>
+      <div id="destination"></div>
 
-
-<!-- DESTINATION -->
-<div
-  id="destinationBox">
-
-  <div class="destinationTitle">
-    🎁 The next destination is:
-  </div>
-
-  <div id="destination">
-  </div>
-
-</div>
-```
+    </div>
 
   </div>
 
-<script>
+  <script>
 
-const APPS_SCRIPT_URL =
-  "https://script.google.com/macros/s/AKfycbyar5ETPG9fs8Rur7aYuR9wZDFF9ry8Ra9Fw3wbz97AsYUrnK12BpLQofuHCsUFpWrw/exec";
+    // =========================================================
+    // CONFIGURATION
+    // =========================================================
 
-
-const video =
-  document.getElementById("camera");
-
-const canvas =
-  document.getElementById("canvas");
-
-const ctx =
-  canvas.getContext("2d", {
-    willReadFrequently: true
-  });
-
-const status =
-  document.getElementById("status");
-
-const startButton =
-  document.getElementById("startButton");
-
-const scannerPage =
-  document.getElementById("scannerPage");
-
-const resultPage =
-  document.getElementById("resultPage");
-
-const clueText =
-  document.getElementById("clueText");
-
-const destination =
-  document.getElementById("destination");
-
-const destinationBox =
-  document.getElementById("destinationBox");
-
-const timer =
-  document.getElementById("timer");
-
-const timerBox =
-  document.getElementById("timerBox");
-
-const scanNumberDisplay =
-  document.getElementById("scanNumberDisplay");
+    const APPS_SCRIPT_URL =
+      "https://script.google.com/macros/s/AKfycbyar5ETPG9fs8Rur7aYuR9wZDFF9ry8Ra9Fw3wbz97AsYUrnK12BpLQofuHCsUFpWrw/exec";
 
 
-let stream = null;
-let scanning = false;
-let timerInterval = null;
+    // =========================================================
+    // ELEMENTS
+    // =========================================================
 
+    const video =
+      document.getElementById("camera");
 
-/* =========================================
-   FALLING CELEBRATION
-   ========================================= */
+    const canvas =
+      document.getElementById("canvas");
 
-function createCelebration() {
-
-  const container =
-    document.getElementById("celebration");
-
-  container.innerHTML = "";
-
-  const pieces = [
-    "🎀",
-    "✨",
-    "🎉",
-    "💗",
-    "💕",
-    "🌸",
-    "🎊",
-    "⭐"
-  ];
-
-  for (let i = 0; i < 22; i++) {
-
-    const piece =
-      document.createElement("div");
-
-    piece.className =
-      "fallingPiece";
-
-    piece.innerHTML =
-      pieces[
-        Math.floor(
-          Math.random() * pieces.length
-        )
-      ];
-
-    piece.style.left =
-      Math.random() * 100 + "%";
-
-    piece.style.animationDelay =
-      Math.random() * 5 + "s";
-
-    piece.style.animationDuration =
-      5 + Math.random() * 5 + "s";
-
-    piece.style.fontSize =
-      12 + Math.random() * 12 + "px";
-
-    container.appendChild(piece);
-  }
-}
-
-createCelebration();
-
-
-/* =========================================
-   START SCANNER
-   ========================================= */
-
-async function startScanner() {
-
-  startButton.disabled = true;
-
-  status.innerHTML =
-    "📷 Requesting camera permission...";
-
-  try {
-
-    if (
-      !navigator.mediaDevices ||
-      !navigator.mediaDevices.getUserMedia
-    ) {
-
-      throw new Error(
-        "Camera is not supported by this browser."
+    const ctx =
+      canvas.getContext(
+        "2d",
+        { willReadFrequently: true }
       );
+
+    const status =
+      document.getElementById("status");
+
+    const startButton =
+      document.getElementById("startButton");
+
+    const scannerPage =
+      document.getElementById("scannerPage");
+
+    const resultPage =
+      document.getElementById("resultPage");
+
+    const clueText =
+      document.getElementById("clueText");
+
+    const destination =
+      document.getElementById("destination");
+
+    const destinationBox =
+      document.getElementById("destinationBox");
+
+    const timerBox =
+      document.getElementById("timerBox");
+
+    const timer =
+      document.getElementById("timer");
+
+    const scanNumberDisplay =
+      document.getElementById("scanNumberDisplay");
+
+    const celebration =
+      document.getElementById("celebration");
+
+
+    // =========================================================
+    // VARIABLES
+    // =========================================================
+
+    let stream = null;
+    let scanning = false;
+    let timerInterval = null;
+
+
+    // =========================================================
+    // SHORT CELEBRATION BURST
+    // =========================================================
+
+    const celebrationPieces = [
+      "🎀",
+      "🎉",
+      "✨",
+      "💖",
+      "🎊",
+      "🌸",
+      "💗",
+      "⭐"
+    ];
+
+
+    function playCelebration() {
+
+      // Remove an older burst first.
+      celebration.innerHTML = "";
+
+      // Create only 18 pieces for this burst.
+      for (let i = 0; i < 18; i++) {
+
+        const piece =
+          document.createElement("div");
+
+        piece.className =
+          "fallingPiece";
+
+        piece.textContent =
+          celebrationPieces[
+            Math.floor(
+              Math.random() *
+              celebrationPieces.length
+            )
+          ];
+
+        piece.style.left =
+          Math.random() * 100 + "%";
+
+        piece.style.fontSize =
+          (12 + Math.random() * 14) + "px";
+
+        piece.style.animationDuration =
+          (3.5 + Math.random() * 3) + "s";
+
+        piece.style.animationDelay =
+          (Math.random() * 0.8) + "s";
+
+        celebration.appendChild(piece);
+      }
+
+      // Automatically remove the pieces.
+      setTimeout(function () {
+        celebration.innerHTML = "";
+      }, 5500);
     }
 
 
-    if (stream) {
+    // =========================================================
+    // START SCANNER
+    // =========================================================
 
-      stream
-        .getTracks()
-        .forEach(track => track.stop());
-    }
+    async function startScanner() {
 
+      startButton.disabled = true;
 
-    stream =
-      await navigator.mediaDevices.getUserMedia({
-
-        video: {
-          facingMode: {
-            ideal: "environment"
-          },
-
-          width: {
-            ideal: 1280
-          },
-
-          height: {
-            ideal: 720
-          }
-        },
-
-        audio: false
-      });
-
-
-    video.srcObject =
-      stream;
-
-    await video.play();
-
-
-    status.innerHTML =
-      "📷 Camera working — scanning QR code...";
-
-    scanning = true;
-
-    scanQRCode();
-
-  } catch (error) {
-
-    console.error(error);
-
-    status.innerHTML =
-      "❌ Camera error: " +
-      error.message;
-
-    startButton.disabled =
-      false;
-  }
-}
-
-
-/* =========================================
-   QR SCANNER
-   ========================================= */
-
-function scanQRCode() {
-
-  if (!scanning) {
-    return;
-  }
-
-
-  if (
-    video.readyState ===
-    video.HAVE_ENOUGH_DATA
-  ) {
-
-    canvas.width =
-      video.videoWidth;
-
-    canvas.height =
-      video.videoHeight;
-
-
-    ctx.drawImage(
-      video,
-      0,
-      0,
-      canvas.width,
-      canvas.height
-    );
-
-
-    const imageData =
-      ctx.getImageData(
-        0,
-        0,
-        canvas.width,
-        canvas.height
-      );
-
-
-    const code =
-      jsQR(
-        imageData.data,
-        imageData.width,
-        imageData.height,
-        {
-          inversionAttempts:
-            "attemptBoth"
-        }
-      );
-
-
-    if (code) {
-
-      console.log(
-        "QR DETECTED:",
-        code.data
-      );
-
-      scanning = false;
-
-      stopCamera();
-
-      processQRCode(code.data);
-
-      return;
-    }
-  }
-
-
-  requestAnimationFrame(
-    scanQRCode
-  );
-}
-
-
-/* =========================================
-   STOP CAMERA
-   ========================================= */
-
-function stopCamera() {
-
-  if (stream) {
-
-    stream
-      .getTracks()
-      .forEach(
-        track => track.stop()
-      );
-
-    stream = null;
-  }
-
-  video.srcObject = null;
-}
-
-
-/* =========================================
-   PROCESS QR
-   ========================================= */
-
-function processQRCode(qrData) {
-
-  console.log(
-    "QR CONTENT:",
-    qrData
-  );
-
-  let scanNumber = null;
-
-
-  try {
-
-    const url =
-      new URL(qrData);
-
-    scanNumber =
-      url.searchParams.get("scan");
-
-  } catch (error) {
-
-    console.log(
-      "QR is not a normal URL."
-    );
-  }
-
-
-  if (!scanNumber) {
-
-    const match =
-      String(qrData).match(
-        /[?&]scan=([^&]+)/i
-      );
-
-    if (match) {
-
-      scanNumber =
-        decodeURIComponent(
-          match[1]
-        );
-    }
-  }
-
-
-  if (!scanNumber) {
-
-    status.innerHTML =
-      "❌ This QR code does not contain a valid clue number.";
-
-    startButton.disabled =
-      false;
-
-    return;
-  }
-
-
-  openResultPage(scanNumber);
-}
-
-
-/* =========================================
-   OPEN RESULT PAGE
-   ========================================= */
-
-function openResultPage(scanNumber) {
-
-  scannerPage.style.display =
-    "none";
-
-  resultPage.style.display =
-    "block";
-
-
-  scanNumberDisplay.innerHTML =
-    escapeHtml(scanNumber);
-
-
-  clueText.innerHTML =
-    "🔍 Loading your surprise...";
-
-
-  destinationBox.style.display =
-    "none";
-
-
-  timer.innerHTML =
-    "02:30";
-
-
-  const newUrl =
-    window.location.pathname +
-    "?result=1&scan=" +
-    encodeURIComponent(scanNumber);
-
-
-  window.history.pushState(
-    {
-      result: true,
-      scan: scanNumber
-    },
-    "",
-    newUrl
-  );
-
-
-  getClueFromAppsScript(
-    scanNumber
-  );
-}
-
-
-/* =========================================
-   GET CLUE
-   ========================================= */
-
-function getClueFromAppsScript(
-  scanNumber
-) {
-
-  const callbackName =
-    "qrCallback_" +
-    Date.now();
-
-
-  window[callbackName] =
-    function(data) {
-
-      console.log(
-        "APPS SCRIPT RESPONSE:",
-        data
-      );
-
+      status.innerHTML =
+        "📷 Requesting camera permission...";
 
       try {
 
-        delete window[
-          callbackName
-        ];
+        if (
+          !navigator.mediaDevices ||
+          !navigator.mediaDevices.getUserMedia
+        ) {
+          throw new Error(
+            "Camera is not supported by this browser."
+          );
+        }
 
-      } catch (e) {
+        if (stream) {
+          stream
+            .getTracks()
+            .forEach(track => track.stop());
+        }
 
-        window[
-          callbackName
-        ] = undefined;
+        stream =
+          await navigator.mediaDevices.getUserMedia({
+            video: {
+              facingMode: {
+                ideal: "environment"
+              },
+              width: {
+                ideal: 1280
+              },
+              height: {
+                ideal: 720
+              }
+            },
+            audio: false
+          });
+
+        video.srcObject = stream;
+
+        await video.play();
+
+        status.innerHTML =
+          "📷 Camera working — scanning QR code...";
+
+        scanning = true;
+
+        scanQRCode();
+
+      } catch (error) {
+
+        console.error(error);
+
+        status.innerHTML =
+          "❌ Camera error: " +
+          error.message;
+
+        startButton.disabled = false;
       }
+    }
 
 
-      if (scriptElement) {
+    // =========================================================
+    // QR SCANNER
+    // =========================================================
 
-        scriptElement.remove();
+    function scanQRCode() {
+
+      if (!scanning) {
+        return;
       }
-
 
       if (
-        !data ||
-        data.success !== true
+        video.readyState ===
+        video.HAVE_ENOUGH_DATA
       ) {
 
-        clueText.innerHTML =
-          "❌ Could not load your surprise.<br><br>" +
-          escapeHtml(
-            data && data.error
-              ? data.error
-              : "Unknown error."
+        canvas.width =
+          video.videoWidth;
+
+        canvas.height =
+          video.videoHeight;
+
+        ctx.drawImage(
+          video,
+          0,
+          0,
+          canvas.width,
+          canvas.height
+        );
+
+        const imageData =
+          ctx.getImageData(
+            0,
+            0,
+            canvas.width,
+            canvas.height
           );
+
+        const code =
+          jsQR(
+            imageData.data,
+            imageData.width,
+            imageData.height,
+            {
+              inversionAttempts:
+                "attemptBoth"
+            }
+          );
+
+        if (code) {
+
+          console.log(
+            "QR DETECTED:",
+            code.data
+          );
+
+          scanning = false;
+
+          stopCamera();
+
+          processQRCode(code.data);
+
+          return;
+        }
+      }
+
+      requestAnimationFrame(scanQRCode);
+    }
+
+
+    // =========================================================
+    // STOP CAMERA
+    // =========================================================
+
+    function stopCamera() {
+
+      if (stream) {
+
+        stream
+          .getTracks()
+          .forEach(track => track.stop());
+
+        stream = null;
+      }
+
+      video.srcObject = null;
+    }
+
+
+    // =========================================================
+    // PROCESS QR CONTENT
+    // =========================================================
+
+    function processQRCode(qrData) {
+
+      console.log(
+        "QR CONTENT:",
+        qrData
+      );
+
+      let scanNumber = null;
+
+      try {
+
+        const url =
+          new URL(qrData);
+
+        scanNumber =
+          url.searchParams.get("scan");
+
+      } catch (error) {
+
+        console.log(
+          "QR is not a normal URL."
+        );
+      }
+
+      if (!scanNumber) {
+
+        const match =
+          String(qrData).match(
+            /[?&]scan=([^&]+)/i
+          );
+
+        if (match) {
+
+          scanNumber =
+            decodeURIComponent(match[1]);
+        }
+      }
+
+      if (!scanNumber) {
+
+        status.innerHTML =
+          "❌ This QR code does not contain a valid clue number.";
+
+        startButton.disabled = false;
 
         return;
       }
 
+      openResultPage(scanNumber);
+    }
+
+
+    // =========================================================
+    // OPEN RESULT PAGE
+    // =========================================================
+
+    function openResultPage(scanNumber) {
+
+      scannerPage.style.display =
+        "none";
+
+      resultPage.style.display =
+        "block";
+
+      // 🎉 Burst when the clue page opens.
+      playCelebration();
+
+      scanNumberDisplay.innerHTML =
+        escapeHtml(scanNumber);
 
       clueText.innerHTML =
-        escapeHtml(
-          data.clue || ""
-        );
+        "🔍 Loading your surprise...";
 
+      destinationBox.style.display =
+        "none";
 
-      startCountdown(
-        data.destination || ""
-      );
-    };
+      timerBox.style.display =
+        "block";
 
+      timer.innerHTML =
+        "02:30";
 
-  const apiUrl =
-    APPS_SCRIPT_URL +
-    "?api=1" +
-    "&scan=" +
-    encodeURIComponent(scanNumber) +
-    "&callback=" +
-    encodeURIComponent(callbackName);
+      document.getElementById(
+        "waitingMessage"
+      ).innerHTML =
+        "Keep this screen open... 🎁";
 
+      const newUrl =
+        window.location.pathname +
+        "?result=1&scan=" +
+        encodeURIComponent(scanNumber);
 
-  console.log(
-    "API URL:",
-    apiUrl
-  );
-
-
-  const scriptElement =
-    document.createElement("script");
-
-
-  scriptElement.src =
-    apiUrl;
-
-
-  scriptElement.onerror =
-    function() {
-
-      console.error(
-        "Apps Script API failed."
+      window.history.pushState(
+        {
+          result: true,
+          scan: scanNumber
+        },
+        "",
+        newUrl
       );
 
+      getClueFromAppsScript(scanNumber);
+    }
 
-      try {
 
-        delete window[
-          callbackName
-        ];
+    // =========================================================
+    // GET CLUE FROM APPS SCRIPT
+    // =========================================================
 
-      } catch (e) {
+    function getClueFromAppsScript(scanNumber) {
 
-        window[
-          callbackName
-        ] = undefined;
+      status.innerHTML =
+        "🔍 Loading clue " +
+        escapeHtml(scanNumber) +
+        "...";
+
+      const callbackName =
+        "qrCallback_" +
+        Date.now();
+
+      let scriptElement = null;
+
+      window[callbackName] =
+        function(data) {
+
+          console.log(
+            "APPS SCRIPT RESPONSE:",
+            data
+          );
+
+          try {
+            delete window[callbackName];
+          } catch (e) {
+            window[callbackName] = undefined;
+          }
+
+          if (scriptElement) {
+            scriptElement.remove();
+          }
+
+          if (
+            !data ||
+            data.success !== true
+          ) {
+
+            clueText.innerHTML =
+              "❌ Could not load your surprise.<br><br>" +
+              escapeHtml(
+                data && data.error
+                  ? data.error
+                  : "Unknown error."
+              );
+
+            return;
+          }
+
+          console.log(
+            "CLUE RECEIVED:",
+            data
+          );
+
+          clueText.innerHTML =
+            escapeHtml(
+              data.clue || ""
+            );
+
+          // ✨ Burst when the clue successfully appears.
+          playCelebration();
+
+          startCountdown(
+            data.destination || ""
+          );
+        };
+
+
+      const apiUrl =
+        APPS_SCRIPT_URL +
+        "?api=1" +
+        "&scan=" +
+        encodeURIComponent(scanNumber) +
+        "&callback=" +
+        encodeURIComponent(callbackName);
+
+
+      console.log(
+        "API URL:",
+        apiUrl
+      );
+
+
+      scriptElement =
+        document.createElement("script");
+
+
+      scriptElement.src =
+        apiUrl;
+
+
+      scriptElement.onerror =
+        function() {
+
+          console.error(
+            "Apps Script API failed."
+          );
+
+          try {
+            delete window[callbackName];
+          } catch (e) {
+            window[callbackName] = undefined;
+          }
+
+          clueText.innerHTML =
+            "❌ Could not connect to the clue server.<br><br>" +
+            "Please check your Apps Script deployment.";
+
+          if (scriptElement) {
+            scriptElement.remove();
+          }
+        };
+
+
+      document.body.appendChild(
+        scriptElement
+      );
+    }
+
+
+    // =========================================================
+    // COUNTDOWN
+    // =========================================================
+
+    function startCountdown(destinationValue) {
+
+      if (timerInterval) {
+
+        clearInterval(timerInterval);
       }
 
+      const TOTAL_SECONDS = 150;
 
-      clueText.innerHTML =
-        "❌ Could not connect to the clue server.<br><br>" +
-        "Please check your Apps Script deployment.";
+      let remaining =
+        TOTAL_SECONDS;
 
+      timerBox.style.display =
+        "block";
 
-      scriptElement.remove();
-    };
+      destinationBox.style.display =
+        "none";
 
+      updateTimer(remaining);
 
-  document.body.appendChild(
-    scriptElement
-  );
-}
+      timerInterval =
+        setInterval(function () {
 
+          remaining--;
 
-/* =========================================
-   COUNTDOWN
-   ========================================= */
+          updateTimer(remaining);
 
-function startCountdown(
-  destinationValue
-) {
+          if (remaining <= 0) {
 
-  if (timerInterval) {
+            clearInterval(timerInterval);
 
-    clearInterval(
-      timerInterval
-    );
-  }
+            timer.innerHTML =
+              "00:00";
 
+            revealDestination(
+              destinationValue
+            );
+          }
 
-  const TOTAL_SECONDS = 150;
-
-  let remaining =
-    TOTAL_SECONDS;
+        }, 1000);
+    }
 
 
-  timerBox.style.display =
-    "block";
+    // =========================================================
+    // UPDATE TIMER
+    // =========================================================
 
-  destinationBox.style.display =
-    "none";
+    function updateTimer(seconds) {
+
+      const minutes =
+        Math.floor(seconds / 60);
+
+      const secs =
+        seconds % 60;
+
+      timer.innerHTML =
+        String(minutes).padStart(2, "0") +
+        ":" +
+        String(secs).padStart(2, "0");
+    }
 
 
-  updateTimer(
-    remaining
-  );
+    // =========================================================
+    // REVEAL DESTINATION
+    // =========================================================
+
+    function revealDestination(value) {
+
+      document.getElementById(
+        "waitingMessage"
+      ).innerHTML =
+        "🎉 The wait is over! 🎉";
+
+      if (
+        value &&
+        String(value).trim()
+      ) {
+
+        destination.innerHTML =
+          escapeHtml(value);
+
+      } else {
+
+        destination.innerHTML =
+          "Your next surprise is waiting for you! 🎁";
+      }
+
+      destinationBox.style.display =
+        "block";
+
+      // 🎁 Burst when destination is revealed.
+      playCelebration();
+    }
 
 
-  timerInterval =
-    setInterval(
-      function() {
+    // =========================================================
+    // HTML ESCAPE
+    // =========================================================
 
-        remaining--;
+    function escapeHtml(value) {
 
-        updateTimer(
-          remaining
+      return String(
+        value === null ||
+        value === undefined
+          ? ""
+          : value
+      )
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;");
+    }
+
+
+    // =========================================================
+    // OPEN RESULT PAGE FROM URL
+    // =========================================================
+
+    (function checkExistingResult() {
+
+      const params =
+        new URLSearchParams(
+          window.location.search
         );
 
+      const result =
+        params.get("result");
 
-        if (
-          remaining <= 0
-        ) {
+      const scan =
+        params.get("scan");
 
-          clearInterval(
-            timerInterval
-          );
+      if (
+        result === "1" &&
+        scan
+      ) {
 
-          timer.innerHTML =
-            "00:00";
+        openResultPage(scan);
+      }
 
+    })();
 
-          revealDestination(
-            destinationValue
-          );
-        }
-
-      },
-      1000
-    );
-}
-
-
-/* =========================================
-   UPDATE TIMER
-   ========================================= */
-
-function updateTimer(seconds) {
-
-  const minutes =
-    Math.floor(
-      seconds / 60
-    );
-
-  const secs =
-    seconds % 60;
-
-
-  timer.innerHTML =
-    String(minutes).padStart(2, "0") +
-    ":" +
-    String(secs).padStart(2, "0");
-}
-
-
-/* =========================================
-   REVEAL DESTINATION
-   ========================================= */
-
-function revealDestination(value) {
-
-  document.getElementById(
-    "waitingMessage"
-  ).innerHTML =
-    "🎉 The wait is over! 🎉";
-
-
-  if (
-    value &&
-    String(value).trim()
-  ) {
-
-    destination.innerHTML =
-      escapeHtml(value);
-
-  } else {
-
-    destination.innerHTML =
-      "Your next surprise is waiting for you! 🎁";
-  }
-
-
-  destinationBox.style.display =
-    "block";
-}
-
-
-/* =========================================
-   ESCAPE HTML
-   ========================================= */
-
-function escapeHtml(value) {
-
-  return String(
-    value === null ||
-    value === undefined
-      ? ""
-      : value
-  )
-  .replace(/&/g, "&amp;")
-  .replace(/</g, "&lt;")
-  .replace(/>/g, "&gt;")
-  .replace(/"/g, "&quot;")
-  .replace(/'/g, "&#039;");
-}
-
-
-/* =========================================
-   EXISTING RESULT
-   ========================================= */
-
-(function checkExistingResult() {
-
-  const params =
-    new URLSearchParams(
-      window.location.search
-    );
-
-
-  const result =
-    params.get("result");
-
-  const scan =
-    params.get("scan");
-
-
-  if (
-    result === "1" &&
-    scan
-  ) {
-
-    openResultPage(scan);
-  }
-
-})();
-</script>
+  </script>
 
 </body>
 </html>
