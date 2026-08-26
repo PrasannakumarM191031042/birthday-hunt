@@ -1,193 +1,449 @@
-function doGet(e) {
+<!DOCTYPE html>
+<html>
+<head>
 
-  // ==========================================================
-  // JSONP API MODE
-  // ==========================================================
-  //
-  // The GitHub QR scanner calls:
-  //
-  // ?api=1&scan=1&callback=qrCallback_xxxxx
-  //
-  // We return:
-  //
-  // qrCallback_xxxxx({
-  //   success:true,
-  //   scan:"1",
-  //   clue:"...",
-  //   destination:"..."
-  // });
-  //
-  // ==========================================================
+  <meta charset="UTF-8">
 
-  const api =
-    e &&
-    e.parameter &&
-    String(e.parameter.api || "").trim();
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1"
+  >
 
-  if (api === "1") {
+  <title>Birthday Hunt</title>
 
-    const scanNumber =
-      e.parameter.scan
-        ? String(e.parameter.scan).trim()
-        : "";
+  <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js"></script>
 
-    const callback =
-      e.parameter.callback
-        ? String(e.parameter.callback).trim()
-        : "";
+  <style>
+
+    body {
+      margin: 0;
+      background: #000;
+      color: white;
+      font-family: Arial, sans-serif;
+      text-align: center;
+    }
+
+    h1 {
+      margin: 25px 10px 10px;
+      color: #4cff3b;
+      font-size: 42px;
+    }
+
+    p {
+      font-size: 20px;
+    }
+
+    #cameraBox {
+      width: 90%;
+      max-width: 650px;
+      margin: 35px auto;
+      border: 4px solid #4cff3b;
+      border-radius: 20px;
+      padding: 20px;
+      box-sizing: border-box;
+      background: #111;
+    }
+
+    #camera {
+      width: 100%;
+      display: block;
+      border-radius: 15px;
+      background: #111;
+    }
+
+    canvas {
+      display: none;
+    }
+
+    #status {
+      font-size: 22px;
+      margin: 25px 10px;
+    }
+
+    button {
+      padding: 16px 30px;
+      font-size: 20px;
+      font-weight: bold;
+      border: 3px solid #4cff3b;
+      border-radius: 12px;
+      background: #111;
+      color: #4cff3b;
+      margin: 15px;
+    }
+
+    button:disabled {
+      opacity: 0.5;
+    }
+
+  </style>
+
+</head>
+
+<body>
+
+  <h1>🎂 Birthday Hunt</h1>
+
+  <p>
+    Point your camera at the QR code.
+  </p>
+
+  <p>
+    You will be taken to your clue automatically.
+  </p>
 
 
-    let response;
+  <div id="cameraBox">
+
+    <video
+      id="camera"
+      autoplay
+      playsinline
+      muted>
+    </video>
+
+  </div>
 
 
-    try {
-
-      if (!scanNumber) {
-
-        throw new Error(
-          "Scan number is missing."
-        );
-
-      }
+  <canvas id="canvas"></canvas>
 
 
-      const huntData =
-        getHuntData(scanNumber);
+  <div id="status">
+    Camera not started.
+  </div>
 
 
-      response = {
+  <button
+    id="startButton"
+    onclick="startScanner()">
 
-        success: true,
+    📷 Start Scanner
 
-        scan: scanNumber,
-
-        clue:
-          huntData.clue,
-
-        destination:
-          huntData.destination
-
-      };
+  </button>
 
 
-    } catch (error) {
+<script>
 
-      response = {
 
-        success: false,
+// ============================================================
+// ELEMENTS
+// ============================================================
 
-        error:
-          error.message ||
-          String(error)
+const video =
+  document.getElementById("camera");
 
-      };
+const canvas =
+  document.getElementById("canvas");
+
+const ctx =
+  canvas.getContext(
+    "2d",
+    {
+      willReadFrequently: true
+    }
+  );
+
+const status =
+  document.getElementById("status");
+
+const startButton =
+  document.getElementById("startButton");
+
+
+// ============================================================
+// VARIABLES
+// ============================================================
+
+let stream = null;
+
+let scanning = false;
+
+let qrFound = false;
+
+
+// ============================================================
+// START CAMERA
+// ============================================================
+
+async function startScanner() {
+
+  qrFound = false;
+
+  startButton.disabled = true;
+
+  status.innerHTML =
+    "📷 Requesting camera permission...";
+
+
+  try {
+
+    if (
+      !navigator.mediaDevices ||
+      !navigator.mediaDevices.getUserMedia
+    ) {
+
+      throw new Error(
+        "Camera is not supported by this browser."
+      );
 
     }
 
 
-    const json =
-      JSON.stringify(response);
+    // Stop previous camera
 
+    if (stream) {
 
-    // ========================================================
-    // JSONP RESPONSE
-    // ========================================================
-
-    if (callback) {
-
-      // Only allow a normal JavaScript callback name.
-      //
-      // This prevents arbitrary JavaScript from being
-      // inserted into the response.
-
-      if (
-        !/^[A-Za-z_$][0-9A-Za-z_$]*$/.test(
-          callback
-        )
-      ) {
-
-        return ContentService
-          .createTextOutput(
-            "Invalid callback."
-          )
-          .setMimeType(
-            ContentService.MimeType.TEXT
-          );
-
-      }
-
-
-      return ContentService
-        .createTextOutput(
-          callback +
-          "(" +
-          json +
-          ");"
-        )
-        .setMimeType(
-          ContentService.MimeType.JAVASCRIPT
+      stream
+        .getTracks()
+        .forEach(
+          track => track.stop()
         );
 
     }
 
 
-    // ========================================================
-    // NORMAL JSON RESPONSE
-    // ========================================================
+    // Open rear camera
 
-    return ContentService
-      .createTextOutput(json)
-      .setMimeType(
-        ContentService.MimeType.JSON
+    stream =
+      await navigator.mediaDevices.getUserMedia({
+
+        video: {
+
+          facingMode: {
+            ideal: "environment"
+          },
+
+          width: {
+            ideal: 1280
+          },
+
+          height: {
+            ideal: 720
+          }
+
+        },
+
+        audio: false
+
+      });
+
+
+    video.srcObject =
+      stream;
+
+
+    await video.play();
+
+
+    status.innerHTML =
+      "📷 Camera working — scanning QR code...";
+
+
+    scanning = true;
+
+
+    scanQRCode();
+
+
+  } catch (error) {
+
+    console.error(error);
+
+
+    status.innerHTML =
+      "❌ Camera error: " +
+      error.name +
+      " — " +
+      error.message;
+
+
+    startButton.disabled =
+      false;
+
+  }
+
+}
+
+
+// ============================================================
+// SCAN QR CODE
+// ============================================================
+
+function scanQRCode() {
+
+  if (!scanning) {
+    return;
+  }
+
+
+  if (
+    video.readyState ===
+    video.HAVE_ENOUGH_DATA
+  ) {
+
+    canvas.width =
+      video.videoWidth;
+
+    canvas.height =
+      video.videoHeight;
+
+
+    ctx.drawImage(
+      video,
+      0,
+      0,
+      canvas.width,
+      canvas.height
+    );
+
+
+    const imageData =
+      ctx.getImageData(
+        0,
+        0,
+        canvas.width,
+        canvas.height
+      );
+
+
+    const code =
+      jsQR(
+        imageData.data,
+        imageData.width,
+        imageData.height,
+        {
+          inversionAttempts:
+            "attemptBoth"
+        }
+      );
+
+
+    if (code) {
+
+      handleQRCode(
+        code.data
+      );
+
+      return;
+
+    }
+
+  }
+
+
+  requestAnimationFrame(
+    scanQRCode
+  );
+
+}
+
+
+// ============================================================
+// QR DETECTED
+// ============================================================
+
+function handleQRCode(
+  qrContent
+) {
+
+  if (qrFound) {
+    return;
+  }
+
+
+  qrFound = true;
+
+  scanning = false;
+
+
+  console.log(
+    "QR CODE FOUND:",
+    qrContent
+  );
+
+
+  status.innerHTML =
+    "✅ QR code detected! Opening your clue...";
+
+
+  // ==========================================================
+  // STOP CAMERA
+  // ==========================================================
+
+  if (stream) {
+
+    stream
+      .getTracks()
+      .forEach(
+        track => track.stop()
       );
 
   }
 
 
+  video.srcObject = null;
+
+
   // ==========================================================
-  // NORMAL WEB APP PAGE
+  // CHECK QR CONTENT
   // ==========================================================
 
-  const template =
-    HtmlService.createTemplateFromFile(
-      "Index"
+  try {
+
+    const qrUrl =
+      new URL(
+        qrContent
+      );
+
+
+    const scanNumber =
+      qrUrl.searchParams.get(
+        "scan"
+      );
+
+
+    if (!scanNumber) {
+
+      status.innerHTML =
+        "❌ QR code does not contain a scan number.";
+
+      startButton.disabled =
+        false;
+
+      return;
+
+    }
+
+
+    // ========================================================
+    // IMPORTANT
+    //
+    // OPEN THE QR URL DIRECTLY
+    //
+    // This takes the user to your Apps Script page.
+    // ========================================================
+
+    window.location.href =
+      qrContent;
+
+
+  } catch (error) {
+
+    console.error(
+      error
     );
 
 
-  const scanNumber =
-    e &&
-    e.parameter &&
-    e.parameter.scan
-      ? String(
-          e.parameter.scan
-        ).trim()
-      : "";
+    status.innerHTML =
+      "❌ Invalid QR code.";
 
+    startButton.disabled =
+      false;
 
-  const scannerMode =
-    !scanNumber ||
-    (
-      e &&
-      e.parameter &&
-      String(
-        e.parameter.scanner || ""
-      ).trim() === "1"
-    );
-
-
-  template.scanNumber =
-    scanNumber;
-
-
-  template.scannerMode =
-    scannerMode;
-
-
-  return template
-    .evaluate()
-    .setTitle("Mystery")
-    .setXFrameOptionsMode(
-      HtmlService.XFrameOptionsMode.ALLOWALL
-    );
+  }
 
 }
+
+</script>
+
+</body>
+</html>
