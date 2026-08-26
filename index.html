@@ -1,35 +1,97 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <base target="_top">
+  <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
+  <title>Birthday Hunt - QR Scanner</title>
+
+  <!-- QR SCANNER LIBRARY -->
+  <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+
   <style>
+    * {
+      box-sizing: border-box;
+    }
+
     body {
       margin: 0;
-      background: #000;
+      min-height: 100vh;
+      background:
+        radial-gradient(circle at center, #062000 0%, #000 65%);
       color: white;
       font-family: Arial, sans-serif;
       text-align: center;
     }
 
+    .container {
+      width: 95%;
+      max-width: 700px;
+      margin: 0 auto;
+      padding: 20px 10px 40px;
+    }
+
     h1 {
-      margin: 30px 10px 10px;
+      margin: 20px 10px 10px;
       color: #4cff3b;
+      font-size: clamp(30px, 8vw, 55px);
+      text-shadow:
+        0 0 10px #4cff3b,
+        0 0 25px #4cff3b;
     }
 
-    p {
+    .subtitle {
       font-size: 18px;
+      line-height: 1.6;
+      margin: 10px auto 25px;
     }
 
-    #camera {
-      width: 90%;
+    .highlight {
+      color: #4cff3b;
+      font-weight: bold;
+    }
+
+    /* QR SCANNER BOX */
+    #reader {
+      width: 100%;
       max-width: 600px;
       margin: 20px auto;
       border: 3px solid #4cff3b;
-      border-radius: 15px;
-      background: #111;
-      display: block;
+      border-radius: 18px;
+      overflow: hidden;
+      background: #000;
+      box-shadow:
+        0 0 15px #4cff3b,
+        0 0 35px rgba(76, 255, 59, 0.3);
+    }
+
+    /*
+      html5-qrcode creates the camera video
+      inside #reader automatically.
+    */
+
+    #status {
+      margin: 20px auto;
+      padding: 15px;
+      width: 95%;
+      max-width: 600px;
+      font-size: 18px;
+      line-height: 1.5;
+    }
+
+    .waiting {
+      color: #fff;
+    }
+
+    .success {
+      color: #4cff3b;
+      font-weight: bold;
+      text-shadow: 0 0 10px #4cff3b;
+    }
+
+    .error {
+      color: #ff4545;
+      font-weight: bold;
     }
 
     button {
@@ -40,89 +102,397 @@
       border-radius: 10px;
       background: #111;
       color: #4cff3b;
-      margin: 15px;
+      margin: 10px;
+      cursor: pointer;
+      box-shadow: 0 0 15px rgba(76, 255, 59, 0.3);
     }
 
-    #status {
-      font-size: 18px;
-      margin: 20px;
+    button:active {
+      transform: scale(0.97);
+    }
+
+    button:disabled {
+      opacity: 0.5;
+    }
+
+    #result {
+      display: none;
+      width: 95%;
+      max-width: 600px;
+      margin: 20px auto;
+      padding: 20px;
+      border: 2px solid #4cff3b;
+      border-radius: 15px;
+      background: rgba(0, 20, 0, 0.8);
+    }
+
+    #resultTitle {
+      color: #4cff3b;
+      font-size: 24px;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+
+    #resultText {
+      word-break: break-all;
+      font-size: 17px;
+    }
+
+    .instructions {
+      margin-top: 25px;
+      padding: 15px;
+      border-radius: 12px;
+      border: 1px solid #245f1b;
+      background: rgba(0, 30, 0, 0.5);
+      line-height: 1.6;
     }
   </style>
 </head>
 
 <body>
 
-  <h1>📷 Camera Test</h1>
+  <div class="container">
 
-  <p>
-    Tap the button and allow camera access.
-  </p>
+    <h1>📷 QR SCANNER</h1>
 
-  <video
-    id="camera"
-    autoplay
-    playsinline
-    muted>
-  </video>
+    <div class="subtitle">
+      Use your <span class="highlight">mobile phone camera</span>
+      to scan the QR code.
+      <br>
+      Hold the QR code inside the scanning box.
+      <br>
+      <span class="highlight">
+        No picture is taken or uploaded.
+      </span>
+    </div>
 
-  <div id="status">
-    Camera not started.
+    <!-- QR SCANNER -->
+    <div id="reader"></div>
+
+    <div id="status" class="waiting">
+      📷 Tap <b>Start Camera</b> to begin scanning.
+    </div>
+
+    <button id="startButton" onclick="startScanner()">
+      📷 Start Camera
+    </button>
+
+    <button
+      id="stopButton"
+      onclick="stopScanner()"
+      style="display:none;">
+      ⏹ Stop Camera
+    </button>
+
+    <!-- RESULT -->
+    <div id="result">
+
+      <div id="resultTitle">
+        ✅ QR CODE FOUND!
+      </div>
+
+      <div id="resultText"></div>
+
+    </div>
+
+    <div class="instructions">
+      <b>How to scan:</b>
+      <br>
+      1. Tap <b>Start Camera</b>
+      <br>
+      2. Allow camera access
+      <br>
+      3. Point your camera at the QR code
+      <br>
+      4. Keep the QR code inside the box
+      <br>
+      5. The scanner will automatically detect it
+    </div>
+
   </div>
 
-  <button onclick="startCamera()">
-    📷 Start Camera
-  </button>
 
 <script>
 
-async function startCamera() {
+  let scanner = null;
+  let scannerRunning = false;
+  let scanLocked = false;
 
-  const video =
-    document.getElementById("camera");
 
-  const status =
-    document.getElementById("status");
+  function setStatus(message, type = "waiting") {
 
-  status.innerHTML =
-    "Requesting camera permission...";
+    const status = document.getElementById("status");
 
-  try {
+    status.className = type;
 
-    if (!navigator.mediaDevices ||
-        !navigator.mediaDevices.getUserMedia) {
+    status.innerHTML = message;
+  }
 
-      status.innerHTML =
-        "❌ This browser does not support camera access.";
 
+  async function startScanner() {
+
+    if (scannerRunning) {
       return;
     }
 
-    const stream =
-      await navigator.mediaDevices.getUserMedia({
-        video: {
+    scanLocked = false;
+
+    document.getElementById("result").style.display = "none";
+
+    setStatus(
+      "📷 Starting camera... Please allow camera access when asked.",
+      "waiting"
+    );
+
+    try {
+
+      scanner = new Html5Qrcode("reader");
+
+      /*
+       * Start the BACK camera on the mobile phone.
+       */
+      await scanner.start(
+
+        {
           facingMode: {
             ideal: "environment"
           }
         },
-        audio: false
-      });
 
-    video.srcObject = stream;
+        {
+          fps: 10,
 
-    status.innerHTML =
-      "✅ CAMERA WORKING!";
+          /*
+           * QR scanning area.
+           */
+          qrbox: function(viewfinderWidth, viewfinderHeight) {
 
-  } catch (error) {
+            const minEdge = Math.min(
+              viewfinderWidth,
+              viewfinderHeight
+            );
 
-    console.error(error);
+            const size = Math.floor(minEdge * 0.70);
 
-    status.innerHTML =
-      "❌ Camera error: " +
-      error.name +
-      " — " +
-      error.message;
+            return {
+              width: size,
+              height: size
+            };
+          },
+
+          aspectRatio: 1.0
+        },
+
+        /*
+         * QR CODE FOUND
+         */
+        function(decodedText, decodedResult) {
+
+          if (scanLocked) {
+            return;
+          }
+
+          scanLocked = true;
+
+          qrCodeFound(decodedText);
+        },
+
+        /*
+         * QR NOT FOUND
+         *
+         * This is completely normal.
+         * The scanner keeps looking.
+         */
+        function(errorMessage) {
+
+          // Do nothing.
+          // The scanner continuously checks the camera.
+        }
+
+      );
+
+      scannerRunning = true;
+
+      document.getElementById("startButton").style.display = "none";
+      document.getElementById("stopButton").style.display = "inline-block";
+
+      setStatus(
+        "🟢 CAMERA ACTIVE — Point your camera at the QR code.",
+        "success"
+      );
+
+    } catch (error) {
+
+      console.error("QR scanner error:", error);
+
+      scannerRunning = false;
+
+      let message = error.message || String(error);
+
+      if (error.name === "NotAllowedError") {
+
+        message =
+          "Camera permission was denied. Please allow camera access for this site in Chrome settings and try again.";
+
+      }
+
+      setStatus(
+        "❌ " + message,
+        "error"
+      );
+
+    }
   }
-}
+
+
+  async function qrCodeFound(decodedText) {
+
+    console.log("QR CODE:", decodedText);
+
+    setStatus(
+      "🎉 QR CODE FOUND! Processing...",
+      "success"
+    );
+
+    document.getElementById("result").style.display = "block";
+
+    document.getElementById("resultText").innerText =
+      decodedText;
+
+
+    /*
+     * Stop the scanner after a successful scan.
+     */
+    try {
+
+      if (scanner && scannerRunning) {
+
+        await scanner.stop();
+
+        scanner.clear();
+
+        scannerRunning = false;
+
+      }
+
+    } catch (error) {
+
+      console.error(
+        "Could not stop scanner:",
+        error
+      );
+
+    }
+
+
+    document.getElementById("startButton").style.display =
+      "inline-block";
+
+    document.getElementById("stopButton").style.display =
+      "none";
+
+
+    /*
+     * ======================================================
+     * IMPORTANT
+     * ======================================================
+     *
+     * If your QR code contains a URL, automatically open it.
+     *
+     * Example:
+     *
+     * https://example.com/?scan=123
+     *
+     * The browser will automatically open that URL.
+     */
+
+    if (
+      decodedText.startsWith("http://") ||
+      decodedText.startsWith("https://")
+    ) {
+
+      setStatus(
+        "✅ QR code detected! Opening...",
+        "success"
+      );
+
+      setTimeout(function() {
+
+        window.location.href = decodedText;
+
+      }, 800);
+
+    }
+
+    /*
+     * If the QR code contains only a number/text,
+     * it will remain displayed on the screen.
+     *
+     * We can connect this to your Birthday Hunt
+     * backend once we know exactly what your QR
+     * codes contain.
+     */
+
+  }
+
+
+  async function stopScanner() {
+
+    if (!scanner || !scannerRunning) {
+      return;
+    }
+
+    try {
+
+      await scanner.stop();
+
+      scanner.clear();
+
+    } catch (error) {
+
+      console.error(
+        "Stop scanner error:",
+        error
+      );
+
+    }
+
+    scannerRunning = false;
+    scanLocked = false;
+
+    document.getElementById("startButton").style.display =
+      "inline-block";
+
+    document.getElementById("stopButton").style.display =
+      "none";
+
+    setStatus(
+      "📷 Camera stopped. Tap Start Camera to scan again.",
+      "waiting"
+    );
+
+  }
+
+
+  /*
+   * Prevent accidental page scrolling while
+   * interacting with the scanner.
+   */
+  document.addEventListener(
+    "visibilitychange",
+    function() {
+
+      if (
+        document.hidden &&
+        scannerRunning
+      ) {
+
+        stopScanner();
+
+      }
+
+    }
+  );
 
 </script>
 
