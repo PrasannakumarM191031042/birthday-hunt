@@ -1,46 +1,94 @@
+/* =========================================================
+   EMERALD GREEN
+   ========================================================= */
+
 :root {
+  --accent: #55e89b;
+  --accent-light: #b9ffd9;
+  --accent-soft: rgba(85, 232, 155, 0.28);
 
-  --primary: #4cff3b;
+  --text: #ffffff;
+  --muted: #d7ffe8;
 
-  --primary-soft:
-    rgba(76, 255, 59, 0.25);
+  --card: rgba(5, 45, 29, 0.90);
+}
 
-  --primary-glow:
-    rgba(76, 255, 59, 0.55);
+body {
+  background:
+    radial-gradient(
+      circle at 15% 5%,
+      rgba(50, 220, 130, 0.25),
+      transparent 28%
+    ),
+    radial-gradient(
+      circle at 90% 20%,
+      rgba(0, 160, 90, 0.25),
+      transparent 30%
+    ),
+    linear-gradient(
+      135deg,
+      #075333,
+      #032719 52%,
+      #010604
+    );
+}
 
-  --background:
-    #000000;
+h1,
+.successTitle {
+  color: #64efa4;
 
-  --card-background:
-    #080808;
+  text-shadow:
+    0 0 10px #55e89b,
+    0 0 28px rgba(85, 232, 155, 0.55);
+}
 
-  --camera-background:
-    #080808;
+.subtitle,
+#status,
+.timerLabel,
+#waitingMessage {
+  color: var(--muted);
+}
 
-  --timer-background:
-    #090909;
+.cameraBox,
+.clueCard,
+.timerBox,
+#destinationBox {
+  border: 2px solid var(--accent);
 
-  --destination-background:
-    #0b0b0b;
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255, 255, 255, 0.07),
+      var(--card)
+    );
 
-  --button-background:
-    #111111;
+  box-shadow:
+    0 15px 50px rgba(0, 0, 0, 0.4),
+    0 0 28px var(--accent-soft);
 
-  --button-hover:
-    #14200f;
+  backdrop-filter: blur(12px);
+}
 
-  --text:
-    #ffffff;
+button {
+  background:
+    linear-gradient(
+      135deg,
+      #20b96b,
+      #087a42
+    );
 
-  --secondary-text:
-    #dddddd;
+  color: white;
+}
 
+.clueLabel {
+  color: var(--accent-light);
+}
 
-  /* Celebration colors */
+#timer,
+#destination {
+  color: #64efa4;
 
-  --streamer-1: #ff4fd8;
-  --streamer-2: #4cc9ff;
-  --streamer-3: #ffd23f;
-  --streamer-4: #a95cff;
-  --streamer-5: #4cff91;
+  text-shadow:
+    0 0 10px #55e89b,
+    0 0 28px rgba(85, 232, 155, 0.55);
 }
