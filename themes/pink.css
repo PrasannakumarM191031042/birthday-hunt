@@ -1,44 +1,104 @@
+/* =========================================================
+   PINK ROMANCE
+   ========================================================= */
+
 :root {
+  --accent: #ff4f9a;
+  --accent-light: #ffb6d8;
+  --accent-soft: rgba(255, 79, 154, 0.30);
 
-  --primary: #ff5fa2;
+  --text: #ffffff;
+  --muted: #ffe5f1;
 
-  --primary-soft:
-    rgba(255, 95, 162, 0.25);
+  --bg-dark: #210816;
+  --bg-mid: #4b1533;
 
-  --primary-glow:
-    rgba(255, 95, 162, 0.55);
+  --card: rgba(54, 12, 35, 0.86);
+  --card-light: rgba(255, 255, 255, 0.10);
+}
 
-  --background:
-    #100006;
+body {
+  background:
+    radial-gradient(
+      circle at 15% 10%,
+      rgba(255, 133, 187, 0.32),
+      transparent 30%
+    ),
+    radial-gradient(
+      circle at 90% 15%,
+      rgba(255, 79, 154, 0.20),
+      transparent 28%
+    ),
+    linear-gradient(
+      135deg,
+      #4b1533 0%,
+      #210816 50%,
+      #08030a 100%
+    );
 
-  --card-background:
-    #1b080f;
+  color: var(--text);
+}
 
-  --camera-background:
-    #18070d;
+h1,
+.successTitle {
+  color: #ff72ad;
 
-  --timer-background:
-    #200912;
+  text-shadow:
+    0 0 10px #ff4f9a,
+    0 0 25px rgba(255, 79, 154, 0.55);
+}
 
-  --destination-background:
-    #220a15;
+.subtitle,
+#status,
+.timerLabel,
+#waitingMessage {
+  color: var(--muted);
+}
 
-  --button-background:
-    #1b080f;
+.cameraBox,
+.clueCard,
+.timerBox,
+#destinationBox {
+  border:
+    2px solid var(--accent);
 
-  --button-hover:
-    #320d1c;
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255, 255, 255, 0.10),
+      var(--card)
+    );
 
-  --text:
-    #ffffff;
+  box-shadow:
+    0 15px 50px rgba(0, 0, 0, 0.35),
+    0 0 25px var(--accent-soft);
 
-  --secondary-text:
-    #ffe3ed;
+  backdrop-filter: blur(12px);
+}
 
+button {
+  background:
+    linear-gradient(
+      135deg,
+      #ff4f9a,
+      #d92f78
+    );
 
-  --streamer-1: #ff5fa2;
-  --streamer-2: #59c7ff;
-  --streamer-3: #ffd23f;
-  --streamer-4: #b76cff;
-  --streamer-5: #6dffb8;
+  color: #fff;
+
+  box-shadow:
+    0 8px 25px var(--accent-soft);
+}
+
+.clueLabel {
+  color: var(--accent-light);
+}
+
+#timer,
+#destination {
+  color: #ff72ad;
+
+  text-shadow:
+    0 0 10px #ff4f9a,
+    0 0 25px rgba(255, 79, 154, 0.5);
 }
