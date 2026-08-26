@@ -1,6 +1,10 @@
 /* =========================================================
-   BIRTHDAY SURPRISE
-   COMMON DESIGN CSS
+   BIRTHDAY SURPRISE - COMMON RESPONSIVE DESIGN
+   Works on:
+   Mobile
+   Tablet
+   Laptop
+   Desktop
    ========================================================= */
 
 * {
@@ -15,84 +19,129 @@ body {
   min-height: 100%;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
-  background: var(--background);
-  color: var(--text);
+  min-height: 100vh;
+  overflow-x: hidden;
+
   font-family:
+    Inter,
     Arial,
     Helvetica,
     sans-serif;
 
   text-align: center;
 
-  min-height: 100vh;
-
-  overflow-x: hidden;
+  position: relative;
 }
 
-
 /* =========================================================
-   PAGES
+   MAIN CONTAINER
    ========================================================= */
 
 #scannerPage,
 #resultPage {
-  width: 100%;
-  max-width: 800px;
-  margin: auto;
-  padding: 10px 20px 40px;
+  width: min(94vw, 1180px);
+  margin: 0 auto;
+
+  padding:
+    clamp(24px, 4vw, 55px)
+    clamp(15px, 4vw, 45px)
+    55px;
+
+  position: relative;
+  z-index: 2;
 }
 
+#resultPage {
+  display: none;
+}
+
+/* =========================================================
+   SCANNER PAGE
+   ========================================================= */
+
+.scannerLayout {
+  width: 100%;
+  max-width: 1100px;
+
+  margin: 30px auto;
+
+  display: grid;
+  grid-template-columns:
+    minmax(280px, 0.9fr)
+    minmax(320px, 1.1fr);
+
+  gap: clamp(25px, 5vw, 70px);
+
+  align-items: center;
+}
 
 /* =========================================================
    HEADINGS
    ========================================================= */
 
 h1 {
-  margin: 35px 10px 15px;
+  margin:
+    0 0 18px;
 
-  color: var(--primary);
+  font-size:
+    clamp(30px, 5vw, 58px);
 
-  font-size: 42px;
+  line-height: 1.05;
 
-  text-shadow:
-    0 0 15px var(--primary-glow);
+  font-weight: 800;
+
+  letter-spacing: -1px;
 }
 
 .subtitle {
-  font-size: 21px;
+  margin:
+    10px auto;
 
-  margin: 15px;
+  max-width: 520px;
 
-  line-height: 1.6;
+  font-size:
+    clamp(15px, 1.7vw, 19px);
 
-  color: var(--secondary-text);
+  line-height: 1.55;
 }
 
-
 /* =========================================================
-   CAMERA
+   SCANNER SIDE
    ========================================================= */
 
-.cameraBox {
+.scannerPanel {
   width: 100%;
 
-  margin: 30px auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 
-  padding: 15px;
+  justify-content: center;
+}
 
-  border:
-    4px solid
-    var(--primary);
+.cameraBox {
+  width: min(100%, 500px);
 
-  border-radius: 20px;
+  margin: 25px auto;
 
-  box-shadow:
-    0 0 25px
-    var(--primary-glow);
+  padding: 10px;
 
-  background:
-    var(--camera-background);
+  border-radius: 24px;
+
+  position: relative;
+
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+.cameraBox:hover {
+  transform: translateY(-3px);
 }
 
 #camera {
@@ -100,57 +149,88 @@ h1 {
 
   display: block;
 
-  border-radius: 15px;
-
-  background: #111;
-
   min-height: 300px;
 
   object-fit: cover;
+
+  border-radius: 17px;
+
+  background: #050505;
 }
 
+/* =========================================================
+   QR CORNER DESIGN
+   ========================================================= */
+
+.cameraBox::before,
+.cameraBox::after {
+  content: "";
+
+  position: absolute;
+
+  width: 45px;
+  height: 45px;
+
+  pointer-events: none;
+
+  z-index: 5;
+}
+
+.cameraBox::before {
+  top: 20px;
+  left: 20px;
+
+  border-top: 4px solid var(--accent);
+  border-left: 4px solid var(--accent);
+
+  border-radius: 8px 0 0 0;
+}
+
+.cameraBox::after {
+  bottom: 20px;
+  right: 20px;
+
+  border-bottom: 4px solid var(--accent);
+  border-right: 4px solid var(--accent);
+
+  border-radius: 0 0 8px 0;
+}
 
 /* =========================================================
    STATUS
    ========================================================= */
 
 #status {
-  font-size: 20px;
+  margin: 15px auto;
 
-  margin: 20px;
+  max-width: 500px;
 
-  color: var(--secondary-text);
+  font-size:
+    clamp(14px, 1.7vw, 18px);
+
+  line-height: 1.5;
 }
 
-
 /* =========================================================
-   BUTTON
+   BUTTONS
    ========================================================= */
 
 button {
-  padding: 16px 30px;
+  appearance: none;
 
-  font-size: 19px;
+  border: 2px solid var(--accent);
 
-  font-weight: bold;
+  border-radius: 14px;
 
-  border:
-    2px solid
-    var(--primary);
+  padding:
+    12px 24px;
 
-  border-radius: 12px;
+  margin: 8px;
 
-  background:
-    var(--button-background);
+  font-size:
+    clamp(14px, 1.5vw, 17px);
 
-  color:
-    var(--primary);
-
-  margin: 15px;
-
-  box-shadow:
-    0 0 12px
-    var(--primary-soft);
+  font-weight: 700;
 
   cursor: pointer;
 
@@ -161,14 +241,10 @@ button {
 }
 
 button:hover {
-  transform: scale(1.04);
+  transform: translateY(-2px);
 
   box-shadow:
-    0 0 20px
-    var(--primary-glow);
-
-  background:
-    var(--button-hover);
+    0 8px 25px var(--accent-soft);
 }
 
 button:active {
@@ -177,153 +253,161 @@ button:active {
 
 button:disabled {
   opacity: 0.5;
+  cursor: not-allowed;
 }
-
 
 /* =========================================================
    RESULT PAGE
    ========================================================= */
 
-#resultPage {
-  display: none;
+.resultContainer {
+  width: min(100%, 820px);
+
+  margin: 0 auto;
 }
+
+/* =========================================================
+   SUCCESS TITLE
+   ========================================================= */
 
 .successTitle {
-  font-size: 34px;
-
-  color:
-    var(--primary);
-
   margin:
-    30px 0;
+    10px auto 25px;
 
-  text-shadow:
-    0 0 15px
-    var(--primary-glow);
+  font-size:
+    clamp(27px, 5vw, 48px);
 
-  animation:
-    popIn 0.6s ease;
+  line-height: 1.15;
+
+  font-weight: 800;
 }
-
 
 /* =========================================================
    CLUE CARD
    ========================================================= */
 
 .clueCard {
-  margin:
-    25px auto;
+  width: min(100%, 780px);
+
+  margin: 20px auto;
 
   padding:
-    30px 25px;
+    clamp(22px, 4vw, 42px)
+    clamp(18px, 4vw, 45px);
 
-  border:
-    3px solid
-    var(--primary);
+  border-radius: 25px;
 
-  border-radius:
-    20px;
+  position: relative;
+
+  overflow: hidden;
+}
+
+/* decorative shine */
+
+.clueCard::before {
+  content: "";
+
+  position: absolute;
+
+  width: 180px;
+  height: 180px;
+
+  top: -100px;
+  right: -80px;
+
+  border-radius: 50%;
 
   background:
-    var(--card-background);
+    radial-gradient(
+      circle,
+      var(--accent-soft),
+      transparent 70%
+    );
 
-  box-shadow:
-    0 0 30px
-    var(--primary-soft);
-
-  animation:
-    popIn 0.7s ease;
+  pointer-events: none;
 }
+
+/* =========================================================
+   CLUE LABEL
+   ========================================================= */
 
 .clueLabel {
-  font-size: 16px;
+  margin-bottom: 18px;
 
-  color:
-    var(--secondary-text);
+  font-size:
+    clamp(12px, 1.6vw, 16px);
 
-  text-transform:
-    uppercase;
+  font-weight: 700;
+
+  text-transform: uppercase;
 
   letter-spacing:
-    2px;
-
-  margin-bottom:
-    15px;
+    clamp(2px, 0.5vw, 5px);
 }
+
+/* =========================================================
+   CLUE TEXT
+   ========================================================= */
 
 #clueText {
-  font-size: 28px;
+  margin: 0 auto;
 
-  line-height: 1.6;
+  max-width: 680px;
 
-  color:
-    var(--text);
+  font-size:
+    clamp(18px, 2.6vw, 27px);
+
+  line-height: 1.55;
+
+  font-weight: 500;
+
+  word-wrap: break-word;
 }
-
 
 /* =========================================================
    TIMER
    ========================================================= */
 
 .timerBox {
-  margin:
-    30px auto;
+  width: min(100%, 650px);
+
+  margin: 25px auto;
 
   padding:
-    25px;
+    clamp(20px, 3vw, 32px);
 
-  border:
-    2px solid
-    var(--primary);
-
-  border-radius:
-    18px;
-
-  background:
-    var(--timer-background);
-
-  box-shadow:
-    0 0 20px
-    var(--primary-soft);
-
-  animation:
-    popIn 0.8s ease;
+  border-radius: 22px;
 }
 
 .timerLabel {
-  font-size: 18px;
+  font-size:
+    clamp(14px, 1.8vw, 19px);
 
-  color:
-    var(--secondary-text);
+  line-height: 1.5;
 
-  margin-bottom:
-    10px;
+  margin-bottom: 8px;
 }
 
 #timer {
-  font-size: 52px;
+  margin:
+    10px 0 12px;
 
-  font-weight:
-    bold;
+  font-size:
+    clamp(44px, 8vw, 72px);
 
-  color:
-    var(--primary);
+  line-height: 1;
 
-  text-shadow:
-    0 0 15px
-    var(--primary-glow);
+  font-weight: 800;
+
+  letter-spacing: 2px;
 }
 
 #waitingMessage {
-  font-size: 20px;
+  margin-top: 10px;
 
-  color:
-    var(--secondary-text);
-
-  margin-top:
-    15px;
+  font-size:
+    clamp(14px, 1.8vw, 19px);
 }
-
 
 /* =========================================================
    DESTINATION
@@ -332,288 +416,160 @@ button:disabled {
 #destinationBox {
   display: none;
 
-  margin:
-    30px auto;
+  width: min(100%, 650px);
+
+  margin: 25px auto;
 
   padding:
-    30px 25px;
+    clamp(22px, 3vw, 35px);
 
-  border:
-    3px solid
-    var(--primary);
-
-  border-radius:
-    20px;
-
-  background:
-    var(--destination-background);
-
-  box-shadow:
-    0 0 35px
-    var(--primary-glow);
+  border-radius: 23px;
 
   animation:
-    destinationReveal
-    1s ease;
-}
-
-#destination {
-  font-size: 30px;
-
-  font-weight:
-    bold;
-
-  color:
-    var(--primary);
-
-  line-height:
-    1.5;
+    destinationReveal 0.7s ease;
 }
 
 .destinationTitle {
-  font-size: 20px;
+  margin-bottom: 12px;
 
-  color:
-    var(--text);
-
-  margin-bottom:
-    15px;
+  font-size:
+    clamp(15px, 2vw, 20px);
 }
 
+#destination {
+  font-size:
+    clamp(22px, 4vw, 34px);
 
-/* =========================================================
-   CELEBRATION
-   ========================================================= */
+  font-weight: 800;
 
-.celebration {
-  position:
-    fixed;
-
-  top: 0;
-  left: 0;
-
-  width: 100%;
-  height: 100%;
-
-  pointer-events:
-    none;
-
-  overflow:
-    hidden;
-
-  z-index:
-    9999;
+  line-height: 1.4;
 }
-
-.celebration span {
-  position:
-    absolute;
-
-  top:
-    -70px;
-
-  width:
-    4px;
-
-  height:
-    45px;
-
-  border-radius:
-    50%;
-
-  opacity:
-    0.75;
-
-  animation:
-    streamerFall
-    linear
-    infinite;
-}
-
-
-/* =========================================================
-   STREAMER POSITIONS
-   ========================================================= */
-
-.celebration span:nth-child(1) {
-  left: 8%;
-
-  background:
-    var(--streamer-1);
-
-  animation-duration:
-    7s;
-
-  animation-delay:
-    0s;
-}
-
-.celebration span:nth-child(2) {
-  left: 20%;
-
-  background:
-    var(--streamer-2);
-
-  animation-duration:
-    8s;
-
-  animation-delay:
-    1.5s;
-}
-
-.celebration span:nth-child(3) {
-  left: 33%;
-
-  background:
-    var(--streamer-3);
-
-  animation-duration:
-    7.5s;
-
-  animation-delay:
-    3s;
-}
-
-.celebration span:nth-child(4) {
-  left: 46%;
-
-  background:
-    var(--streamer-4);
-
-  animation-duration:
-    8.5s;
-
-  animation-delay:
-    0.8s;
-}
-
-.celebration span:nth-child(5) {
-  left: 59%;
-
-  background:
-    var(--streamer-5);
-
-  animation-duration:
-    7.8s;
-
-  animation-delay:
-    2.2s;
-}
-
-.celebration span:nth-child(6) {
-  left: 72%;
-
-  background:
-    var(--streamer-1);
-
-  animation-duration:
-    8.2s;
-
-  animation-delay:
-    4s;
-}
-
-.celebration span:nth-child(7) {
-  left: 84%;
-
-  background:
-    var(--streamer-2);
-
-  animation-duration:
-    7.3s;
-
-  animation-delay:
-    1s;
-}
-
-.celebration span:nth-child(8) {
-  left: 94%;
-
-  background:
-    var(--streamer-4);
-
-  animation-duration:
-    8s;
-
-  animation-delay:
-    3.5s;
-}
-
-
-/* =========================================================
-   ANIMATIONS
-   ========================================================= */
-
-@keyframes streamerFall {
-
-  0% {
-    transform:
-      translateY(-70px)
-      translateX(0)
-      rotate(0deg);
-
-    opacity: 0;
-  }
-
-  10% {
-    opacity: 0.75;
-  }
-
-  50% {
-    transform:
-      translateY(50vh)
-      translateX(15px)
-      rotate(180deg);
-  }
-
-  100% {
-    transform:
-      translateY(110vh)
-      translateX(-15px)
-      rotate(360deg);
-
-    opacity: 0;
-  }
-}
-
-
-@keyframes popIn {
-
-  from {
-    opacity: 0;
-
-    transform:
-      scale(0.92)
-      translateY(15px);
-  }
-
-  to {
-    opacity: 1;
-
-    transform:
-      scale(1)
-      translateY(0);
-  }
-}
-
 
 @keyframes destinationReveal {
 
   from {
     opacity: 0;
-
     transform:
-      scale(0.75);
+      translateY(20px)
+      scale(0.92);
   }
 
   to {
     opacity: 1;
-
     transform:
+      translateY(0)
       scale(1);
   }
+
 }
 
+/* =========================================================
+   CELEBRATION
+   ========================================================= */
+
+#celebration {
+  position: fixed;
+
+  inset: 0;
+
+  width: 100%;
+  height: 100vh;
+
+  pointer-events: none;
+
+  overflow: hidden;
+
+  z-index: 999;
+}
+
+.fallingPiece {
+  position: absolute;
+
+  top: -50px;
+
+  pointer-events: none;
+
+  animation:
+    fallDown linear forwards;
+}
+
+@keyframes fallDown {
+
+  0% {
+    transform:
+      translateY(-50px)
+      rotate(0deg);
+
+    opacity: 0;
+  }
+
+  12% {
+    opacity: 0.9;
+  }
+
+  85% {
+    opacity: 0.8;
+  }
+
+  100% {
+    transform:
+      translateY(110vh)
+      rotate(360deg);
+
+    opacity: 0;
+  }
+
+}
+
+/* =========================================================
+   SMALL DECORATIVE STARS
+   ========================================================= */
+
+.sparkle {
+  position: absolute;
+
+  pointer-events: none;
+
+  color: var(--accent);
+
+  animation:
+    sparkleFloat 3s ease-in-out infinite;
+}
+
+@keyframes sparkleFloat {
+
+  0%,
+  100% {
+    opacity: 0.35;
+    transform: scale(0.8);
+  }
+
+  50% {
+    opacity: 1;
+    transform: scale(1.2);
+  }
+
+}
+
+/* =========================================================
+   TABLET
+   ========================================================= */
+
+@media (max-width: 850px) {
+
+  .scannerLayout {
+    grid-template-columns: 1fr;
+
+    max-width: 650px;
+
+    gap: 25px;
+  }
+
+  .scannerPanel {
+    order: 1;
+  }
+
+}
 
 /* =========================================================
    MOBILE
@@ -623,93 +579,108 @@ button:disabled {
 
   #scannerPage,
   #resultPage {
+    width: 100%;
+
     padding:
-      5px 12px 30px;
+      18px 14px 35px;
   }
 
   h1 {
-    font-size:
-      32px;
+    font-size: clamp(30px, 9vw, 42px);
 
-    margin-top:
-      20px;
+    letter-spacing: -0.5px;
   }
 
   .subtitle {
-    font-size:
-      17px;
+    font-size: 15px;
   }
 
   .cameraBox {
-    margin:
-      20px auto;
+    margin: 18px auto;
 
-    padding:
-      10px;
+    padding: 8px;
 
-    border-width:
-      3px;
+    border-radius: 19px;
   }
 
   #camera {
-    min-height:
-      240px;
+    min-height: 250px;
+
+    border-radius: 13px;
   }
 
-  .successTitle {
-    font-size:
-      28px;
+  .cameraBox::before,
+  .cameraBox::after {
+    width: 35px;
+    height: 35px;
+  }
 
-    margin:
-      20px 0;
+  .cameraBox::before {
+    top: 15px;
+    left: 15px;
+  }
+
+  .cameraBox::after {
+    bottom: 15px;
+    right: 15px;
   }
 
   .clueCard {
     padding:
-      22px 18px;
+      22px 16px;
+
+    border-radius: 20px;
   }
 
   #clueText {
-    font-size:
-      22px;
-  }
+    font-size: 19px;
 
-  #timer {
-    font-size:
-      45px;
+    line-height: 1.5;
   }
 
   .timerBox {
     padding:
-      20px 15px;
+      20px 14px;
+
+    border-radius: 18px;
   }
 
-  #destination {
+  #timer {
     font-size:
-      24px;
+      clamp(45px, 15vw, 65px);
   }
 
-  button {
-    font-size:
-      17px;
-
+  #destinationBox {
     padding:
-      14px 24px;
+      22px 15px;
+
+    border-radius: 19px;
   }
 
 }
-
 
 /* =========================================================
-   HIDE UTILITY
+   VERY SMALL PHONES
    ========================================================= */
 
-.hidden {
-  display:
-    none !important;
-}
+@media (max-width: 380px) {
 
-canvas {
-  display:
-    none;
+  #scannerPage,
+  #resultPage {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
+  h1 {
+    font-size: 29px;
+  }
+
+  #camera {
+    min-height: 220px;
+  }
+
+  #clueText {
+    font-size: 17px;
+  }
+
 }
