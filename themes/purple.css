@@ -1,39 +1,90 @@
 :root {
-  --page-bg: #faf7ff;
 
-  --bg-glow-1: #e8d8ff;
-  --bg-glow-2: #f2e7ff;
-  --soft-light: rgba(174, 116, 224, 0.28);
+  --page-background:
+    linear-gradient(
+      135deg,
+      #160b25,
+      #35135a
+    );
 
-  --card-bg: #ffffff;
-  --card-bg-2: #faf6ff;
+  --panel-background:
+    rgba(34,17,52,.92);
 
-  --timer-bg: #f2eaff;
-  --destination-bg: #f3eaff;
+  --panel-border:
+    #a95ad1;
 
-  --camera-bg: #f5efff;
+  --panel-shadow:
+    rgba(119,45,170,.40);
 
-  --heading: #54217d;
-  --heading-shadow: rgba(84, 33, 125, 0.16);
+  --scanner-background:
+    linear-gradient(
+      145deg,
+      #301052,
+      #160c28
+    );
 
-  --accent: #7436a5;
-  --accent-dark: #54217d;
-  --accent-glow: rgba(116, 54, 165, 0.35);
+  --preview-background:
+    linear-gradient(
+      145deg,
+      #43176b,
+      #211036
+    );
 
-  --border: #a06bc6;
+  --accent:
+    #d38aff;
 
-  --text-main: #261a31;
-  --text-muted: #62536d;
+  --accent-glow:
+    rgba(211,138,255,.42);
 
-  --button-top: #7c3aaa;
-  --button-bottom: #61278c;
-  --button-border: #61278c;
-  --button-text: #ffffff;
+  --title-color:
+    #f1d5ff;
 
-  --shadow: rgba(91, 44, 126, 0.18);
-  --shadow-light: rgba(91, 44, 126, 0.10);
+  --text-primary:
+    #fff;
 
-  --card-highlight: rgba(255, 255, 255, 0.9);
+  --text-secondary:
+    #e7c9f5;
 
-  --decorative: #8b4cc1;
+  --text-muted:
+    #b895c8;
+
+  --label-color:
+    #e1a5ff;
+
+  --scanner-frame:
+    #d38aff;
+
+  --scanner-corners:
+    #e7b3ff;
+
+  --button-background:
+    #7432a0;
+
+  --card-background:
+    rgba(42,18,60,.80);
+
+  --card-border:
+    #a95ad1;
+
+  --card-shadow:
+    rgba(180,80,240,.22);
+
+  --timer-background:
+    linear-gradient(
+      135deg,
+      #39145b,
+      #210d35
+    );
+
+  --timer-color:
+    #ffd76a;
+
+  --destination-background:
+    #35104d;
+
+  --decorative-glow:
+    #9c4dcc;
+
+  --celebration-color:
+    #e6a6ff;
 }
