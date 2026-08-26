@@ -10,287 +10,277 @@
 
   <title>Birthday Surprise</title>
 
-  <!-- QR SCANNER -->
-  <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js"></script>
-
-  <!-- BASE DESIGN -->
+  <!-- Main layout -->
   <link rel="stylesheet" href="style.css">
 
-  <!-- CHANGE ONLY THIS FILE TO CHANGE THEME -->
+  <!-- Change this to another theme when required -->
+  <!--
   <link rel="stylesheet" href="themes/pink.css">
+  <link rel="stylesheet" href="themes/purple.css">
+  <link rel="stylesheet" href="themes/blue.css">
+  <link rel="stylesheet" href="themes/gold.css">
+  <link rel="stylesheet" href="themes/green.css">
+  <link rel="stylesheet" href="themes/teal.css">
+  -->
+
+  <!-- QR scanner library -->
+  <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js"></script>
 </head>
 
 <body>
 
-  <!-- =========================================
+  <!-- =====================================================
        CELEBRATION
-  ========================================== -->
+       Appears only during screen transitions
+  ====================================================== -->
 
   <div id="celebration"></div>
 
 
-  <!-- =========================================
-       MAIN APPLICATION
-  ========================================== -->
+  <!-- =====================================================
+       SCREEN 1
+       SCANNER ONLY
+  ====================================================== -->
 
-  <main class="app-shell">
+  <section id="scannerPage" class="page scannerPage">
 
-    <!-- =======================================
-         SCANNER PAGE
-    ======================================== -->
+    <div class="scannerLayout">
 
-    <section id="scannerPage" class="screen">
+      <!-- LEFT / TOP BRANDING -->
+      <div class="scannerIntro">
 
-      <div class="scanner-layout">
+        <div class="smallDecor">♡</div>
 
-        <!-- LEFT / SCANNER -->
-        <div class="scanner-panel">
+        <h1 class="mainTitle">
+          Birthday<br>
+          <span>Surprise</span>
+        </h1>
 
-          <div class="brand-mark">
-            🎂
-          </div>
+        <p class="scannerInstruction">
+          Point your camera<br>
+          at the QR code
+        </p>
 
-          <h1 class="main-title">
-            Birthday<br>
-            <span>Surprise</span>
-          </h1>
+      </div>
 
-          <p class="scanner-instruction">
-            Point your camera<br>
-            at the QR code
-          </p>
 
-          <div class="qr-frame">
+      <!-- QR SCANNER -->
+      <div class="scannerArea">
 
-            <video
-              id="camera"
-              autoplay
-              playsinline
-              muted
-            ></video>
+        <div class="qrFrame">
 
-            <div class="corner top-left"></div>
-            <div class="corner top-right"></div>
-            <div class="corner bottom-left"></div>
-            <div class="corner bottom-right"></div>
+          <video
+            id="camera"
+            autoplay
+            muted
+            playsinline
+          ></video>
 
-          </div>
+          <div class="corner topLeft"></div>
+          <div class="corner topRight"></div>
+          <div class="corner bottomLeft"></div>
+          <div class="corner bottomRight"></div>
 
-          <canvas id="canvas"></canvas>
-
-          <button
-            id="startButton"
-            class="primary-button"
-            onclick="startScanner()"
-          >
-            Scanning...
-          </button>
-
-          <p id="status" class="small-status">
-            Position the QR code inside the frame
-          </p>
+          <div class="scanLine"></div>
 
         </div>
 
 
-        <!-- RIGHT / PREVIEW -->
-        <div class="preview-panel">
-
-          <div class="preview-top">
-
-            <div class="sparkle">✦</div>
-
-            <h2>
-              Amazing!
-            </h2>
-
-            <div class="clue-ready">
-              Your clue is here
-            </div>
-
-          </div>
+        <canvas id="canvas"></canvas>
 
 
-          <div class="preview-card">
-
-            <p>
-              Your surprise clue<br>
-              will appear here.
-            </p>
-
-          </div>
-
-
-          <div class="preview-timer">
-
-            <span>
-              Next surprise in
-            </span>
-
-            <strong>
-              02:30
-            </strong>
-
-            <small>
-              The next surprise will<br>
-              appear automatically
-            </small>
-
-          </div>
-
-
-          <div class="preview-destination">
-
-            <strong>
-              Destination
-            </strong>
-
-            <span>
-              Will be revealed soon...
-            </span>
-
-          </div>
-
-
-          <div class="gift">
-            🎁
-          </div>
-
+        <div class="scannerStatus" id="status">
+          <span class="statusDot"></span>
+          Scanning...
         </div>
 
       </div>
 
-    </section>
+    </div>
+
+  </section>
 
 
 
-    <!-- =======================================
-         CLUE / RESULT PAGE
-    ======================================== -->
+  <!-- =====================================================
+       SCREEN 2
+       CLUE + COUNTDOWN
+  ====================================================== -->
 
-    <section
-      id="resultPage"
-      class="screen result-screen"
-    >
+  <section
+    id="cluePage"
+    class="page cluePage"
+    style="display:none;"
+  >
 
-      <div class="result-layout">
-
-        <!-- RESULT HEADER -->
-
-        <header class="result-header">
-
-          <div class="result-icon">
-            🎉
-          </div>
-
-          <div>
-
-            <div class="result-amazing">
-              ✦ Amazing! ✦
-            </div>
-
-            <div class="result-ready">
-              Your clue is here
-            </div>
-
-          </div>
-
-        </header>
+    <div class="clueLayout">
 
 
-        <!-- CLUE -->
+      <!-- HEADER -->
+      <div class="clueHeader">
 
-        <div class="clue-card">
-
-          <div class="card-decoration">
-            ✦
-          </div>
-
-          <div class="clue-label">
-            YOUR CLUE
-          </div>
-
-          <div id="clueText">
-            Your clue will appear here.
-          </div>
-
+        <div class="celebrationIcon">
+          🎉
         </div>
 
+        <h2 class="amazingTitle">
+          Amazing!
+        </h2>
 
-        <!-- COUNTDOWN -->
+        <p class="clueReady">
+          Your clue is here
+        </p>
 
-        <div class="countdown-card">
+      </div>
 
-          <div class="countdown-heading">
-            Next surprise in
-          </div>
 
-          <div id="timer">
-            02:30
-          </div>
+      <!-- CLUE CARD -->
+      <div class="clueCard">
 
-          <div id="waitingMessage">
-            The next surprise will<br>
-            appear automatically
-          </div>
-
+        <div class="cardTopDecoration">
+          ✦
         </div>
 
+        <div class="clueLabel">
+          Your clue
+        </div>
 
-        <!-- DESTINATION -->
-
-        <div
-          id="destinationBox"
-          class="destination-card"
-        >
-
-          <div class="destination-icon">
-            🎁
-          </div>
-
-          <div class="destination-title">
-            Destination
-          </div>
-
-          <div id="destination">
-            Will be revealed soon...
-          </div>
-
+        <div id="clueText" class="clueText">
+          Sometimes the best surprises
+          are found where we least expect them.
         </div>
 
       </div>
 
-    </section>
 
-  </main>
+      <!-- COUNTDOWN -->
+      <div class="timerCard">
+
+        <div class="timerHeading">
+          Next surprise in
+        </div>
+
+        <div id="timer">
+          02:30
+        </div>
+
+        <div id="waitingMessage">
+          The next surprise will appear automatically.
+        </div>
+
+      </div>
 
 
-  <!-- =========================================
-       JAVASCRIPT
-  ========================================== -->
+      <div class="keepWaiting">
+        Keep this screen open...
+      </div>
+
+    </div>
+
+  </section>
+
+
+
+  <!-- =====================================================
+       SCREEN 3
+       DESTINATION
+  ====================================================== -->
+
+  <section
+    id="destinationPage"
+    class="page destinationPage"
+    style="display:none;"
+  >
+
+    <div class="destinationLayout">
+
+      <div class="destinationBurst">
+        🎁
+      </div>
+
+      <div class="destinationSmall">
+        Your surprise awaits
+      </div>
+
+      <h2 class="destinationHeading">
+        Destination
+        <span>Revealed!</span>
+      </h2>
+
+
+      <div class="destinationCard">
+
+        <div class="destinationEmoji">
+          📍
+        </div>
+
+        <div class="destinationLabel">
+          Your next destination
+        </div>
+
+        <div id="destination">
+          Your Destination
+        </div>
+
+        <div class="destinationMessage">
+          Go there and continue your birthday adventure!
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+
+  <!-- =====================================================
+       QR SCANNER SCRIPT
+  ====================================================== -->
 
   <script>
 
-    /* =========================================
+    /* =====================================================
        SETTINGS
-    ========================================== */
+    ===================================================== */
 
-    const CONFIG = {
+    const COUNTDOWN_SECONDS = 150;
 
-      clue:
-        "Sometimes the best memories are found where we least expect them.",
+    /*
+      Default clue and destination.
 
-      destination:
-        "Your next surprise awaits!",
+      You can change these directly here.
 
-      countdownSeconds: 150
+      If your QR code contains JSON such as:
 
-    };
+      {
+        "clue": "Your clue here",
+        "destination": "The Garden"
+      }
+
+      the scanned values will automatically be used.
+    */
+
+    const DEFAULT_CLUE =
+      "Sometimes the best surprises are found where we least expect them.";
+
+    const DEFAULT_DESTINATION =
+      "Your Birthday Surprise";
 
 
-    /* =========================================
+
+    /* =====================================================
        ELEMENTS
-    ========================================== */
+    ===================================================== */
+
+    const scannerPage =
+      document.getElementById("scannerPage");
+
+    const cluePage =
+      document.getElementById("cluePage");
+
+    const destinationPage =
+      document.getElementById("destinationPage");
 
     const video =
       document.getElementById("camera");
@@ -304,59 +294,65 @@
     const status =
       document.getElementById("status");
 
-    const scannerPage =
-      document.getElementById("scannerPage");
-
-    const resultPage =
-      document.getElementById("resultPage");
-
     const clueText =
       document.getElementById("clueText");
-
-    const timer =
-      document.getElementById("timer");
-
-    const destinationBox =
-      document.getElementById("destinationBox");
 
     const destination =
       document.getElementById("destination");
 
+    const timer =
+      document.getElementById("timer");
+
+    const celebration =
+      document.getElementById("celebration");
+
+
+
+    /* =====================================================
+       VARIABLES
+    ===================================================== */
+
     let stream = null;
 
-    let scanning = false;
+    let scanning = true;
 
     let countdownInterval = null;
 
+    let remainingSeconds =
+      COUNTDOWN_SECONDS;
 
 
-    /* =========================================
+
+    /* =====================================================
        START CAMERA
-    ========================================== */
+    ===================================================== */
 
-    async function startScanner() {
+    async function startCamera() {
 
       try {
 
         stream =
           await navigator.mediaDevices.getUserMedia({
-
             video: {
               facingMode: {
                 ideal: "environment"
+              },
+              width: {
+                ideal: 1280
+              },
+              height: {
+                ideal: 720
               }
             },
-
             audio: false
-
           });
 
         video.srcObject = stream;
 
-        scanning = true;
+        await video.play();
 
-        status.innerText =
-          "Scanning for your surprise...";
+        status.innerHTML =
+          '<span class="statusDot"></span> Scanning...';
 
         requestAnimationFrame(scanQR);
 
@@ -366,8 +362,8 @@
 
         console.error(error);
 
-        status.innerText =
-          "Camera access is required.";
+        status.innerHTML =
+          "📷 Please allow camera access";
 
       }
 
@@ -375,9 +371,9 @@
 
 
 
-    /* =========================================
-       QR SCANNER
-    ========================================== */
+    /* =====================================================
+       SCAN QR
+    ===================================================== */
 
     function scanQR() {
 
@@ -386,8 +382,7 @@
       }
 
       if (
-        video.readyState ===
-        video.HAVE_ENOUGH_DATA
+        video.readyState === video.HAVE_ENOUGH_DATA
       ) {
 
         canvas.width =
@@ -416,7 +411,11 @@
           jsQR(
             imageData.data,
             imageData.width,
-            imageData.height
+            imageData.height,
+            {
+              inversionAttempts:
+                "dontInvert"
+            }
           );
 
         if (code) {
@@ -435,95 +434,196 @@
 
 
 
-    /* =========================================
-       QR FOUND
-    ========================================== */
+    /* =====================================================
+       QR RESULT
+    ===================================================== */
 
     function handleQRCode(data) {
 
+      if (!scanning) {
+        return;
+      }
+
       scanning = false;
+
+      parseQRData(data);
+
+      stopCamera();
+
+      showCluePage();
+
+    }
+
+
+
+    /* =====================================================
+       READ QR CONTENT
+    ===================================================== */
+
+    function parseQRData(data) {
+
+      clueText.textContent =
+        DEFAULT_CLUE;
+
+      destination.textContent =
+        DEFAULT_DESTINATION;
+
+      try {
+
+        const parsed =
+          JSON.parse(data);
+
+        if (
+          parsed &&
+          typeof parsed === "object"
+        ) {
+
+          if (parsed.clue) {
+
+            clueText.textContent =
+              parsed.clue;
+
+          }
+
+          if (parsed.destination) {
+
+            destination.textContent =
+              parsed.destination;
+
+          }
+
+          return;
+
+        }
+
+      }
+
+      catch (error) {
+
+        /*
+          QR was not JSON.
+          Keep default clue and destination.
+        */
+
+      }
+
+      /*
+        Optional simple format:
+
+        clue | destination
+      */
+
+      if (data.includes("|")) {
+
+        const parts =
+          data.split("|");
+
+        if (parts[0]) {
+
+          clueText.textContent =
+            parts[0].trim();
+
+        }
+
+        if (parts[1]) {
+
+          destination.textContent =
+            parts[1].trim();
+
+        }
+
+      }
+
+    }
+
+
+
+    /* =====================================================
+       STOP CAMERA
+    ===================================================== */
+
+    function stopCamera() {
 
       if (stream) {
 
         stream
           .getTracks()
-          .forEach(track => track.stop());
+          .forEach(track => {
+            track.stop();
+          });
+
+        stream = null;
 
       }
-
-      status.innerText =
-        "QR code found! 🎉";
-
-      showResult(data);
 
     }
 
 
 
-    /* =========================================
-       SHOW RESULT
-    ========================================== */
+    /* =====================================================
+       SHOW CLUE PAGE
+    ===================================================== */
 
-    function showResult(data) {
+    function showCluePage() {
 
       scannerPage.style.display =
         "none";
 
-      resultPage.style.display =
+      destinationPage.style.display =
+        "none";
+
+      cluePage.style.display =
         "block";
 
-      clueText.innerText =
-        CONFIG.clue;
-
-      destination.innerText =
-        CONFIG.destination;
+      window.scrollTo({
+        top: 0,
+        behavior: "instant"
+      });
 
       /*
-       * Celebration happens ONLY
-       * when clue page opens.
-       */
+        Celebration happens ONLY once
+        when clue page opens.
+      */
 
-      celebrationBurst(28);
+      createCelebration();
 
-      startCountdown(
-        CONFIG.countdownSeconds
-      );
+      startCountdown();
 
     }
 
 
 
-    /* =========================================
+    /* =====================================================
        COUNTDOWN
-    ========================================== */
+    ===================================================== */
 
-    function startCountdown(seconds) {
+    function startCountdown() {
 
       clearInterval(
         countdownInterval
       );
 
-      let remaining =
-        seconds;
+      remainingSeconds =
+        COUNTDOWN_SECONDS;
 
-      updateTimer(remaining);
+      updateTimer();
 
       countdownInterval =
         setInterval(() => {
 
-          remaining--;
+          remainingSeconds--;
 
-          updateTimer(
-            remaining
-          );
+          updateTimer();
 
-          if (remaining <= 0) {
+          if (
+            remainingSeconds <= 0
+          ) {
 
             clearInterval(
               countdownInterval
             );
 
-            revealDestination();
+            showDestinationPage();
 
           }
 
@@ -533,69 +633,93 @@
 
 
 
-    /* =========================================
+    /* =====================================================
        TIMER DISPLAY
-    ========================================== */
+    ===================================================== */
 
-    function updateTimer(seconds) {
+    function updateTimer() {
 
       const minutes =
         Math.floor(
-          seconds / 60
+          remainingSeconds / 60
         );
 
-      const secs =
-        seconds % 60;
+      const seconds =
+        remainingSeconds % 60;
 
-      timer.innerText =
+      timer.textContent =
         String(minutes).padStart(2, "0")
         + ":"
         +
-        String(secs).padStart(2, "0");
+        String(seconds).padStart(2, "0");
 
     }
 
 
 
-    /* =========================================
-       DESTINATION REVEAL
-    ========================================== */
+    /* =====================================================
+       DESTINATION PAGE
+    ===================================================== */
 
-    function revealDestination() {
+    function showDestinationPage() {
 
-      destinationBox.style.display =
+      cluePage.style.display =
+        "none";
+
+      scannerPage.style.display =
+        "none";
+
+      destinationPage.style.display =
         "block";
 
-      /*
-       * Second celebration.
-       */
+      window.scrollTo({
+        top: 0,
+        behavior: "instant"
+      });
 
-      celebrationBurst(35);
+      /*
+        Second celebration:
+        only when destination appears.
+      */
+
+      createCelebration();
 
     }
 
 
 
-    /* =========================================
+    /* =====================================================
        CELEBRATION
-    ========================================== */
+       Light amount of falling decorations
+    ===================================================== */
 
-    function celebrationBurst(amount) {
+    function createCelebration() {
 
-      const container =
-        document.getElementById(
-          "celebration"
-        );
+      celebration.innerHTML = "";
 
-      const shapes = [
-        "●",
+      const pieces = [
+        "•",
+        "✦",
+        "✧",
+        "♥",
         "◆",
         "★",
-        "✦",
-        "▪",
-        "🎉",
-        "✨"
+        "❀"
       ];
+
+      const colors = [
+        "var(--theme-primary)",
+        "var(--theme-secondary)",
+        "var(--theme-accent)",
+        "#ffffff"
+      ];
+
+      /*
+        Reduced number so it does not
+        become too crowded.
+      */
+
+      const amount = 32;
 
       for (
         let i = 0;
@@ -609,57 +733,67 @@
         piece.className =
           "fallingPiece";
 
-        piece.innerText =
-          shapes[
+        piece.textContent =
+          pieces[
             Math.floor(
               Math.random() *
-              shapes.length
+              pieces.length
             )
           ];
 
         piece.style.left =
           Math.random() * 100 + "%";
 
+        piece.style.color =
+          colors[
+            Math.floor(
+              Math.random() *
+              colors.length
+            )
+          ];
+
         piece.style.fontSize =
-          (8 + Math.random() * 13)
+          (10 + Math.random() * 13)
           + "px";
 
         piece.style.animationDuration =
-          (2.2 + Math.random() * 2.5)
+          (2.8 + Math.random() * 2.2)
           + "s";
 
         piece.style.animationDelay =
-          (Math.random() * 0.5)
+          Math.random() * 0.8
           + "s";
 
-        container.appendChild(
+        celebration.appendChild(
           piece
         );
 
-        setTimeout(() => {
-
-          piece.remove();
-
-        }, 5500);
-
       }
+
+      /*
+        Remove decorations after
+        the animation has finished.
+      */
+
+      setTimeout(() => {
+
+        celebration.innerHTML = "";
+
+      }, 6000);
 
     }
 
 
 
-    /* =========================================
-       AUTO START
-    ========================================== */
+    /* =====================================================
+       START
+    ===================================================== */
 
     window.addEventListener(
       "load",
       () => {
 
-        /*
-         * We deliberately do NOT
-         * start celebration here.
-         */
+        startCamera();
 
       }
     );
