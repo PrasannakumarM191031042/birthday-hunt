@@ -1,44 +1,94 @@
+/* =========================================================
+   OCEAN BLUE
+   ========================================================= */
+
 :root {
+  --accent: #36a9ff;
+  --accent-light: #bce7ff;
+  --accent-soft: rgba(54, 169, 255, 0.30);
 
-  --primary: #35b9ff;
+  --text: #ffffff;
+  --muted: #d9f1ff;
 
-  --primary-soft:
-    rgba(53, 185, 255, 0.25);
+  --card: rgba(7, 40, 67, 0.88);
+}
 
-  --primary-glow:
-    rgba(53, 185, 255, 0.55);
+body {
+  background:
+    radial-gradient(
+      circle at 15% 5%,
+      rgba(70, 190, 255, 0.35),
+      transparent 30%
+    ),
+    radial-gradient(
+      circle at 90% 30%,
+      rgba(0, 130, 255, 0.25),
+      transparent 30%
+    ),
+    linear-gradient(
+      135deg,
+      #0d4c73,
+      #06263e 52%,
+      #02070c
+    );
+}
 
-  --background:
-    #020814;
+h1,
+.successTitle {
+  color: #48b7ff;
 
-  --card-background:
-    #071525;
+  text-shadow:
+    0 0 10px #36a9ff,
+    0 0 28px rgba(54, 169, 255, 0.55);
+}
 
-  --camera-background:
-    #06111f;
+.subtitle,
+#status,
+.timerLabel,
+#waitingMessage {
+  color: var(--muted);
+}
 
-  --timer-background:
-    #061321;
+.cameraBox,
+.clueCard,
+.timerBox,
+#destinationBox {
+  border: 2px solid var(--accent);
 
-  --destination-background:
-    #07182a;
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255, 255, 255, 0.09),
+      var(--card)
+    );
 
-  --button-background:
-    #071525;
+  box-shadow:
+    0 15px 50px rgba(0, 0, 0, 0.35),
+    0 0 28px var(--accent-soft);
 
-  --button-hover:
-    #0b2038;
+  backdrop-filter: blur(12px);
+}
 
-  --text:
-    #ffffff;
+button {
+  background:
+    linear-gradient(
+      135deg,
+      #159ee9,
+      #0872ae
+    );
 
-  --secondary-text:
-    #dcecff;
+  color: white;
+}
 
+.clueLabel {
+  color: var(--accent-light);
+}
 
-  --streamer-1: #ff4fd8;
-  --streamer-2: #35b9ff;
-  --streamer-3: #ffd23f;
-  --streamer-4: #9b5cff;
-  --streamer-5: #54ff9f;
+#timer,
+#destination {
+  color: #52baff;
+
+  text-shadow:
+    0 0 10px #36a9ff,
+    0 0 28px rgba(54, 169, 255, 0.55);
 }
