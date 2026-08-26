@@ -1,41 +1,46 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
   <meta charset="UTF-8">
 
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
-  >
+<meta
+name="viewport"
+content="width=device-width, initial-scale=1.0"
+
+>
 
   <title>Birthday Surprise</title>
 
-  <!-- Main layout -->
+  <!-- MAIN DESIGN -->
+
   <link rel="stylesheet" href="style.css">
 
-  <!-- Change this to another theme when required -->
   <!--
-  <link rel="stylesheet" href="themes/pink.css">
-  <link rel="stylesheet" href="themes/purple.css">
-  <link rel="stylesheet" href="themes/blue.css">
-  <link rel="stylesheet" href="themes/gold.css">
-  <link rel="stylesheet" href="themes/green.css">
-  <link rel="stylesheet" href="themes/teal.css">
+    USE ONLY ONE THEME AT A TIME
+
+    <link rel="stylesheet" href="themes/pink.css">
+    <link rel="stylesheet" href="themes/purple.css">
+    <link rel="stylesheet" href="themes/blue.css">
+    <link rel="stylesheet" href="themes/gold.css">
+    <link rel="stylesheet" href="themes/green.css">
+    <link rel="stylesheet" href="themes/teal.css">
   -->
 
-  <!-- QR scanner library -->
+  <!-- QR SCANNER -->
+
   <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js"></script>
+
 </head>
 
 <body>
 
   <!-- =====================================================
        CELEBRATION
-       Appears only during screen transitions
+       Only appears when clue page opens and destination opens
   ====================================================== -->
 
   <div id="celebration"></div>
-
 
   <!-- =====================================================
        SCREEN 1
@@ -44,63 +49,61 @@
 
   <section id="scannerPage" class="page scannerPage">
 
-    <div class="scannerLayout">
+```
+<div class="scannerLayout">
 
-      <!-- LEFT / TOP BRANDING -->
-      <div class="scannerIntro">
+  <div class="scannerIntro">
 
-        <div class="smallDecor">♡</div>
+    <div class="smallDecor">♡</div>
 
-        <h1 class="mainTitle">
-          Birthday<br>
-          <span>Surprise</span>
-        </h1>
+    <h1 class="mainTitle">
+      Birthday<br>
+      <span>Surprise</span>
+    </h1>
 
-        <p class="scannerInstruction">
-          Point your camera<br>
-          at the QR code
-        </p>
+    <p class="scannerInstruction">
+      Point your camera<br>
+      at the QR code
+    </p>
 
-      </div>
-
-
-      <!-- QR SCANNER -->
-      <div class="scannerArea">
-
-        <div class="qrFrame">
-
-          <video
-            id="camera"
-            autoplay
-            muted
-            playsinline
-          ></video>
-
-          <div class="corner topLeft"></div>
-          <div class="corner topRight"></div>
-          <div class="corner bottomLeft"></div>
-          <div class="corner bottomRight"></div>
-
-          <div class="scanLine"></div>
-
-        </div>
+  </div>
 
 
-        <canvas id="canvas"></canvas>
+  <div class="scannerArea">
 
+    <div class="qrFrame">
 
-        <div class="scannerStatus" id="status">
-          <span class="statusDot"></span>
-          Scanning...
-        </div>
+      <video
+        id="camera"
+        autoplay
+        muted
+        playsinline
+      ></video>
 
-      </div>
+      <div class="corner topLeft"></div>
+      <div class="corner topRight"></div>
+      <div class="corner bottomLeft"></div>
+      <div class="corner bottomRight"></div>
+
+      <div class="scanLine"></div>
 
     </div>
 
+
+    <canvas id="canvas"></canvas>
+
+
+    <div class="scannerStatus" id="status">
+      <span class="statusDot"></span>
+      Scanning...
+    </div>
+
+  </div>
+
+</div>
+```
+
   </section>
-
-
 
   <!-- =====================================================
        SCREEN 2
@@ -113,73 +116,67 @@
     style="display:none;"
   >
 
-    <div class="clueLayout">
+```
+<div class="clueLayout">
 
+  <div class="clueHeader">
 
-      <!-- HEADER -->
-      <div class="clueHeader">
-
-        <div class="celebrationIcon">
-          🎉
-        </div>
-
-        <h2 class="amazingTitle">
-          Amazing!
-        </h2>
-
-        <p class="clueReady">
-          Your clue is here
-        </p>
-
-      </div>
-
-
-      <!-- CLUE CARD -->
-      <div class="clueCard">
-
-        <div class="cardTopDecoration">
-          ✦
-        </div>
-
-        <div class="clueLabel">
-          Your clue
-        </div>
-
-        <div id="clueText" class="clueText">
-          Sometimes the best surprises
-          are found where we least expect them.
-        </div>
-
-      </div>
-
-
-      <!-- COUNTDOWN -->
-      <div class="timerCard">
-
-        <div class="timerHeading">
-          Next surprise in
-        </div>
-
-        <div id="timer">
-          02:30
-        </div>
-
-        <div id="waitingMessage">
-          The next surprise will appear automatically.
-        </div>
-
-      </div>
-
-
-      <div class="keepWaiting">
-        Keep this screen open...
-      </div>
-
+    <div class="celebrationIcon">
+      🎉
     </div>
 
+    <h2 class="amazingTitle">
+      Amazing!
+    </h2>
+
+    <p class="clueReady">
+      Your clue is here
+    </p>
+
+  </div>
+
+
+  <div class="clueCard">
+
+    <div class="cardTopDecoration">
+      ✦
+    </div>
+
+    <div class="clueLabel">
+      Your clue
+    </div>
+
+    <!-- REAL J COLUMN VALUE GOES HERE -->
+    <div id="clueText" class="clueText"></div>
+
+  </div>
+
+
+  <div class="timerCard">
+
+    <div class="timerHeading">
+      Next surprise in
+    </div>
+
+    <div id="timer">
+      02:30
+    </div>
+
+    <div id="waitingMessage">
+      The next surprise will appear automatically.
+    </div>
+
+  </div>
+
+
+  <div class="keepWaiting">
+    Keep this screen open...
+  </div>
+
+</div>
+```
+
   </section>
-
-
 
   <!-- =====================================================
        SCREEN 3
@@ -192,86 +189,73 @@
     style="display:none;"
   >
 
-    <div class="destinationLayout">
+```
+<div class="destinationLayout">
 
-      <div class="destinationBurst">
-        🎁
-      </div>
+  <div class="destinationBurst">
+    🎁
+  </div>
 
-      <div class="destinationSmall">
-        Your surprise awaits
-      </div>
+  <div class="destinationSmall">
+    Your surprise awaits
+  </div>
 
-      <h2 class="destinationHeading">
-        Destination
-        <span>Revealed!</span>
-      </h2>
+  <h2 class="destinationHeading">
+    Destination
+    <span>Revealed!</span>
+  </h2>
 
 
-      <div class="destinationCard">
+  <div class="destinationCard">
 
-        <div class="destinationEmoji">
-          📍
-        </div>
-
-        <div class="destinationLabel">
-          Your next destination
-        </div>
-
-        <div id="destination">
-          Your Destination
-        </div>
-
-        <div class="destinationMessage">
-          Go there and continue your birthday adventure!
-        </div>
-
-      </div>
-
+    <div class="destinationEmoji">
+      📍
     </div>
+
+    <div class="destinationLabel">
+      Your next destination
+    </div>
+
+    <!-- REAL K COLUMN VALUE GOES HERE -->
+    <div id="destination"></div>
+
+    <div class="destinationMessage">
+      Go there and continue your birthday adventure!
+    </div>
+
+  </div>
+
+</div>
+```
 
   </section>
 
-
-
   <!-- =====================================================
-       QR SCANNER SCRIPT
+       JAVASCRIPT
   ====================================================== -->
 
   <script>
 
-    /* =====================================================
-       SETTINGS
-    ===================================================== */
+    // =====================================================
+    // SETTINGS
+    // =====================================================
 
     const COUNTDOWN_SECONDS = 150;
 
-    /*
-      Default clue and destination.
 
-      You can change these directly here.
+    // =====================================================
+    // YOUR GOOGLE APPS SCRIPT WEB APP
+    //
+    // This is the URL contained inside your QR code.
+    // =====================================================
 
-      If your QR code contains JSON such as:
-
-      {
-        "clue": "Your clue here",
-        "destination": "The Garden"
-      }
-
-      the scanned values will automatically be used.
-    */
-
-    const DEFAULT_CLUE =
-      "Sometimes the best surprises are found where we least expect them.";
-
-    const DEFAULT_DESTINATION =
-      "Your Birthday Surprise";
+    const APPS_SCRIPT_URL =
+      "https://script.google.com/macros/s/AKfycbyar5ETPG9fs8Rur7aYuR9wZDFF9ry8Ra9Fw3wbz97AsYUrnK12BpLQofuHCsUFpWrw/exec";
 
 
-
-    /* =====================================================
-       ELEMENTS
-    ===================================================== */
+    // =====================================================
+    // ELEMENTS
+    // =====================================================
 
     const scannerPage =
       document.getElementById("scannerPage");
@@ -303,14 +287,16 @@
     const timer =
       document.getElementById("timer");
 
+    const waitingMessage =
+      document.getElementById("waitingMessage");
+
     const celebration =
       document.getElementById("celebration");
 
 
-
-    /* =====================================================
-       VARIABLES
-    ===================================================== */
+    // =====================================================
+    // VARIABLES
+    // =====================================================
 
     let stream = null;
 
@@ -322,10 +308,9 @@
       COUNTDOWN_SECONDS;
 
 
-
-    /* =====================================================
-       START CAMERA
-    ===================================================== */
+    // =====================================================
+    // START CAMERA
+    // =====================================================
 
     async function startCamera() {
 
@@ -333,26 +318,34 @@
 
         stream =
           await navigator.mediaDevices.getUserMedia({
+
             video: {
               facingMode: {
                 ideal: "environment"
               },
+
               width: {
                 ideal: 1280
               },
+
               height: {
                 ideal: 720
               }
             },
+
             audio: false
+
           });
+
 
         video.srcObject = stream;
 
         await video.play();
 
+
         status.innerHTML =
           '<span class="statusDot"></span> Scanning...';
+
 
         requestAnimationFrame(scanQR);
 
@@ -370,16 +363,16 @@
     }
 
 
-
-    /* =====================================================
-       SCAN QR
-    ===================================================== */
+    // =====================================================
+    // SCAN QR
+    // =====================================================
 
     function scanQR() {
 
       if (!scanning) {
         return;
       }
+
 
       if (
         video.readyState === video.HAVE_ENOUGH_DATA
@@ -391,6 +384,7 @@
         canvas.height =
           video.videoHeight;
 
+
         ctx.drawImage(
           video,
           0,
@@ -399,6 +393,7 @@
           canvas.height
         );
 
+
         const imageData =
           ctx.getImageData(
             0,
@@ -406,6 +401,7 @@
             canvas.width,
             canvas.height
           );
+
 
         const code =
           jsQR(
@@ -418,9 +414,12 @@
             }
           );
 
+
         if (code) {
 
-          handleQRCode(code.data);
+          handleQRCode(
+            code.data
+          );
 
           return;
 
@@ -428,15 +427,15 @@
 
       }
 
+
       requestAnimationFrame(scanQR);
 
     }
 
 
-
-    /* =====================================================
-       QR RESULT
-    ===================================================== */
+    // =====================================================
+    // QR RESULT
+    // =====================================================
 
     function handleQRCode(data) {
 
@@ -444,55 +443,86 @@
         return;
       }
 
+
       scanning = false;
 
-      parseQRData(data);
 
       stopCamera();
 
-      showCluePage();
+
+      /*
+        Your QR contains something like:
+
+        https://script.google.com/macros/s/XXXX/exec?scan=1
+
+        We extract:
+
+        scan = 1
+      */
+
+      const scanNumber =
+        extractScanNumber(data);
+
+
+      if (!scanNumber) {
+
+        showError(
+          "Invalid QR code. Scan the correct birthday QR code."
+        );
+
+        return;
+
+      }
+
+
+      status.innerHTML =
+        "Loading your clue...";
+
+
+      /*
+        IMPORTANT:
+
+        Do NOT display the QR text itself.
+
+        Instead, get the matching row
+        from Google Sheets.
+      */
+
+      getHuntData(
+        scanNumber
+      );
 
     }
 
 
+    // =====================================================
+    // EXTRACT SCAN NUMBER FROM QR
+    // =====================================================
 
-    /* =====================================================
-       READ QR CONTENT
-    ===================================================== */
+    function extractScanNumber(data) {
 
-    function parseQRData(data) {
+      const qrText =
+        String(data || "").trim();
 
-      clueText.textContent =
-        DEFAULT_CLUE;
 
-      destination.textContent =
-        DEFAULT_DESTINATION;
+      // ---------------------------------------------------
+      // CASE 1
+      // QR is Apps Script URL
+      // ---------------------------------------------------
 
       try {
 
-        const parsed =
-          JSON.parse(data);
+        const url =
+          new URL(qrText);
 
-        if (
-          parsed &&
-          typeof parsed === "object"
-        ) {
 
-          if (parsed.clue) {
+        const scan =
+          url.searchParams.get("scan");
 
-            clueText.textContent =
-              parsed.clue;
 
-          }
+        if (scan) {
 
-          if (parsed.destination) {
-
-            destination.textContent =
-              parsed.destination;
-
-          }
-
-          return;
+          return scan.trim();
 
         }
 
@@ -500,47 +530,204 @@
 
       catch (error) {
 
-        /*
-          QR was not JSON.
-          Keep default clue and destination.
-        */
+        // QR was not a URL
+      }
+
+
+      // ---------------------------------------------------
+      // CASE 2
+      // QR contains just a number
+      // ---------------------------------------------------
+
+      if (
+        /^\d+$/.test(qrText)
+      ) {
+
+        return qrText;
 
       }
 
-      /*
-        Optional simple format:
 
-        clue | destination
-      */
+      // ---------------------------------------------------
+      // CASE 3
+      // QR contains JSON
+      // ---------------------------------------------------
 
-      if (data.includes("|")) {
+      try {
 
-        const parts =
-          data.split("|");
+        const parsed =
+          JSON.parse(qrText);
 
-        if (parts[0]) {
 
-          clueText.textContent =
-            parts[0].trim();
+        if (
+          parsed &&
+          parsed.scan
+        ) {
 
-        }
-
-        if (parts[1]) {
-
-          destination.textContent =
-            parts[1].trim();
+          return String(
+            parsed.scan
+          ).trim();
 
         }
 
       }
+
+      catch (error) {
+
+        // Not JSON
+      }
+
+
+      return "";
 
     }
 
 
+    // =====================================================
+    // GET CLUE + DESTINATION FROM GOOGLE SHEETS
+    // =====================================================
+    //
+    // Apps Script:
+    //
+    // Column A = Step
+    // Column J = Clue
+    // Column K = Destination
+    //
+    // =====================================================
 
-    /* =====================================================
-       STOP CAMERA
-    ===================================================== */
+    function getHuntData(
+      scanNumber
+    ) {
+
+      const callbackName =
+        "qrCallback_" +
+        Date.now();
+
+
+      const script =
+        document.createElement("script");
+
+
+      const timeout =
+        setTimeout(() => {
+
+          cleanup();
+
+          showError(
+            "Could not load the clue. Please try scanning again."
+          );
+
+        }, 15000);
+
+
+      function cleanup() {
+
+        clearTimeout(timeout);
+
+        if (script.parentNode) {
+
+          script.parentNode.removeChild(
+            script
+          );
+
+        }
+
+        try {
+
+          delete window[
+            callbackName
+          ];
+
+        }
+
+        catch (error) {}
+
+      }
+
+
+      window[
+        callbackName
+      ] = function(data) {
+
+        cleanup();
+
+
+        if (
+          !data ||
+          data.success === false
+        ) {
+
+          showError(
+            data && data.error
+              ? data.error
+              : "Clue not found."
+          );
+
+          return;
+
+        }
+
+
+        // ===============================================
+        // COLUMN J → CLUE
+        // ===============================================
+
+        clueText.textContent =
+          data.clue || "No clue available.";
+
+
+        // ===============================================
+        // COLUMN K → DESTINATION
+        // ===============================================
+
+        destination.textContent =
+          data.destination || "No destination available.";
+
+
+        // ===============================================
+        // NOW SHOW CLUE PAGE
+        // ===============================================
+
+        showCluePage();
+
+      };
+
+
+      script.src =
+        APPS_SCRIPT_URL +
+        "?api=1" +
+        "&scan=" +
+        encodeURIComponent(
+          scanNumber
+        ) +
+        "&callback=" +
+        encodeURIComponent(
+          callbackName
+        );
+
+
+      script.onerror =
+        function() {
+
+          cleanup();
+
+          showError(
+            "Unable to connect to the birthday clue server."
+          );
+
+        };
+
+
+      document.body.appendChild(
+        script
+      );
+
+    }
+
+
+    // =====================================================
+    // STOP CAMERA
+    // =====================================================
 
     function stopCamera() {
 
@@ -548,9 +735,9 @@
 
         stream
           .getTracks()
-          .forEach(track => {
-            track.stop();
-          });
+          .forEach(
+            track => track.stop()
+          );
 
         stream = null;
 
@@ -559,10 +746,9 @@
     }
 
 
-
-    /* =====================================================
-       SHOW CLUE PAGE
-    ===================================================== */
+    // =====================================================
+    // SHOW CLUE PAGE
+    // =====================================================
 
     function showCluePage() {
 
@@ -575,27 +761,25 @@
       cluePage.style.display =
         "block";
 
+
       window.scrollTo({
         top: 0,
         behavior: "instant"
       });
 
-      /*
-        Celebration happens ONLY once
-        when clue page opens.
-      */
 
+      // Celebration ONLY when clue page opens
       createCelebration();
+
 
       startCountdown();
 
     }
 
 
-
-    /* =====================================================
-       COUNTDOWN
-    ===================================================== */
+    // =====================================================
+    // COUNTDOWN
+    // =====================================================
 
     function startCountdown() {
 
@@ -603,39 +787,47 @@
         countdownInterval
       );
 
+
       remainingSeconds =
         COUNTDOWN_SECONDS;
 
+
       updateTimer();
 
+
       countdownInterval =
-        setInterval(() => {
+        setInterval(
+          () => {
 
-          remainingSeconds--;
+            remainingSeconds--;
 
-          updateTimer();
 
-          if (
-            remainingSeconds <= 0
-          ) {
+            updateTimer();
 
-            clearInterval(
-              countdownInterval
-            );
 
-            showDestinationPage();
+            if (
+              remainingSeconds <= 0
+            ) {
 
-          }
+              clearInterval(
+                countdownInterval
+              );
 
-        }, 1000);
+
+              showDestinationPage();
+
+            }
+
+          },
+          1000
+        );
 
     }
 
 
-
-    /* =====================================================
-       TIMER DISPLAY
-    ===================================================== */
+    // =====================================================
+    // TIMER
+    // =====================================================
 
     function updateTimer() {
 
@@ -644,22 +836,32 @@
           remainingSeconds / 60
         );
 
+
       const seconds =
         remainingSeconds % 60;
 
+
       timer.textContent =
-        String(minutes).padStart(2, "0")
-        + ":"
-        +
-        String(seconds).padStart(2, "0");
+        String(
+          minutes
+        ).padStart(
+          2,
+          "0"
+        ) +
+        ":" +
+        String(
+          seconds
+        ).padStart(
+          2,
+          "0"
+        );
 
     }
 
 
-
-    /* =====================================================
-       DESTINATION PAGE
-    ===================================================== */
+    // =====================================================
+    // DESTINATION PAGE
+    // =====================================================
 
     function showDestinationPage() {
 
@@ -672,30 +874,66 @@
       destinationPage.style.display =
         "block";
 
+
       window.scrollTo({
         top: 0,
         behavior: "instant"
       });
 
-      /*
-        Second celebration:
-        only when destination appears.
-      */
 
+      // Celebration ONLY when destination appears
       createCelebration();
 
     }
 
 
+    // =====================================================
+    // ERROR SCREEN
+    // =====================================================
 
-    /* =====================================================
-       CELEBRATION
-       Light amount of falling decorations
-    ===================================================== */
+    function showError(
+      message
+    ) {
+
+      scannerPage.style.display =
+        "block";
+
+      cluePage.style.display =
+        "none";
+
+      destinationPage.style.display =
+        "none";
+
+
+      status.innerHTML =
+        "⚠️ " +
+        message;
+
+
+      scanning = true;
+
+
+      setTimeout(
+        () => {
+
+          startCamera();
+
+        },
+        1500
+      );
+
+    }
+
+
+    // =====================================================
+    // CELEBRATION
+    // =====================================================
 
     function createCelebration() {
 
-      celebration.innerHTML = "";
+      celebration.innerHTML =
+        "";
+
 
       const pieces = [
         "•",
@@ -707,19 +945,23 @@
         "❀"
       ];
 
+
       const colors = [
+
         "var(--theme-primary)",
+
         "var(--theme-secondary)",
+
         "var(--theme-accent)",
+
         "#ffffff"
+
       ];
 
-      /*
-        Reduced number so it does not
-        become too crowded.
-      */
 
-      const amount = 32;
+      const amount =
+        32;
+
 
       for (
         let i = 0;
@@ -728,10 +970,14 @@
       ) {
 
         const piece =
-          document.createElement("span");
+          document.createElement(
+            "span"
+          );
+
 
         piece.className =
           "fallingPiece";
+
 
         piece.textContent =
           pieces[
@@ -741,8 +987,12 @@
             )
           ];
 
+
         piece.style.left =
-          Math.random() * 100 + "%";
+          Math.random() *
+          100 +
+          "%";
+
 
         piece.style.color =
           colors[
@@ -752,17 +1002,30 @@
             )
           ];
 
+
         piece.style.fontSize =
-          (10 + Math.random() * 13)
-          + "px";
+          (
+            10 +
+            Math.random() *
+            13
+          ) +
+          "px";
+
 
         piece.style.animationDuration =
-          (2.8 + Math.random() * 2.2)
-          + "s";
+          (
+            2.8 +
+            Math.random() *
+            2.2
+          ) +
+          "s";
+
 
         piece.style.animationDelay =
-          Math.random() * 0.8
-          + "s";
+          Math.random() *
+          0.8 +
+          "s";
+
 
         celebration.appendChild(
           piece
@@ -770,24 +1033,23 @@
 
       }
 
-      /*
-        Remove decorations after
-        the animation has finished.
-      */
 
-      setTimeout(() => {
+      setTimeout(
+        () => {
 
-        celebration.innerHTML = "";
+          celebration.innerHTML =
+            "";
 
-      }, 6000);
+        },
+        6000
+      );
 
     }
 
 
-
-    /* =====================================================
-       START
-    ===================================================== */
+    // =====================================================
+    // START
+    // =====================================================
 
     window.addEventListener(
       "load",
