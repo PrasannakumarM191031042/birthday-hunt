@@ -6,7 +6,6 @@
 
   <title>QR Scanner</title>
 
-  <!-- QR scanner library -->
   <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js"></script>
 
   <style>
@@ -44,11 +43,12 @@
     }
 
     #result {
-      font-size: 20px;
+      font-size: 18px;
       color: #4cff3b;
       font-weight: bold;
       margin: 20px;
-      word-break: break-word;
+      padding: 15px;
+      word-break: break-all;
     }
 
     button {
@@ -62,10 +62,6 @@
       margin: 15px;
     }
 
-    button:disabled {
-      opacity: 0.5;
-    }
-
     canvas {
       display: none;
     }
@@ -74,45 +70,52 @@
 
 <body>
 
-  <h1>📷 QR Scanner</h1>
+<h1>📷 QR SCANNER</h1>
 
-  <p>
-    Point your camera at the QR code.
-  </p>
+<p>Use your mobile phone camera to scan the QR code.</p>
 
-  <p>
-    No picture is taken or uploaded.
-  </p>
+<p><b>Hold the QR code inside the scanning box.</b></p>
 
-  <video
-    id="camera"
-    autoplay
-    playsinline
-    muted>
-  </video>
+<p style="color:#4cff3b;">
+  No picture is taken or uploaded.
+</p>
 
-  <canvas id="canvas"></canvas>
+<video
+  id="camera"
+  autoplay
+  playsinline
+  muted>
+</video>
 
-  <div id="status">
-    Camera not started.
-  </div>
+<canvas id="canvas"></canvas>
 
-  <div id="result"></div>
+<div id="status">
+  Camera not started.
+</div>
 
-  <button id="startButton" onclick="startScanner()">
-    📷 Start Scanner
-  </button>
+<div id="result"></div>
+
+<button id="startButton" onclick="startScanner()">
+  📷 Start Scanner
+</button>
 
 <script>
 
 let video = document.getElementById("camera");
 let canvas = document.getElementById("canvas");
+
 let ctx = canvas.getContext("2d", {
   willReadFrequently: true
 });
 
 let stream = null;
 let scanning = false;
+let qrAlreadyFound = false;
+
+
+/* =========================
+   START CAMERA
+========================= */
 
 async function startScanner() {
 
@@ -122,56 +125,77 @@ async function startScanner() {
 
   result.innerHTML = "";
 
+  qrAlreadyFound = false;
+
   status.innerHTML = "Requesting camera permission...";
 
   button.disabled = true;
 
   try {
 
-    if (!navigator.mediaDevices ||
-        !navigator.mediaDevices.getUserMedia) {
+    if (
+      !navigator.mediaDevices ||
+      !navigator.mediaDevices.getUserMedia
+    ) {
 
       status.innerHTML =
-        "❌ Camera is not supported by this browser.";
+        "❌ Camera is not supported.";
 
       button.disabled = false;
 
       return;
     }
 
-    // Stop previous camera if one exists
+
+    /* Stop old camera */
+
     if (stream) {
-      stream.getTracks().forEach(track => track.stop());
+
+      stream.getTracks().forEach(
+        track => track.stop()
+      );
+
     }
 
-    // Open rear camera
+
+    /* Start rear camera */
+
     stream = await navigator.mediaDevices.getUserMedia({
+
       video: {
         facingMode: {
           ideal: "environment"
         },
+
         width: {
           ideal: 1280
         },
+
         height: {
           ideal: 720
         }
       },
+
       audio: false
+
     });
+
 
     video.srcObject = stream;
 
     await video.play();
 
+
     status.innerHTML =
-      "📷 Camera working — scanning QR code...";
+      "🟢 Camera working — scanning...";
 
     scanning = true;
 
     scanQRCode();
 
-  } catch (error) {
+  }
+
+  catch (error) {
 
     console.error(error);
 
@@ -182,9 +206,15 @@ async function startScanner() {
       error.message;
 
     button.disabled = false;
+
   }
+
 }
 
+
+/* =========================
+   QR SCANNER
+========================= */
 
 function scanQRCode() {
 
@@ -192,11 +222,18 @@ function scanQRCode() {
     return;
   }
 
-  // Make sure video has actual dimensions
-  if (video.readyState === video.HAVE_ENOUGH_DATA) {
 
-    canvas.width = video.videoWidth;
-    canvas.height = video.videoHeight;
+  if (
+    video.readyState ===
+    video.HAVE_ENOUGH_DATA
+  ) {
+
+    canvas.width =
+      video.videoWidth;
+
+    canvas.height =
+      video.videoHeight;
+
 
     ctx.drawImage(
       video,
@@ -206,50 +243,132 @@ function scanQRCode() {
       canvas.height
     );
 
-    const imageData = ctx.getImageData(
-      0,
-      0,
-      canvas.width,
-      canvas.height
-    );
+
+    const imageData =
+      ctx.getImageData(
+        0,
+        0,
+        canvas.width,
+        canvas.height
+      );
+
 
     const code = jsQR(
+
       imageData.data,
+
       imageData.width,
+
       imageData.height,
+
       {
         inversionAttempts: "attemptBoth"
       }
+
     );
 
-    if (code) {
 
-      console.log("QR CODE FOUND:", code.data);
+    /* =========================
+       QR FOUND
+    ========================= */
+
+    if (
+      code &&
+      code.data &&
+      !qrAlreadyFound
+    ) {
+
+      qrAlreadyFound = true;
 
       scanning = false;
 
-      // Stop camera
+
+      console.log(
+        "QR CODE FOUND:",
+        code.data
+      );
+
+
+      /* Stop camera */
+
       if (stream) {
-        stream.getTracks().forEach(track => track.stop());
+
+        stream
+          .getTracks()
+          .forEach(
+            track => track.stop()
+          );
+
       }
 
       video.srcObject = null;
 
-      status.innerHTML =
+
+      /* Show result */
+
+      document.getElementById("status").innerHTML =
         "✅ QR CODE DETECTED!";
 
-      result.innerHTML =
-        "QR Result:<br>" +
-        code.data;
 
-      document.getElementById("startButton").disabled = false;
+      document.getElementById("result").innerHTML =
+        "<div>QR CONTENT:</div>" +
+        "<br>" +
+        "<div>" +
+        escapeHtml(code.data) +
+        "</div>";
+
+
+      document.getElementById("startButton")
+        .disabled = false;
+
+
+      /*
+        IMPORTANT:
+
+        DO NOT use:
+
+        window.location.href = code.data
+
+        DO NOT use:
+
+        window.open(code.data)
+
+        DO NOT use:
+
+        location.assign(code.data)
+
+        Therefore the page will NOT
+        navigate to Google Apps Script.
+      */
+
 
       return;
     }
+
   }
 
-  // Continue scanning
-  requestAnimationFrame(scanQRCode);
+
+  /* Continue scanning */
+
+  requestAnimationFrame(
+    scanQRCode
+  );
+
+}
+
+
+/* =========================
+   SAFELY DISPLAY QR CONTENT
+========================= */
+
+function escapeHtml(text) {
+
+  const div =
+    document.createElement("div");
+
+  div.textContent = text;
+
+  return div.innerHTML;
 }
 
 </script>
