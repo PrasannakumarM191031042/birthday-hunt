@@ -1,94 +1,39 @@
-/* =========================================================
-   EMERALD GREEN
-   ========================================================= */
-
 :root {
-  --accent: #55e89b;
-  --accent-light: #b9ffd9;
-  --accent-soft: rgba(85, 232, 155, 0.28);
+  --page-bg: #f5fbf7;
 
-  --text: #ffffff;
-  --muted: #d7ffe8;
+  --bg-glow-1: #d3f1dd;
+  --bg-glow-2: #e7f8ec;
+  --soft-light: rgba(48, 155, 91, 0.25);
 
-  --card: rgba(5, 45, 29, 0.90);
-}
+  --card-bg: #ffffff;
+  --card-bg-2: #f4fbf6;
 
-body {
-  background:
-    radial-gradient(
-      circle at 15% 5%,
-      rgba(50, 220, 130, 0.25),
-      transparent 28%
-    ),
-    radial-gradient(
-      circle at 90% 20%,
-      rgba(0, 160, 90, 0.25),
-      transparent 30%
-    ),
-    linear-gradient(
-      135deg,
-      #075333,
-      #032719 52%,
-      #010604
-    );
-}
+  --timer-bg: #eaf8ef;
+  --destination-bg: #eaf8ef;
 
-h1,
-.successTitle {
-  color: #64efa4;
+  --camera-bg: #edf9f1;
 
-  text-shadow:
-    0 0 10px #55e89b,
-    0 0 28px rgba(85, 232, 155, 0.55);
-}
+  --heading: #126b43;
+  --heading-shadow: rgba(18, 107, 67, 0.15);
 
-.subtitle,
-#status,
-.timerLabel,
-#waitingMessage {
-  color: var(--muted);
-}
+  --accent: #168353;
+  --accent-dark: #126b43;
+  --accent-glow: rgba(22, 131, 83, 0.32);
 
-.cameraBox,
-.clueCard,
-.timerBox,
-#destinationBox {
-  border: 2px solid var(--accent);
+  --border: #6cbd91;
 
-  background:
-    linear-gradient(
-      145deg,
-      rgba(255, 255, 255, 0.07),
-      var(--card)
-    );
+  --text-main: #172b21;
+  --text-muted: #557063;
 
-  box-shadow:
-    0 15px 50px rgba(0, 0, 0, 0.4),
-    0 0 28px var(--accent-soft);
+  --button-top: #1b9560;
+  --button-bottom: #117748;
+  --button-border: #117748;
+  --button-text: #ffffff;
 
-  backdrop-filter: blur(12px);
-}
+  --shadow: rgba(24, 112, 68, 0.17);
+  --shadow-light: rgba(24, 112, 68, 0.09);
 
-button {
-  background:
-    linear-gradient(
-      135deg,
-      #20b96b,
-      #087a42
-    );
+  --card-highlight: rgba(255, 255, 255, 0.92);
 
-  color: white;
-}
-
-.clueLabel {
-  color: var(--accent-light);
-}
-
-#timer,
-#destination {
-  color: #64efa4;
-
-  text-shadow:
-    0 0 10px #55e89b,
-    0 0 28px rgba(85, 232, 155, 0.55);
+  --decorative: #168353;
 }
