@@ -1,0 +1,715 @@
+/* =========================================================
+   BIRTHDAY SURPRISE
+   COMMON DESIGN CSS
+   ========================================================= */
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  min-height: 100%;
+}
+
+body {
+  background: var(--background);
+  color: var(--text);
+  font-family:
+    Arial,
+    Helvetica,
+    sans-serif;
+
+  text-align: center;
+
+  min-height: 100vh;
+
+  overflow-x: hidden;
+}
+
+
+/* =========================================================
+   PAGES
+   ========================================================= */
+
+#scannerPage,
+#resultPage {
+  width: 100%;
+  max-width: 800px;
+  margin: auto;
+  padding: 10px 20px 40px;
+}
+
+
+/* =========================================================
+   HEADINGS
+   ========================================================= */
+
+h1 {
+  margin: 35px 10px 15px;
+
+  color: var(--primary);
+
+  font-size: 42px;
+
+  text-shadow:
+    0 0 15px var(--primary-glow);
+}
+
+.subtitle {
+  font-size: 21px;
+
+  margin: 15px;
+
+  line-height: 1.6;
+
+  color: var(--secondary-text);
+}
+
+
+/* =========================================================
+   CAMERA
+   ========================================================= */
+
+.cameraBox {
+  width: 100%;
+
+  margin: 30px auto;
+
+  padding: 15px;
+
+  border:
+    4px solid
+    var(--primary);
+
+  border-radius: 20px;
+
+  box-shadow:
+    0 0 25px
+    var(--primary-glow);
+
+  background:
+    var(--camera-background);
+}
+
+#camera {
+  width: 100%;
+
+  display: block;
+
+  border-radius: 15px;
+
+  background: #111;
+
+  min-height: 300px;
+
+  object-fit: cover;
+}
+
+
+/* =========================================================
+   STATUS
+   ========================================================= */
+
+#status {
+  font-size: 20px;
+
+  margin: 20px;
+
+  color: var(--secondary-text);
+}
+
+
+/* =========================================================
+   BUTTON
+   ========================================================= */
+
+button {
+  padding: 16px 30px;
+
+  font-size: 19px;
+
+  font-weight: bold;
+
+  border:
+    2px solid
+    var(--primary);
+
+  border-radius: 12px;
+
+  background:
+    var(--button-background);
+
+  color:
+    var(--primary);
+
+  margin: 15px;
+
+  box-shadow:
+    0 0 12px
+    var(--primary-soft);
+
+  cursor: pointer;
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease;
+}
+
+button:hover {
+  transform: scale(1.04);
+
+  box-shadow:
+    0 0 20px
+    var(--primary-glow);
+
+  background:
+    var(--button-hover);
+}
+
+button:active {
+  transform: scale(0.97);
+}
+
+button:disabled {
+  opacity: 0.5;
+}
+
+
+/* =========================================================
+   RESULT PAGE
+   ========================================================= */
+
+#resultPage {
+  display: none;
+}
+
+.successTitle {
+  font-size: 34px;
+
+  color:
+    var(--primary);
+
+  margin:
+    30px 0;
+
+  text-shadow:
+    0 0 15px
+    var(--primary-glow);
+
+  animation:
+    popIn 0.6s ease;
+}
+
+
+/* =========================================================
+   CLUE CARD
+   ========================================================= */
+
+.clueCard {
+  margin:
+    25px auto;
+
+  padding:
+    30px 25px;
+
+  border:
+    3px solid
+    var(--primary);
+
+  border-radius:
+    20px;
+
+  background:
+    var(--card-background);
+
+  box-shadow:
+    0 0 30px
+    var(--primary-soft);
+
+  animation:
+    popIn 0.7s ease;
+}
+
+.clueLabel {
+  font-size: 16px;
+
+  color:
+    var(--secondary-text);
+
+  text-transform:
+    uppercase;
+
+  letter-spacing:
+    2px;
+
+  margin-bottom:
+    15px;
+}
+
+#clueText {
+  font-size: 28px;
+
+  line-height: 1.6;
+
+  color:
+    var(--text);
+}
+
+
+/* =========================================================
+   TIMER
+   ========================================================= */
+
+.timerBox {
+  margin:
+    30px auto;
+
+  padding:
+    25px;
+
+  border:
+    2px solid
+    var(--primary);
+
+  border-radius:
+    18px;
+
+  background:
+    var(--timer-background);
+
+  box-shadow:
+    0 0 20px
+    var(--primary-soft);
+
+  animation:
+    popIn 0.8s ease;
+}
+
+.timerLabel {
+  font-size: 18px;
+
+  color:
+    var(--secondary-text);
+
+  margin-bottom:
+    10px;
+}
+
+#timer {
+  font-size: 52px;
+
+  font-weight:
+    bold;
+
+  color:
+    var(--primary);
+
+  text-shadow:
+    0 0 15px
+    var(--primary-glow);
+}
+
+#waitingMessage {
+  font-size: 20px;
+
+  color:
+    var(--secondary-text);
+
+  margin-top:
+    15px;
+}
+
+
+/* =========================================================
+   DESTINATION
+   ========================================================= */
+
+#destinationBox {
+  display: none;
+
+  margin:
+    30px auto;
+
+  padding:
+    30px 25px;
+
+  border:
+    3px solid
+    var(--primary);
+
+  border-radius:
+    20px;
+
+  background:
+    var(--destination-background);
+
+  box-shadow:
+    0 0 35px
+    var(--primary-glow);
+
+  animation:
+    destinationReveal
+    1s ease;
+}
+
+#destination {
+  font-size: 30px;
+
+  font-weight:
+    bold;
+
+  color:
+    var(--primary);
+
+  line-height:
+    1.5;
+}
+
+.destinationTitle {
+  font-size: 20px;
+
+  color:
+    var(--text);
+
+  margin-bottom:
+    15px;
+}
+
+
+/* =========================================================
+   CELEBRATION
+   ========================================================= */
+
+.celebration {
+  position:
+    fixed;
+
+  top: 0;
+  left: 0;
+
+  width: 100%;
+  height: 100%;
+
+  pointer-events:
+    none;
+
+  overflow:
+    hidden;
+
+  z-index:
+    9999;
+}
+
+.celebration span {
+  position:
+    absolute;
+
+  top:
+    -70px;
+
+  width:
+    4px;
+
+  height:
+    45px;
+
+  border-radius:
+    50%;
+
+  opacity:
+    0.75;
+
+  animation:
+    streamerFall
+    linear
+    infinite;
+}
+
+
+/* =========================================================
+   STREAMER POSITIONS
+   ========================================================= */
+
+.celebration span:nth-child(1) {
+  left: 8%;
+
+  background:
+    var(--streamer-1);
+
+  animation-duration:
+    7s;
+
+  animation-delay:
+    0s;
+}
+
+.celebration span:nth-child(2) {
+  left: 20%;
+
+  background:
+    var(--streamer-2);
+
+  animation-duration:
+    8s;
+
+  animation-delay:
+    1.5s;
+}
+
+.celebration span:nth-child(3) {
+  left: 33%;
+
+  background:
+    var(--streamer-3);
+
+  animation-duration:
+    7.5s;
+
+  animation-delay:
+    3s;
+}
+
+.celebration span:nth-child(4) {
+  left: 46%;
+
+  background:
+    var(--streamer-4);
+
+  animation-duration:
+    8.5s;
+
+  animation-delay:
+    0.8s;
+}
+
+.celebration span:nth-child(5) {
+  left: 59%;
+
+  background:
+    var(--streamer-5);
+
+  animation-duration:
+    7.8s;
+
+  animation-delay:
+    2.2s;
+}
+
+.celebration span:nth-child(6) {
+  left: 72%;
+
+  background:
+    var(--streamer-1);
+
+  animation-duration:
+    8.2s;
+
+  animation-delay:
+    4s;
+}
+
+.celebration span:nth-child(7) {
+  left: 84%;
+
+  background:
+    var(--streamer-2);
+
+  animation-duration:
+    7.3s;
+
+  animation-delay:
+    1s;
+}
+
+.celebration span:nth-child(8) {
+  left: 94%;
+
+  background:
+    var(--streamer-4);
+
+  animation-duration:
+    8s;
+
+  animation-delay:
+    3.5s;
+}
+
+
+/* =========================================================
+   ANIMATIONS
+   ========================================================= */
+
+@keyframes streamerFall {
+
+  0% {
+    transform:
+      translateY(-70px)
+      translateX(0)
+      rotate(0deg);
+
+    opacity: 0;
+  }
+
+  10% {
+    opacity: 0.75;
+  }
+
+  50% {
+    transform:
+      translateY(50vh)
+      translateX(15px)
+      rotate(180deg);
+  }
+
+  100% {
+    transform:
+      translateY(110vh)
+      translateX(-15px)
+      rotate(360deg);
+
+    opacity: 0;
+  }
+}
+
+
+@keyframes popIn {
+
+  from {
+    opacity: 0;
+
+    transform:
+      scale(0.92)
+      translateY(15px);
+  }
+
+  to {
+    opacity: 1;
+
+    transform:
+      scale(1)
+      translateY(0);
+  }
+}
+
+
+@keyframes destinationReveal {
+
+  from {
+    opacity: 0;
+
+    transform:
+      scale(0.75);
+  }
+
+  to {
+    opacity: 1;
+
+    transform:
+      scale(1);
+  }
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 600px) {
+
+  #scannerPage,
+  #resultPage {
+    padding:
+      5px 12px 30px;
+  }
+
+  h1 {
+    font-size:
+      32px;
+
+    margin-top:
+      20px;
+  }
+
+  .subtitle {
+    font-size:
+      17px;
+  }
+
+  .cameraBox {
+    margin:
+      20px auto;
+
+    padding:
+      10px;
+
+    border-width:
+      3px;
+  }
+
+  #camera {
+    min-height:
+      240px;
+  }
+
+  .successTitle {
+    font-size:
+      28px;
+
+    margin:
+      20px 0;
+  }
+
+  .clueCard {
+    padding:
+      22px 18px;
+  }
+
+  #clueText {
+    font-size:
+      22px;
+  }
+
+  #timer {
+    font-size:
+      45px;
+  }
+
+  .timerBox {
+    padding:
+      20px 15px;
+  }
+
+  #destination {
+    font-size:
+      24px;
+  }
+
+  button {
+    font-size:
+      17px;
+
+    padding:
+      14px 24px;
+  }
+
+}
+
+
+/* =========================================================
+   HIDE UTILITY
+   ========================================================= */
+
+.hidden {
+  display:
+    none !important;
+}
+
+canvas {
+  display:
+    none;
+}
