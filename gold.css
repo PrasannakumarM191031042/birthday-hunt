@@ -1,0 +1,269 @@
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  min-height: 100%;
+}
+
+body {
+  background:
+    radial-gradient(circle at top, #3a2b08 0%, #100c02 48%, #020204 100%);
+  color: #fff;
+  font-family: Arial, Helvetica, sans-serif;
+  text-align: center;
+  min-height: 100vh;
+  overflow-x: hidden;
+  position: relative;
+}
+
+#celebration {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100vh;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 999;
+}
+
+.fallingPiece {
+  position: absolute;
+  top: -40px;
+  opacity: 0.8;
+  animation: fallDown linear forwards;
+  filter: drop-shadow(0 0 5px #ffd34d99);
+}
+
+@keyframes fallDown {
+  0% {
+    transform: translateY(-50px) rotate(0deg);
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.85;
+  }
+  90% {
+    opacity: 0.75;
+  }
+  100% {
+    transform: translateY(110vh) rotate(360deg);
+    opacity: 0;
+  }
+}
+
+#scannerPage,
+#resultPage {
+  width: 100%;
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 20px 18px 45px;
+  position: relative;
+  z-index: 2;
+}
+
+#resultPage {
+  display: none;
+}
+
+h1 {
+  margin: 20px 5px 15px;
+  color: #ffd34d;
+  font-size: clamp(32px, 8vw, 48px);
+  line-height: 1.15;
+  text-shadow:
+    0 0 8px #ffd34d,
+    0 0 20px #ffd34da6;
+}
+
+.subtitle {
+  font-size: clamp(17px, 4vw, 21px);
+  line-height: 1.5;
+  margin: 10px 5px;
+  color: #fff0ad;
+}
+
+.cameraBox {
+  width: 100%;
+  margin: 25px auto;
+  padding: 12px;
+  border: 3px solid #ffd34d;
+  border-radius: 20px;
+  background: rgba(38, 27, 5, 0.88);
+  box-shadow: 0 0 18px #ffd34d73;
+}
+
+#camera {
+  width: 100%;
+  display: block;
+  border-radius: 14px;
+  background: #080808;
+  min-height: 280px;
+  object-fit: cover;
+}
+
+#status {
+  font-size: 18px;
+  margin: 18px 5px;
+  color: #fff0ad;
+  line-height: 1.5;
+}
+
+button {
+  padding: 15px 28px;
+  font-size: 18px;
+  font-weight: bold;
+  border: 2px solid #ffd34d;
+  border-radius: 14px;
+  background: #261b05;
+  color: #fff0ad;
+  margin: 10px;
+  box-shadow: 0 0 14px #ffd34d66;
+  cursor: pointer;
+}
+
+button:active {
+  transform: scale(0.97);
+}
+
+button:disabled {
+  opacity: 0.5;
+}
+
+.successTitle {
+  font-size: clamp(27px, 7vw, 40px);
+  font-weight: bold;
+  color: #ffd34d;
+  margin: 20px 0 25px;
+  line-height: 1.25;
+  text-shadow:
+    0 0 8px #ffd34d,
+    0 0 20px #ffd34d99;
+}
+
+.clueCard {
+  margin: 20px auto;
+  padding: 28px 20px;
+  border: 3px solid #ffd34d;
+  border-radius: 22px;
+  background: rgba(38, 27, 5, 0.88);
+  box-shadow: 0 0 22px #ffd34d59;
+}
+
+.clueLabel {
+  font-size: 16px;
+  color: #ffe27a;
+  text-transform: uppercase;
+  letter-spacing: 4px;
+  margin-bottom: 18px;
+}
+
+#clueText {
+  font-size: clamp(22px, 5.5vw, 30px);
+  line-height: 1.55;
+  color: #fff;
+  word-wrap: break-word;
+}
+
+.timerBox {
+  margin: 25px auto;
+  padding: 25px 18px;
+  border: 2px solid #ffd34d;
+  border-radius: 20px;
+  background: rgba(38, 27, 5, 0.88);
+  box-shadow: 0 0 20px #ffd34d4d;
+}
+
+.timerLabel {
+  font-size: clamp(16px, 4vw, 20px);
+  color: #fff0ad;
+  line-height: 1.5;
+  margin-bottom: 10px;
+}
+
+#timer {
+  font-size: clamp(52px, 15vw, 78px);
+  font-weight: bold;
+  color: #ffd34d;
+  line-height: 1;
+  margin: 15px 0;
+  text-shadow:
+    0 0 8px #ffd34d,
+    0 0 25px #ffd34db3;
+}
+
+#waitingMessage {
+  font-size: clamp(17px, 4vw, 21px);
+  color: #fff0ad;
+  margin-top: 15px;
+}
+
+#destinationBox {
+  display: none;
+  margin: 25px auto;
+  padding: 28px 20px;
+  border: 3px solid #ffd34d;
+  border-radius: 22px;
+  background: rgba(38, 27, 5, 0.88);
+  box-shadow: 0 0 25px #ffd34d73;
+  animation: reveal 0.8s ease;
+}
+
+.destinationTitle {
+  font-size: clamp(18px, 4vw, 22px);
+  color: #fff0ad;
+  margin-bottom: 15px;
+}
+
+#destination {
+  font-size: clamp(24px, 6vw, 34px);
+  font-weight: bold;
+  color: #ffd34d;
+  line-height: 1.5;
+  text-shadow: 0 0 10px #ffd34d99;
+}
+
+@keyframes reveal {
+  from {
+    opacity: 0;
+    transform: scale(0.85);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+canvas {
+  display: none;
+}
+
+@media (max-width: 500px) {
+  #scannerPage,
+  #resultPage {
+    padding: 12px 14px 35px;
+  }
+
+  h1 {
+    margin-top: 12px;
+  }
+
+  .cameraBox {
+    margin-top: 20px;
+  }
+
+  #camera {
+    min-height: 240px;
+  }
+
+  .clueCard {
+    padding: 24px 16px;
+  }
+
+  .timerBox {
+    padding: 22px 14px;
+  }
+}
