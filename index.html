@@ -6,169 +6,111 @@
 
   <title>Birthday Hunt</title>
 
-  <!-- QR scanner library -->
   <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js"></script>
 
   <style>
-    * {
-      box-sizing: border-box;
-    }
 
     body {
       margin: 0;
       background: #000;
       color: white;
-      font-family: Arial, Helvetica, sans-serif;
+      font-family: Arial, sans-serif;
       text-align: center;
     }
 
     h1 {
       margin: 25px 10px 10px;
       color: #4cff3b;
-      font-size: 28px;
+      font-size: 42px;
     }
 
     p {
-      font-size: 17px;
-      line-height: 1.5;
+      font-size: 20px;
     }
 
-    #cameraContainer {
-      position: relative;
-      width: 94%;
-      max-width: 600px;
-      margin: 20px auto;
+    #cameraBox {
+      width: 90%;
+      max-width: 650px;
+      margin: 35px auto 20px;
+      border: 4px solid #4cff3b;
+      border-radius: 20px;
+      padding: 20px;
+      box-sizing: border-box;
+      background: #111;
     }
 
     #camera {
       width: 100%;
       height: auto;
-      min-height: 250px;
       display: block;
-      background: #111;
-      border: 3px solid #4cff3b;
       border-radius: 15px;
-      object-fit: cover;
-    }
-
-    /*
-     * Green scanning box
-     */
-    #scanBox {
-      position: absolute;
-      width: 55%;
-      aspect-ratio: 1 / 1;
-      max-width: 300px;
-      max-height: 300px;
-      left: 50%;
-      top: 50%;
-      transform: translate(-50%, -50%);
-      border: 3px solid #4cff3b;
-      border-radius: 15px;
-      pointer-events: none;
-      box-shadow:
-        0 0 10px rgba(76, 255, 59, 0.7);
-    }
-
-    #scanLine {
-      position: absolute;
-      left: 5%;
-      width: 90%;
-      height: 3px;
-      background: #4cff3b;
-      box-shadow: 0 0 10px #4cff3b;
-      animation: scanLine 2s linear infinite;
-    }
-
-    @keyframes scanLine {
-      0% {
-        top: 5%;
-      }
-
-      50% {
-        top: 95%;
-      }
-
-      100% {
-        top: 5%;
-      }
-    }
-
-    #status {
-      font-size: 18px;
-      margin: 18px 15px;
-      min-height: 28px;
-    }
-
-    #result {
-      display: none;
-      width: 92%;
-      max-width: 600px;
-      margin: 25px auto;
-      padding: 25px 20px;
       background: #111;
-      border: 2px solid #4cff3b;
-      border-radius: 15px;
-      text-align: left;
-    }
-
-    #result h2 {
-      color: #4cff3b;
-      text-align: center;
-      margin-top: 0;
-    }
-
-    #clueText {
-      font-size: 21px;
-      line-height: 1.6;
-      margin: 20px 0;
-      white-space: pre-wrap;
-    }
-
-    #destination {
-      font-size: 18px;
-      line-height: 1.5;
-      margin-top: 20px;
-      padding: 15px;
-      background: #222;
-      border-radius: 10px;
-    }
-
-    button {
-      padding: 15px 30px;
-      font-size: 18px;
-      font-weight: bold;
-      border: 2px solid #4cff3b;
-      border-radius: 10px;
-      background: #111;
-      color: #4cff3b;
-      margin: 10px;
-      cursor: pointer;
-    }
-
-    button:disabled {
-      opacity: 0.5;
-      cursor: not-allowed;
-    }
-
-    #retryButton {
-      display: none;
-    }
-
-    #detectedUrl {
-      display: none;
-      width: 90%;
-      max-width: 600px;
-      margin: 15px auto;
-      padding: 10px;
-      font-size: 12px;
-      color: #aaa;
-      word-break: break-all;
     }
 
     canvas {
       display: none;
     }
+
+    #status {
+      font-size: 22px;
+      margin: 25px 10px;
+    }
+
+    #result {
+      width: 90%;
+      max-width: 650px;
+      margin: 20px auto;
+      padding: 25px;
+      box-sizing: border-box;
+      border-radius: 15px;
+      border: 3px solid #4cff3b;
+      background: #111;
+      display: none;
+    }
+
+    #result h2 {
+      color: #4cff3b;
+      font-size: 28px;
+    }
+
+    #clueText {
+      font-size: 24px;
+      line-height: 1.6;
+      margin: 25px 0;
+      color: white;
+      white-space: pre-wrap;
+    }
+
+    #destination {
+      font-size: 21px;
+      line-height: 1.5;
+      color: #4cff3b;
+      margin-top: 20px;
+    }
+
+    #detected {
+      font-size: 14px;
+      color: #aaa;
+      word-break: break-all;
+      margin-top: 20px;
+    }
+
+    button {
+      padding: 16px 30px;
+      font-size: 20px;
+      font-weight: bold;
+      border: 3px solid #4cff3b;
+      border-radius: 12px;
+      background: #111;
+      color: #4cff3b;
+      margin: 15px;
+      cursor: pointer;
+    }
+
+    button:disabled {
+      opacity: 0.5;
+    }
+
   </style>
 </head>
 
@@ -176,15 +118,12 @@
 
   <h1>🎂 Birthday Hunt</h1>
 
-  <p>
-    Point your camera at the QR code.
-  </p>
+  <p>Point your camera at the QR code.</p>
 
-  <p>
-    The clue will appear automatically.
-  </p>
+  <p>The clue will appear automatically.</p>
 
-  <div id="cameraContainer">
+
+  <div id="cameraBox">
 
     <video
       id="camera"
@@ -193,19 +132,31 @@
       muted>
     </video>
 
-    <div id="scanBox">
-      <div id="scanLine"></div>
-    </div>
-
   </div>
 
+
   <canvas id="canvas"></canvas>
+
 
   <div id="status">
     Camera not started.
   </div>
 
-  <div id="detectedUrl"></div>
+
+  <div id="result">
+
+    <h2 id="clueHeading">
+      🎉 CLUE FOUND!
+    </h2>
+
+    <div id="clueText"></div>
+
+    <div id="destination"></div>
+
+    <div id="detected"></div>
+
+  </div>
+
 
   <button
     id="startButton"
@@ -213,853 +164,612 @@
     📷 Start Scanner
   </button>
 
+
   <button
     id="retryButton"
-    onclick="restartScanner()">
+    onclick="startScanner()"
+    style="display:none;">
     🔄 Scan Again
   </button>
 
 
-  <!-- ======================================================
-       RESULT
-       ====================================================== -->
-
-  <div id="result">
-
-    <h2>
-      🎉 Clue Found!
-    </h2>
-
-    <div id="clueText"></div>
-
-    <div id="destination"></div>
-
-  </div>
-
-
 <script>
 
-  // =========================================================
-  // APPS SCRIPT URL
-  // =========================================================
-  //
-  // IMPORTANT:
-  // This must be your Apps Script Web App /exec URL.
-  //
-  // DO NOT put ?scan=1 here.
-  //
-  // The scanner will detect ?scan=1, ?scan=2 etc.
-  // =========================================================
 
-  const APPS_SCRIPT_URL =
-    "https://script.google.com/macros/s/AKfycbyar5ETPG9fs8Rur7aYuR9wZDFF9ry8Ra9Fw3wbz97AsYUrnK12BpLQofuHCsUFpWrw/exec";
+// ============================================================
+// APPS SCRIPT WEB APP URL
+// ============================================================
 
+const APPS_SCRIPT_URL =
+  "https://script.google.com/macros/s/AKfycbyar5ETPG9fs8Rur7aYuR9wZDFF9ry8Ra9Fw3wbz97AsYUrnK12BpLQofuHCsUFpWrw/exec";
 
-  // =========================================================
-  // ELEMENTS
-  // =========================================================
 
-  const video =
-    document.getElementById("camera");
+// ============================================================
+// ELEMENTS
+// ============================================================
 
-  const canvas =
-    document.getElementById("canvas");
+const video =
+  document.getElementById("camera");
 
-  const ctx =
-    canvas.getContext(
-      "2d",
-      {
-        willReadFrequently: true
-      }
-    );
+const canvas =
+  document.getElementById("canvas");
 
-  const status =
-    document.getElementById("status");
+const ctx =
+  canvas.getContext("2d", {
+    willReadFrequently: true
+  });
 
-  const result =
-    document.getElementById("result");
+const status =
+  document.getElementById("status");
 
-  const clueText =
-    document.getElementById("clueText");
+const result =
+  document.getElementById("result");
 
-  const destination =
-    document.getElementById("destination");
+const clueText =
+  document.getElementById("clueText");
 
-  const startButton =
-    document.getElementById("startButton");
+const destination =
+  document.getElementById("destination");
 
-  const retryButton =
-    document.getElementById("retryButton");
+const detected =
+  document.getElementById("detected");
 
-  const detectedUrl =
-    document.getElementById("detectedUrl");
+const startButton =
+  document.getElementById("startButton");
 
+const retryButton =
+  document.getElementById("retryButton");
 
-  // =========================================================
-  // VARIABLES
-  // =========================================================
 
-  let stream = null;
+// ============================================================
+// VARIABLES
+// ============================================================
 
-  let scanning = false;
+let stream = null;
 
-  let qrProcessing = false;
+let scanning = false;
 
+let alreadyDetected = false;
 
-  // =========================================================
-  // START SCANNER
-  // =========================================================
 
-  async function startScanner() {
+// ============================================================
+// START SCANNER
+// ============================================================
 
-    result.style.display = "none";
+async function startScanner() {
 
-    retryButton.style.display = "none";
+  alreadyDetected = false;
 
-    detectedUrl.style.display = "none";
+  result.style.display = "none";
 
-    detectedUrl.innerHTML = "";
+  retryButton.style.display = "none";
 
-    clueText.innerHTML = "";
+  startButton.disabled = true;
 
-    destination.innerHTML = "";
+  status.innerHTML =
+    "📷 Requesting camera permission...";
 
-    status.innerHTML =
-      "📷 Requesting camera permission...";
 
-    startButton.disabled = true;
-
-
-    try {
-
-      if (
-        !navigator.mediaDevices ||
-        !navigator.mediaDevices.getUserMedia
-      ) {
-
-        status.innerHTML =
-          "❌ Camera is not supported by this browser.";
-
-        startButton.disabled = false;
-
-        return;
-      }
-
-
-      // Stop old camera if running
-
-      if (stream) {
-
-        stream
-          .getTracks()
-          .forEach(
-            function(track) {
-              track.stop();
-            }
-          );
-
-      }
-
-
-      // =====================================================
-      // OPEN REAR CAMERA
-      // =====================================================
-
-      stream =
-        await navigator.mediaDevices.getUserMedia({
-
-          video: {
-
-            facingMode: {
-              ideal: "environment"
-            },
-
-            width: {
-              ideal: 1280
-            },
-
-            height: {
-              ideal: 720
-            }
-
-          },
-
-          audio: false
-
-        });
-
-
-      video.srcObject = stream;
-
-
-      await video.play();
-
-
-      status.innerHTML =
-        "📷 Camera working — point at the QR code.";
-
-
-      scanning = true;
-
-      qrProcessing = false;
-
-
-      requestAnimationFrame(
-        scanQRCode
-      );
-
-
-    } catch (error) {
-
-      console.error(
-        "Camera error:",
-        error
-      );
-
-      status.innerHTML =
-        "❌ Camera error: " +
-        error.name +
-        " — " +
-        error.message;
-
-      startButton.disabled = false;
-
-    }
-
-  }
-
-
-  // =========================================================
-  // QR SCANNING
-  // =========================================================
-
-  function scanQRCode() {
-
-    if (!scanning) {
-      return;
-    }
-
+  try {
 
     if (
-      video.readyState ===
-      video.HAVE_ENOUGH_DATA
+      !navigator.mediaDevices ||
+      !navigator.mediaDevices.getUserMedia
     ) {
 
-      const width =
-        video.videoWidth;
-
-      const height =
-        video.videoHeight;
-
-
-      if (
-        width > 0 &&
-        height > 0
-      ) {
-
-        canvas.width = width;
-
-        canvas.height = height;
-
-
-        ctx.drawImage(
-          video,
-          0,
-          0,
-          width,
-          height
-        );
-
-
-        try {
-
-          const imageData =
-            ctx.getImageData(
-              0,
-              0,
-              width,
-              height
-            );
-
-
-          const code =
-            jsQR(
-              imageData.data,
-              imageData.width,
-              imageData.height,
-              {
-                inversionAttempts:
-                  "attemptBoth"
-              }
-            );
-
-
-          if (code && code.data) {
-
-            console.log(
-              "QR CODE FOUND:",
-              code.data
-            );
-
-
-            handleQRCode(
-              code.data
-            );
-
-            return;
-
-          }
-
-        } catch (error) {
-
-          console.error(
-            "QR processing error:",
-            error
-          );
-
-        }
-
-      }
-
-    }
-
-
-    requestAnimationFrame(
-      scanQRCode
-    );
-
-  }
-
-
-  // =========================================================
-  // QR CODE FOUND
-  // =========================================================
-
-  function handleQRCode(
-    qrData
-  ) {
-
-    if (qrProcessing) {
-      return;
-    }
-
-    qrProcessing = true;
-
-    scanning = false;
-
-
-    // =======================================================
-    // STOP CAMERA
-    // =======================================================
-
-    stopCamera();
-
-
-    console.log(
-      "QR DATA:",
-      qrData
-    );
-
-
-    detectedUrl.innerHTML =
-      "Detected:<br>" +
-      escapeHtml(qrData);
-
-    detectedUrl.style.display =
-      "block";
-
-
-    status.innerHTML =
-      "✅ QR code detected!";
-
-
-    // =======================================================
-    // EXTRACT SCAN NUMBER
-    // =======================================================
-
-    const scanNumber =
-      extractScanNumber(qrData);
-
-
-    console.log(
-      "SCAN NUMBER:",
-      scanNumber
-    );
-
-
-    if (!scanNumber) {
-
-      status.innerHTML =
-        "❌ QR code detected, but no scan number was found.";
-
-      clueText.innerHTML =
-        "The QR code must contain something like:<br><br>" +
-        "...?scan=1";
-
-      result.style.display =
-        "block";
-
-      startButton.disabled =
-        false;
-
-      retryButton.style.display =
-        "inline-block";
-
-      return;
-
-    }
-
-
-    // =======================================================
-    // LOAD CLUE
-    // =======================================================
-
-    getClueFromAppsScript(
-      scanNumber
-    );
-
-  }
-
-
-  // =========================================================
-  // EXTRACT ?scan= NUMBER
-  // =========================================================
-
-  function extractScanNumber(
-    qrData
-  ) {
-
-    try {
-
-      const url =
-        new URL(
-          String(qrData).trim()
-        );
-
-
-      const scan =
-        url.searchParams.get(
-          "scan"
-        );
-
-
-      if (scan) {
-
-        return String(
-          scan
-        ).trim();
-
-      }
-
-    } catch (error) {
-
-      console.log(
-        "QR was not a valid URL."
+      throw new Error(
+        "Camera is not supported by this browser."
       );
 
     }
 
 
-    // =======================================================
-    // FALLBACK
-    // =======================================================
-    //
-    // If QR contains plain text such as:
-    //
-    // scan=1
-    //
-    // this will still work.
-    // =======================================================
-
-    const match =
-      String(qrData)
-        .match(
-          /[?&]scan=([^&#\s]+)/i
-        );
-
-
-    if (match) {
-
-      return decodeURIComponent(
-        match[1]
-      ).trim();
-
-    }
-
-
-    return "";
-
-  }
-
-
-  // =========================================================
-  // GET CLUE FROM APPS SCRIPT
-  // =========================================================
-  //
-  // THIS IS THE FUNCTION YOU GAVE ME.
-  //
-  // It uses JSONP so your GitHub Pages HTTPS site can
-  // communicate with Apps Script without a CORS problem.
-  // =========================================================
-
-  function getClueFromAppsScript(
-    scanNumber
-  ) {
-
-    status.innerHTML =
-      "🔍 Loading clue " +
-      escapeHtml(scanNumber) +
-      "...";
-
-    result.style.display =
-      "none";
-
-
-    const callbackName =
-      "qrCallback_" +
-      Date.now();
-
-
-    let scriptElement =
-      null;
-
-
-    window[callbackName] =
-      function(data) {
-
-        console.log(
-          "APPS SCRIPT RESPONSE:",
-          data
-        );
-
-
-        try {
-
-          delete window[
-            callbackName
-          ];
-
-        } catch (e) {
-
-          window[
-            callbackName
-          ] = undefined;
-
-        }
-
-
-        if (scriptElement) {
-
-          scriptElement.remove();
-
-        }
-
-
-        // ===================================================
-        // ERROR RESPONSE
-        // ===================================================
-
-        if (
-          !data ||
-          data.success !== true
-        ) {
-
-          status.innerHTML =
-            "❌ Could not load the clue.";
-
-
-          clueText.innerHTML =
-            escapeHtml(
-              data && data.error
-                ? data.error
-                : "Unknown error."
-            );
-
-
-          destination.innerHTML =
-            "";
-
-
-          result.style.display =
-            "block";
-
-
-          startButton.disabled =
-            false;
-
-
-          retryButton.style.display =
-            "inline-block";
-
-
-          return;
-
-        }
-
-
-        // ===================================================
-        // SUCCESS
-        // ===================================================
-
-        status.innerHTML =
-          "🎉 CLUE " +
-          escapeHtml(data.scan) +
-          " FOUND!";
-
-
-        clueText.innerHTML =
-          escapeHtml(
-            data.clue || ""
-          );
-
-
-        if (data.destination) {
-
-          destination.innerHTML =
-            "<strong>📍 Go to:</strong><br>" +
-            escapeHtml(
-              data.destination
-            );
-
-        } else {
-
-          destination.innerHTML =
-            "";
-
-        }
-
-
-        result.style.display =
-          "block";
-
-
-        startButton.disabled =
-          false;
-
-
-        retryButton.style.display =
-          "inline-block";
-
-      };
-
-
-    // =======================================================
-    // APPS SCRIPT API URL
-    // =======================================================
-
-    const apiUrl =
-      APPS_SCRIPT_URL +
-      "?api=1" +
-      "&scan=" +
-      encodeURIComponent(
-        scanNumber
-      ) +
-      "&callback=" +
-      encodeURIComponent(
-        callbackName
-      );
-
-
-    console.log(
-      "API URL:",
-      apiUrl
-    );
-
-
-    // =======================================================
-    // JSONP SCRIPT
-    // =======================================================
-
-    scriptElement =
-      document.createElement(
-        "script"
-      );
-
-
-    scriptElement.src =
-      apiUrl;
-
-
-    scriptElement.onerror =
-      function() {
-
-        console.error(
-          "Apps Script API failed."
-        );
-
-
-        try {
-
-          delete window[
-            callbackName
-          ];
-
-        } catch (e) {
-
-          window[
-            callbackName
-          ] = undefined;
-
-        }
-
-
-        status.innerHTML =
-          "❌ Could not connect to the clue server.";
-
-
-        clueText.innerHTML =
-          "Please check the Apps Script deployment and try again.";
-
-
-        destination.innerHTML =
-          "";
-
-
-        result.style.display =
-          "block";
-
-
-        startButton.disabled =
-          false;
-
-
-        retryButton.style.display =
-          "inline-block";
-
-
-        if (scriptElement) {
-
-          scriptElement.remove();
-
-        }
-
-      };
-
-
-    document.body.appendChild(
-      scriptElement
-    );
-
-  }
-
-
-  // =========================================================
-  // RESTART SCANNER
-  // =========================================================
-
-  function restartScanner() {
-
-    qrProcessing = false;
-
-    scanning = false;
-
-
-    result.style.display =
-      "none";
-
-
-    retryButton.style.display =
-      "none";
-
-
-    detectedUrl.style.display =
-      "none";
-
-
-    detectedUrl.innerHTML =
-      "";
-
-
-    clueText.innerHTML =
-      "";
-
-
-    destination.innerHTML =
-      "";
-
-
-    startButton.disabled =
-      false;
-
-
-    startScanner();
-
-  }
-
-
-  // =========================================================
-  // STOP CAMERA
-  // =========================================================
-
-  function stopCamera() {
-
-    scanning = false;
-
+    // Stop previous camera
 
     if (stream) {
 
       stream
         .getTracks()
-        .forEach(
-          function(track) {
-
-            track.stop();
-
-          }
-        );
-
-      stream = null;
+        .forEach(track => track.stop());
 
     }
 
 
-    video.srcObject =
-      null;
+    // Open rear camera
+
+    stream =
+      await navigator.mediaDevices.getUserMedia({
+
+        video: {
+
+          facingMode: {
+            ideal: "environment"
+          },
+
+          width: {
+            ideal: 1280
+          },
+
+          height: {
+            ideal: 720
+          }
+
+        },
+
+        audio: false
+
+      });
+
+
+    video.srcObject = stream;
+
+    await video.play();
+
+
+    status.innerHTML =
+      "📷 Camera working — scanning QR code...";
+
+
+    scanning = true;
+
+    scanQRCode();
+
+
+  } catch (error) {
+
+    console.error(error);
+
+    status.innerHTML =
+      "❌ Camera error: " +
+      error.name +
+      " — " +
+      error.message;
+
+    startButton.disabled = false;
+
+  }
+
+}
+
+
+// ============================================================
+// QR SCANNER
+// ============================================================
+
+function scanQRCode() {
+
+  if (!scanning) {
+    return;
+  }
+
+
+  if (
+    video.readyState ===
+    video.HAVE_ENOUGH_DATA
+  ) {
+
+    canvas.width =
+      video.videoWidth;
+
+    canvas.height =
+      video.videoHeight;
+
+
+    ctx.drawImage(
+      video,
+      0,
+      0,
+      canvas.width,
+      canvas.height
+    );
+
+
+    const imageData =
+      ctx.getImageData(
+        0,
+        0,
+        canvas.width,
+        canvas.height
+      );
+
+
+    const code =
+      jsQR(
+        imageData.data,
+        imageData.width,
+        imageData.height,
+        {
+          inversionAttempts: "attemptBoth"
+        }
+      );
+
+
+    if (code) {
+
+      handleQRCode(code.data);
+
+      return;
+
+    }
 
   }
 
 
-  // =========================================================
-  // HTML ESCAPE
-  // =========================================================
+  requestAnimationFrame(
+    scanQRCode
+  );
 
-  function escapeHtml(
-    value
-  ) {
+}
 
-    return String(
-      value === null ||
-      value === undefined
-        ? ""
-        : value
-    )
 
-    .replace(
-      /&/g,
-      "&amp;"
-    )
+// ============================================================
+// HANDLE QR CODE
+// ============================================================
 
-    .replace(
-      /</g,
-      "&lt;"
-    )
+function handleQRCode(qrContent) {
 
-    .replace(
-      />/g,
-      "&gt;"
-    )
+  if (alreadyDetected) {
+    return;
+  }
 
-    .replace(
-      /"/g,
-      "&quot;"
-    )
+  alreadyDetected = true;
 
-    .replace(
-      /'/g,
-      "&#039;"
+  scanning = false;
+
+
+  // Stop camera
+
+  if (stream) {
+
+    stream
+      .getTracks()
+      .forEach(track => track.stop());
+
+  }
+
+  video.srcObject = null;
+
+
+  console.log(
+    "QR CODE FOUND:",
+    qrContent
+  );
+
+
+  detected.innerHTML =
+    "Detected:<br>" +
+    escapeHtml(qrContent);
+
+
+  // ==========================================================
+  // EXTRACT scan NUMBER FROM QR URL
+  // ==========================================================
+
+  let scanNumber = "";
+
+
+  try {
+
+    const qrUrl =
+      new URL(qrContent);
+
+
+    scanNumber =
+      qrUrl.searchParams.get("scan") || "";
+
+  } catch (error) {
+
+    console.error(
+      "QR is not a valid URL:",
+      error
     );
 
   }
+
+
+  // ==========================================================
+  // CHECK scan NUMBER
+  // ==========================================================
+
+  if (!scanNumber) {
+
+    status.innerHTML =
+      "❌ QR code detected, but no scan number was found.";
+
+    clueText.innerHTML =
+      "The QR code must contain something like:<br><br>" +
+      "?scan=1";
+
+    destination.innerHTML = "";
+
+    result.style.display = "block";
+
+    startButton.disabled = false;
+
+    retryButton.style.display =
+      "inline-block";
+
+    return;
+
+  }
+
+
+  // ==========================================================
+  // LOAD CLUE
+  // ==========================================================
+
+  getClueFromAppsScript(
+    scanNumber
+  );
+
+}
+
+
+// ============================================================
+// GET CLUE FROM GOOGLE APPS SCRIPT
+// ============================================================
+
+function getClueFromAppsScript(
+  scanNumber
+) {
+
+  status.innerHTML =
+    "🔍 Loading clue " +
+    escapeHtml(scanNumber) +
+    "...";
+
+
+  result.style.display = "none";
+
+
+  const callbackName =
+    "qrCallback_" +
+    Date.now();
+
+
+  let scriptElement = null;
+
+
+  // ==========================================================
+  // JSONP CALLBACK
+  // ==========================================================
+
+  window[callbackName] =
+    function(data) {
+
+      console.log(
+        "APPS SCRIPT RESPONSE:",
+        data
+      );
+
+
+      try {
+
+        delete window[callbackName];
+
+      } catch (e) {
+
+        window[callbackName] =
+          undefined;
+
+      }
+
+
+      if (scriptElement) {
+        scriptElement.remove();
+      }
+
+
+      // ======================================================
+      // ERROR
+      // ======================================================
+
+      if (
+        !data ||
+        data.success !== true
+      ) {
+
+        status.innerHTML =
+          "❌ Could not load the clue.";
+
+
+        clueText.innerHTML =
+          escapeHtml(
+            data && data.error
+              ? data.error
+              : "Unknown error."
+          );
+
+
+        destination.innerHTML = "";
+
+        result.style.display =
+          "block";
+
+
+        startButton.disabled =
+          false;
+
+
+        retryButton.style.display =
+          "inline-block";
+
+
+        return;
+
+      }
+
+
+      // ======================================================
+      // SUCCESS
+      // ======================================================
+
+      status.innerHTML =
+        "🎉 CLUE " +
+        escapeHtml(data.scan) +
+        " FOUND!";
+
+
+      clueText.innerHTML =
+        escapeHtml(
+          data.clue || ""
+        );
+
+
+      if (data.destination) {
+
+        destination.innerHTML =
+          "<strong>📍 Go to:</strong><br>" +
+          escapeHtml(
+            data.destination
+          );
+
+      } else {
+
+        destination.innerHTML = "";
+
+      }
+
+
+      result.style.display =
+        "block";
+
+
+      startButton.disabled =
+        false;
+
+
+      retryButton.style.display =
+        "inline-block";
+
+    };
+
+
+  // ==========================================================
+  // APPS SCRIPT API URL
+  // ==========================================================
+
+  const apiUrl =
+    APPS_SCRIPT_URL +
+    "?api=1" +
+    "&scan=" +
+    encodeURIComponent(scanNumber) +
+    "&callback=" +
+    encodeURIComponent(callbackName);
+
+
+  console.log(
+    "API URL:",
+    apiUrl
+  );
+
+
+  // ==========================================================
+  // CREATE JSONP SCRIPT
+  // ==========================================================
+
+  scriptElement =
+    document.createElement("script");
+
+
+  scriptElement.src =
+    apiUrl;
+
+
+  scriptElement.onerror =
+    function() {
+
+      console.error(
+        "Apps Script API failed."
+      );
+
+
+      try {
+
+        delete window[callbackName];
+
+      } catch (e) {
+
+        window[callbackName] =
+          undefined;
+
+      }
+
+
+      status.innerHTML =
+        "❌ Could not connect to the clue server.";
+
+
+      clueText.innerHTML =
+        "Please check the Apps Script deployment.";
+
+
+      destination.innerHTML = "";
+
+      result.style.display =
+        "block";
+
+
+      startButton.disabled =
+        false;
+
+
+      retryButton.style.display =
+        "inline-block";
+
+
+      scriptElement.remove();
+
+    };
+
+
+  document.body.appendChild(
+    scriptElement
+  );
+
+}
+
+
+// ============================================================
+// ESCAPE HTML
+// ============================================================
+
+function escapeHtml(value) {
+
+  return String(
+    value === null ||
+    value === undefined
+      ? ""
+      : value
+  )
+
+  .replace(
+    /&/g,
+    "&amp;"
+  )
+
+  .replace(
+    /</g,
+    "&lt;"
+  )
+
+  .replace(
+    />/g,
+    "&gt;"
+  )
+
+  .replace(
+    /"/g,
+    "&quot;"
+  )
+
+  .replace(
+    /'/g,
+    "&#039;"
+  );
+
+}
+
 
 </script>
 
