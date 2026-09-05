@@ -1,90 +1,25 @@
 :root {
+  --theme-primary: #d38aff;
 
-  --page-background:
-    linear-gradient(
-      135deg,
-      #160b25,
-      #35135a
+  --theme-secondary: #e6a6ff;
+
+  --theme-accent: #f1d5ff;
+
+  --theme-background:
+    radial-gradient(
+      circle at top,
+      #faf2ff 0%,
+      #ead7f5 45%,
+      #fdfaff 100%
     );
 
-  --panel-background:
-    rgba(34,17,52,.92);
+  --theme-card: rgba(255, 255, 255, 0.84);
 
-  --panel-border:
-    #a95ad1;
+  --theme-card-dark: rgba(255, 255, 255, 0.70);
 
-  --panel-shadow:
-    rgba(119,45,170,.40);
+  --theme-text: #2b1738;
 
-  --scanner-background:
-    linear-gradient(
-      145deg,
-      #301052,
-      #160c28
-    );
+  --theme-muted: #72557e;
 
-  --preview-background:
-    linear-gradient(
-      145deg,
-      #43176b,
-      #211036
-    );
-
-  --accent:
-    #d38aff;
-
-  --accent-glow:
-    rgba(211,138,255,.42);
-
-  --title-color:
-    #f1d5ff;
-
-  --text-primary:
-    #fff;
-
-  --text-secondary:
-    #e7c9f5;
-
-  --text-muted:
-    #b895c8;
-
-  --label-color:
-    #e1a5ff;
-
-  --scanner-frame:
-    #d38aff;
-
-  --scanner-corners:
-    #e7b3ff;
-
-  --button-background:
-    #7432a0;
-
-  --card-background:
-    rgba(42,18,60,.80);
-
-  --card-border:
-    #a95ad1;
-
-  --card-shadow:
-    rgba(180,80,240,.22);
-
-  --timer-background:
-    linear-gradient(
-      135deg,
-      #39145b,
-      #210d35
-    );
-
-  --timer-color:
-    #ffd76a;
-
-  --destination-background:
-    #35104d;
-
-  --decorative-glow:
-    #9c4dcc;
-
-  --celebration-color:
-    #e6a6ff;
+  --theme-shadow: rgba(180, 80, 240, 0.25);
 }
