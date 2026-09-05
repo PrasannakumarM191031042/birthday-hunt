@@ -1,90 +1,25 @@
 :root {
+  --theme-primary: #e7b63d;
 
-  --page-background:
-    linear-gradient(
-      135deg,
-      #050505,
-      #211705
+  --theme-secondary: #ffd45a;
+
+  --theme-accent: #ffe38a;
+
+  --theme-background:
+    radial-gradient(
+      circle at top,
+      #fff9e8 0%,
+      #f8e8b5 45%,
+      #fffdf5 100%
     );
 
-  --panel-background:
-    rgba(15,13,9,.96);
+  --theme-card: rgba(255, 255, 255, 0.84);
 
-  --panel-border:
-    #9d7219;
+  --theme-card-dark: rgba(255, 255, 255, 0.70);
 
-  --panel-shadow:
-    rgba(218,163,39,.25);
+  --theme-text: #33270d;
 
-  --scanner-background:
-    linear-gradient(
-      145deg,
-      #17130b,
-      #050505
-    );
+  --theme-muted: #705d2b;
 
-  --preview-background:
-    linear-gradient(
-      145deg,
-      #211806,
-      #0a0906
-    );
-
-  --accent:
-    #e7b63d;
-
-  --accent-glow:
-    rgba(231,182,61,.38);
-
-  --title-color:
-    #ffe38a;
-
-  --text-primary:
-    #fff;
-
-  --text-secondary:
-    #f0d994;
-
-  --text-muted:
-    #b7a46f;
-
-  --label-color:
-    #e7b63d;
-
-  --scanner-frame:
-    #dba72c;
-
-  --scanner-corners:
-    #e7b63d;
-
-  --button-background:
-    #9d6912;
-
-  --card-background:
-    rgba(29,23,10,.92);
-
-  --card-border:
-    #a87b20;
-
-  --card-shadow:
-    rgba(231,182,61,.20);
-
-  --timer-background:
-    linear-gradient(
-      135deg,
-      #211806,
-      #0d0b06
-    );
-
-  --timer-color:
-    #ffd34d;
-
-  --destination-background:
-    #1d1608;
-
-  --decorative-glow:
-    #9d741d;
-
-  --celebration-color:
-    #ffd45a;
+  --theme-shadow: rgba(231, 182, 61, 0.28);
 }
