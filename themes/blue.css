@@ -1,90 +1,25 @@
+/* =========================================================
+   BLUE THEME
+========================================================= */
+
 :root {
+  --theme-primary: #4da6ff;
+  --theme-secondary: #6fc3ff;
+  --theme-accent: #c9edff;
 
-  --page-background:
-    linear-gradient(
-      135deg,
-      #e9f8ff,
-      #cbeeff
+  --theme-background:
+    radial-gradient(
+      circle at top,
+      #eef9ff 0%,
+      #d9f0ff 45%,
+      #f8fcff 100%
     );
 
-  --panel-background:
-    rgba(255,255,255,.80);
+  --theme-card: rgba(255, 255, 255, 0.82);
+  --theme-card-dark: rgba(255, 255, 255, 0.68);
 
-  --panel-border:
-    #92cbe8;
+  --theme-text: #102a43;
+  --theme-muted: #42627a;
 
-  --panel-shadow:
-    rgba(24,126,184,.20);
-
-  --scanner-background:
-    linear-gradient(
-      145deg,
-      #dff5ff,
-      #c5eaff
-    );
-
-  --preview-background:
-    linear-gradient(
-      145deg,
-      #f1fbff,
-      #d9f2ff
-    );
-
-  --accent:
-    #087fc2;
-
-  --accent-glow:
-    rgba(8,127,194,.32);
-
-  --title-color:
-    #075b91;
-
-  --text-primary:
-    #102b3b;
-
-  --text-secondary:
-    #2e617d;
-
-  --text-muted:
-    #60879b;
-
-  --label-color:
-    #087fc2;
-
-  --scanner-frame:
-    #087fc2;
-
-  --scanner-corners:
-    #087fc2;
-
-  --button-background:
-    #0786ca;
-
-  --card-background:
-    rgba(255,255,255,.74);
-
-  --card-border:
-    #8bc9e8;
-
-  --card-shadow:
-    rgba(8,127,194,.16);
-
-  --timer-background:
-    linear-gradient(
-      135deg,
-      #e5f7ff,
-      #ccecff
-    );
-
-  --timer-color:
-    #087fc2;
-
-  --destination-background:
-    #e7f8ff;
-
-  --decorative-glow:
-    #89d5ff;
-
-  --celebration-color:
-    #0a8ed1;
+  --theme-shadow: rgba(77, 166, 255, 0.25);
 }
